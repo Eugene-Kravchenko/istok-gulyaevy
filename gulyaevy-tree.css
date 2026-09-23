@@ -158,6 +158,12 @@ svg { display: block; }
 .tree-edge.direct { stroke: #3e6553; stroke-width: 2; }
 .tree-edge.spouse { stroke: var(--gold); stroke-width: 1.6; }
 .tree-edge.foster { stroke-dasharray: 4 4; }
+.tree-edge.clan-gulyaev { stroke: #2f6652; }
+.tree-edge.clan-cherepanov { stroke: #8d4e60; }
+.tree-edge.clan-arzhilovsky { stroke: #466b8d; }
+.tree-edge.clan-nagornov { stroke: #a8701f; }
+.tree-edge.clan-related { stroke: #8b8377; }
+.tree-edge.edge-halo { stroke: #f9f6ee !important; stroke-width: 6; stroke-dasharray: none; stroke-linecap: butt; }
 .tree-node { --clan: #827a6e; --clan-soft: #fbfaf6; --clan-border: #d3cec4; cursor: pointer; }
 .tree-node.clan-gulyaev { --clan: #2f6652; --clan-soft: #edf5f1; --clan-border: #9fbeaf; }
 .tree-node.clan-cherepanov { --clan: #8d4e60; --clan-soft: #faeef1; --clan-border: #d7aab6; }

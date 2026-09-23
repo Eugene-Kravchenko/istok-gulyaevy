@@ -183,6 +183,15 @@
     return 'related';
   }
 
+  function familyClan(family) {
+    const orderedIds = [...family.children, family.husband, family.wife].filter(Boolean);
+    for (const id of orderedIds) {
+      const clan = clanOf(personById(id) || { surname: '', name: '' });
+      if (clan !== 'related') return clan;
+    }
+    return 'related';
+  }
+
   function addGraphNode(nodes, person, generation, direct = false) {
     if (!person) return null;
     const existing = nodes.get(person.id);
@@ -366,8 +375,44 @@
     for (const family of families) {
       const placed = layout.node(`family:${family.id}`);
       family.hub = { x: placed.x, y: placed.y };
+      family.clan = familyClan(state.families.get(family.id));
     }
+    assignFamilyLanes(families, graph);
     return { ...graph, families, units, width: layout.graph().width, height: layout.graph().height };
+  }
+
+  function assignFamilyLanes(families, graph) {
+    const groups = new Map();
+    for (const family of families) {
+      const parents = family.parents.map((id) => graph.nodes.get(id)).filter(Boolean);
+      const children = family.children.map((id) => graph.nodes.get(id)).filter(Boolean);
+      if (!parents.length || !children.length) continue;
+      const parentBottom = Math.max(...parents.map((node) => node.y + CARD_H));
+      const childTop = Math.min(...children.map((node) => node.y));
+      const centers = [...parents, ...children].map((node) => node.x + CARD_W / 2);
+      const top = parentBottom + 12;
+      const bottom = childTop - 12;
+      const key = `${Math.round(parentBottom)}:${Math.round(childTop)}`;
+      const item = { family, left: Math.min(...centers), right: Math.max(...centers), top, bottom, lane: 0 };
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(item);
+    }
+
+    for (const items of groups.values()) {
+      const laneEnds = [];
+      items.sort((a, b) => a.left - b.left || a.right - b.right || a.family.id.localeCompare(b.family.id));
+      for (const item of items) {
+        let lane = laneEnds.findIndex((right) => item.left > right + 18);
+        if (lane < 0) lane = laneEnds.length;
+        laneEnds[lane] = Math.max(laneEnds[lane] ?? Number.NEGATIVE_INFINITY, item.right);
+        item.lane = lane;
+      }
+      const laneCount = laneEnds.length;
+      for (const item of items) {
+        const available = Math.max(8, item.bottom - item.top);
+        item.family.busY = item.top + available * (item.lane + 1) / (laneCount + 1);
+      }
+    }
   }
 
   function splitName(name) {
@@ -375,7 +420,7 @@
     const lines = [''];
     for (const word of words) {
       const current = lines.at(-1);
-      if (!current || `${current} ${word}`.length <= 17) lines[lines.length - 1] = compact(`${current} ${word}`);
+      if (!current || `${current} ${word}`.length <= 16) lines[lines.length - 1] = compact(`${current} ${word}`);
       else lines.push(word);
     }
     return lines;
@@ -417,7 +462,7 @@
     if (children.length) {
       const nearestChildY = Math.min(...children.map((child) => child.y));
       const parentBottom = parents.length ? Math.max(...parents.map((parent) => parent.y + CARD_H)) : family.hub.y;
-      const busY = clamp(family.hub.y, parentBottom + 20, nearestChildY - 20);
+      const busY = family.busY ?? clamp(family.hub.y, parentBottom + 20, nearestChildY - 20);
       paths.push({ type: 'family', d: `M ${trunkX} ${trunkStartY} V ${busY}` });
       const childCenters = children.map((child) => child.x + CARD_W / 2);
       paths.push({ type: 'family', d: `M ${Math.min(...childCenters, trunkX)} ${busY} H ${Math.max(...childCenters, trunkX)}` });
@@ -440,7 +485,9 @@
 
     for (const family of graph.families) {
       for (const path of familyConnectionPaths(family, graph)) {
-        els.edges.appendChild(svgEl('path', { d: path.d, class: `tree-edge ${path.type}${family.direct ? ' direct' : ''}${path.foster ? ' foster' : ''}` }));
+        const classes = `${path.type}${family.direct ? ' direct' : ''}${path.foster ? ' foster' : ''}`;
+        els.edges.appendChild(svgEl('path', { d: path.d, class: `tree-edge edge-halo ${classes}`, 'data-family-id': family.id }));
+        els.edges.appendChild(svgEl('path', { d: path.d, class: `tree-edge clan-${family.clan} ${classes}`, 'data-family-id': family.id }));
       }
     }
 
