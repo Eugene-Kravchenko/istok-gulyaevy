@@ -18,7 +18,7 @@
 
   const state = {
     people: new Map(), families: new Map(), root: '', selected: '', direction: 'ancestors', scope: 'direct',
-    graph: null, camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0, stageWidth: 0
+    graph: null, camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0, stageWidth: 0, hovered: ''
   };
 
   const CARD_W = 176;
@@ -336,9 +336,9 @@
       rankdir: state.direction === 'ancestors' ? 'BT' : 'TB',
       ranker: 'network-simplex',
       acyclicer: 'greedy',
-      nodesep: 18,
-      edgesep: 10,
-      ranksep: 54,
+      nodesep: state.scope === 'all' ? 28 : 18,
+      edgesep: state.scope === 'all' ? 16 : 10,
+      ranksep: state.scope === 'all' ? 82 : 54,
       marginx: PAD,
       marginy: PAD
     });
@@ -506,8 +506,14 @@
   function drawGraph() {
     const graph = layoutGraph(buildGraph());
     state.graph = graph;
+    state.hovered = '';
     els.edges.replaceChildren();
     els.nodes.replaceChildren();
+    els.treeCard.classList.toggle('all-relatives', state.scope === 'all');
+    const desktopTip = $('#stageTip .desktop-tip');
+    const mobileTip = $('#stageTip .mobile-tip');
+    desktopTip.textContent = state.scope === 'all' ? 'Наведите на человека — выделятся его семейные связи' : 'Колесо — масштаб · перетаскивание — перемещение';
+    mobileTip.textContent = state.scope === 'all' ? 'Коснитесь человека — выделятся его семейные связи' : 'Двигайте пальцем · масштабируйте двумя пальцами';
 
     const defs = svgEl('defs');
     const filter = svgEl('filter', { id: 'nodeShadow', x: '-20%', y: '-20%', width: '140%', height: '150%' });
@@ -516,11 +522,13 @@
     els.edges.appendChild(defs);
 
     for (const family of graph.families) {
+      const familyGroup = svgEl('g', { class: 'family-group', 'data-family-id': family.id });
       for (const path of familyConnectionPaths(family, graph)) {
         const classes = `${path.type}${family.direct ? ' direct' : ''}${path.foster ? ' foster' : ''}`;
-        els.edges.appendChild(svgEl('path', { d: path.d, class: `tree-edge edge-halo ${classes}`, 'data-family-id': family.id }));
-        els.edges.appendChild(svgEl('path', { d: path.d, class: `tree-edge clan-${family.clan} ${classes}`, 'data-family-id': family.id }));
+        familyGroup.appendChild(svgEl('path', { d: path.d, class: `tree-edge edge-halo ${classes}` }));
+        familyGroup.appendChild(svgEl('path', { d: path.d, class: `tree-edge clan-${family.clan} ${classes}` }));
       }
+      els.edges.appendChild(familyGroup);
     }
 
     for (const node of graph.nodes.values()) {
@@ -553,6 +561,10 @@
       }
       group.addEventListener('click', () => { if (!state.moved) selectPerson(node.id, true); });
       group.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectPerson(node.id, true); } });
+      group.addEventListener('pointerenter', () => setHoveredPerson(node.id));
+      group.addEventListener('pointerleave', () => setHoveredPerson(''));
+      group.addEventListener('focus', () => setHoveredPerson(node.id));
+      group.addEventListener('blur', () => setHoveredPerson(''));
       els.nodes.appendChild(group);
     }
 
@@ -561,6 +573,7 @@
     els.summary.textContent = `${mode} · ${direction} · ${graph.nodes.size} ${plural(graph.nodes.size, ['человек', 'человека', 'человек'])} на схеме`;
     els.svg.removeAttribute('hidden');
     els.loading.hidden = true;
+    updateFamilyFocus();
     requestAnimationFrame(() => {
       focusRoot();
       state.stageWidth = els.stage.clientWidth;
@@ -578,7 +591,8 @@
 
   function visibleStageSize() {
     const drawerWidth = els.drawer.classList.contains('open') && els.stage.clientWidth > 760 ? Math.min(340, els.stage.clientWidth * .35) : 0;
-    return { width: Math.max(260, els.stage.clientWidth - drawerWidth), height: Math.max(260, els.stage.clientHeight) };
+    const drawerHeight = els.drawer.classList.contains('open') && els.stage.clientWidth <= 760 ? els.drawer.offsetHeight : 0;
+    return { width: Math.max(260, els.stage.clientWidth - drawerWidth), height: Math.max(120, els.stage.clientHeight - drawerHeight) };
   }
 
   function updateCamera() {
@@ -654,6 +668,9 @@
     $$('[data-direction]').forEach((button) => button.classList.toggle('active', button.dataset.direction === state.direction));
     $$('[data-scope]').forEach((button) => button.classList.toggle('active', button.dataset.scope === state.scope));
     els.scopeDirect.textContent = state.direction === 'ancestors' ? 'Прямые предки' : 'Прямые потомки';
+    $('#pageHelp').textContent = state.scope === 'all'
+      ? 'Все люди на схеме. Наведите или нажмите на карточку, чтобы увидеть её родственные связи.'
+      : 'Исследуйте прямую линию предков или откройте боковые ветви семьи.';
   }
 
   function changeView() {
@@ -711,15 +728,64 @@
     const person = personById(id);
     if (!person) return;
     state.selected = id;
+    state.hovered = '';
     renderDetails(person);
     if (openDrawer) els.drawer.classList.add('open');
-    if (state.graph?.nodes.has(id)) drawSelection();
+    if (state.graph?.nodes.has(id)) {
+      drawSelection();
+      if (openDrawer) requestAnimationFrame(() => revealPerson(id));
+    }
+  }
+
+  function revealPerson(id) {
+    const node = state.graph?.nodes.get(id);
+    if (!node) return;
+    const { width, height } = visibleStageSize();
+    const left = state.camera.x + node.x * state.camera.scale;
+    const top = state.camera.y + node.y * state.camera.scale;
+    const right = left + CARD_W * state.camera.scale;
+    const bottom = top + CARD_H * state.camera.scale;
+    if (left >= 12 && right <= width - 12 && top >= 12 && bottom <= height - 12) return;
+    state.camera.x = width / 2 - (node.x + CARD_W / 2) * state.camera.scale;
+    state.camera.y = height / 2 - (node.y + CARD_H / 2) * state.camera.scale;
+    updateCamera();
+  }
+
+  function setHoveredPerson(id) {
+    if (state.scope !== 'all' || state.hovered === id) return;
+    state.hovered = id;
+    updateFamilyFocus();
+  }
+
+  function updateFamilyFocus() {
+    if (!state.graph) return;
+    const focusId = state.hovered && state.graph.nodes.has(state.hovered) ? state.hovered : state.selected;
+    const activeFamilies = new Set(state.graph.families
+      .filter((family) => family.parents.includes(focusId) || family.children.includes(focusId))
+      .map((family) => family.id));
+    const activePeople = new Set([focusId]);
+    for (const family of state.graph.families) {
+      if (activeFamilies.has(family.id)) [...family.parents, ...family.children].forEach((id) => activePeople.add(id));
+    }
+    els.edges.querySelectorAll('.family-group').forEach((group) => {
+      const focused = activeFamilies.has(group.getAttribute('data-family-id'));
+      group.classList.toggle('is-focused', focused);
+      if (focused) els.edges.appendChild(group);
+    });
+    els.nodes.querySelectorAll('.tree-node').forEach((group) => {
+      group.classList.toggle('is-family-member', activePeople.has(group.getAttribute('data-person-id')));
+    });
+    if (state.scope === 'all') {
+      const person = personById(focusId);
+      els.summary.textContent = `Все родственники · ${state.graph.nodes.size} ${plural(state.graph.nodes.size, ['человек', 'человека', 'человек'])} · связи: ${person?.name || ''}`;
+    }
   }
 
   function drawSelection() {
     els.nodes.querySelectorAll('.tree-node').forEach((group) => {
       group.classList.toggle('selected', group.getAttribute('data-person-id') === state.selected);
     });
+    updateFamilyFocus();
   }
 
   function renderPeople(filter = '') {
