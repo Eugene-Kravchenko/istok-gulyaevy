@@ -6,7 +6,7 @@
   const ns = 'http://www.w3.org/2000/svg';
   const els = {
     peopleCount: $('#peopleCount'), familiesCount: $('#familiesCount'), yearsRange: $('#yearsRange'),
-    depth: $('#depthSelect'), scopeDirect: $('#scopeDirect'), searchToggle: $('#searchToggle'),
+    scopeDirect: $('#scopeDirect'), searchToggle: $('#searchToggle'),
     searchPanel: $('#searchPanel'), search: $('#personSearch'), searchMeta: $('#searchMeta'),
     peopleList: $('#peopleList'), treeCard: $('#treeCard'), stage: $('#treeStage'), svg: $('#treeSvg'),
     viewport: $('#treeViewport'), edges: $('#treeEdges'), nodes: $('#treeNodes'), loading: $('#loadingState'),
@@ -17,7 +17,7 @@
   };
 
   const state = {
-    people: new Map(), families: new Map(), root: '', selected: '', direction: 'ancestors', scope: 'direct', depth: 8,
+    people: new Map(), families: new Map(), root: '', selected: '', direction: 'ancestors', scope: 'direct',
     graph: null, camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0
   };
 
@@ -174,6 +174,15 @@
     return `${born || '?'}–${death ? died || '?' : ''}`;
   }
 
+  function clanOf(person) {
+    const familyName = compact(`${person.surname} ${person.name}`).toLowerCase().replaceAll('ё', 'е');
+    if (familyName.includes('черепанов')) return 'cherepanov';
+    if (familyName.includes('нагорнов')) return 'nagornov';
+    if (familyName.includes('аржиловск') || familyName.includes('ржиловск')) return 'arzhilovsky';
+    if (familyName.includes('гуляев')) return 'gulyaev';
+    return 'related';
+  }
+
   function addGraphNode(nodes, person, generation, direct = false) {
     if (!person) return null;
     const existing = nodes.get(person.id);
@@ -194,11 +203,10 @@
     addGraphNode(nodes, root, 0, true);
     directIds.add(root.id);
 
-    const queue = [{ person: root, generation: 0, level: 0 }];
+    const queue = [{ person: root, generation: 0 }];
     const visited = new Set([root.id]);
     while (queue.length) {
       const current = queue.shift();
-      if (current.level >= state.depth - 1) continue;
       const relatives = state.direction === 'ancestors'
         ? parentsOf(current.person).map((entry) => entry.person)
         : childrenOf(current.person).map((entry) => entry.person);
@@ -208,7 +216,7 @@
         directIds.add(relative.id);
         if (!visited.has(relative.id)) {
           visited.add(relative.id);
-          queue.push({ person: relative, generation, level: current.level + 1 });
+          queue.push({ person: relative, generation });
         }
       }
     }
@@ -253,10 +261,10 @@
       }
     }
 
-    const minGeneration = state.direction === 'ancestors' ? -(state.depth - 1) : 0;
-    const maxGeneration = state.direction === 'ancestors' ? 0 : state.depth - 1;
+    const minGeneration = state.direction === 'ancestors' ? Number.NEGATIVE_INFINITY : 0;
+    const maxGeneration = state.direction === 'ancestors' ? 0 : Number.POSITIVE_INFINITY;
     const queue = branchSeeds.map((node) => ({ person: node.person, generation: node.generation }));
-    const visited = new Set(branchSeeds.map((node) => `${node.id}:${node.generation}`));
+    const visited = new Set(branchSeeds.map((node) => node.id));
     while (queue.length) {
       const current = queue.shift();
       if (current.generation >= maxGeneration) continue;
@@ -265,8 +273,7 @@
         if (generation < minGeneration || generation > maxGeneration) continue;
         addGraphNode(nodes, child, generation, false);
         addSpouses(child, generation);
-        const key = `${child.id}:${generation}`;
-        if (!visited.has(key)) { visited.add(key); queue.push({ person: child, generation }); }
+        if (!visited.has(child.id)) { visited.add(child.id); queue.push({ person: child, generation }); }
       }
     }
   }
@@ -438,13 +445,14 @@
     }
 
     for (const node of graph.nodes.values()) {
-      const classes = ['tree-node'];
+      const clan = clanOf(node.person);
+      const classes = ['tree-node', `clan-${clan}`];
       if (!node.direct) classes.push('branch');
       if (node.id === state.root) classes.push('root');
       if (node.id === state.selected) classes.push('selected');
       const datesText = life(node.person);
       const fullLife = life(node.person, true);
-      const group = svgEl('g', { class: classes.join(' '), transform: `translate(${node.x} ${node.y})`, role: 'button', tabindex: '0', 'data-person-id': node.id, 'aria-label': compact(`${node.person.name} ${datesText}`) });
+      const group = svgEl('g', { class: classes.join(' '), transform: `translate(${node.x} ${node.y})`, role: 'button', tabindex: '0', 'data-person-id': node.id, 'data-clan': clan, 'aria-label': compact(`${node.person.name} ${datesText}`) });
       const title = svgEl('title');
       title.textContent = compact(`${node.person.name}${fullLife ? ` · ${fullLife}` : ''}`);
       group.appendChild(title);
@@ -556,7 +564,7 @@
     url.searchParams.set('person', state.root);
     url.searchParams.set('view', state.direction);
     url.searchParams.set('scope', state.scope);
-    url.searchParams.set('depth', String(state.depth));
+    url.searchParams.delete('depth');
     history.replaceState(null, '', url);
   }
 
@@ -564,7 +572,6 @@
     $$('[data-direction]').forEach((button) => button.classList.toggle('active', button.dataset.direction === state.direction));
     $$('[data-scope]').forEach((button) => button.classList.toggle('active', button.dataset.scope === state.scope));
     els.scopeDirect.textContent = state.direction === 'ancestors' ? 'Прямые предки' : 'Прямые потомки';
-    els.depth.value = String(state.depth);
   }
 
   function changeView() {
@@ -683,7 +690,6 @@
   function bindEvents() {
     $$('[data-direction]').forEach((button) => button.addEventListener('click', () => { state.direction = button.dataset.direction; changeView(); }));
     $$('[data-scope]').forEach((button) => button.addEventListener('click', () => { state.scope = button.dataset.scope; changeView(); }));
-    els.depth.addEventListener('change', () => { state.depth = Number(els.depth.value); changeView(); });
     els.searchToggle.addEventListener('click', () => toggleSearch());
     els.search.addEventListener('input', () => renderPeople(els.search.value));
     document.addEventListener('click', (event) => { if (!event.target.closest('.search-wrap')) toggleSearch(false); });
@@ -780,7 +786,6 @@
       state.selected = state.root;
       state.direction = ['ancestors', 'descendants'].includes(params.get('view')) ? params.get('view') : 'ancestors';
       state.scope = ['direct', 'all'].includes(params.get('scope')) ? params.get('scope') : 'direct';
-      state.depth = clamp(Number(params.get('depth')) || 8, 3, 10);
 
       els.peopleCount.textContent = state.people.size;
       els.familiesCount.textContent = state.families.size;

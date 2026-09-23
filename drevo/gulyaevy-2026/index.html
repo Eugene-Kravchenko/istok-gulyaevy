@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer">
   <title>Древо рода Гуляевых — кабинет «Исток»</title>
   <meta name="description" content="Интерактивное родословное древо семьи Гуляевых в личном кабинете родословного бюро «Исток».">
-  <link rel="stylesheet" href="../../gulyaevy-tree.css?v=10">
+  <link rel="stylesheet" href="../../gulyaevy-tree.css?v=11">
 </head>
 <body>
   <header class="site-header">
@@ -64,7 +64,6 @@
         <div class="tree-controls">
           <div class="control-group scope-group"><span class="control-label">Состав древа</span><div class="segmented" aria-label="Состав древа"><button class="active" id="scopeDirect" data-scope="direct" type="button">Прямые предки</button><button id="scopeAll" data-scope="all" type="button">Показать всех</button></div></div>
           <div class="control-group direction-group"><span class="control-label">Направление</span><div class="segmented" aria-label="Направление древа"><button class="active" data-direction="ancestors" type="button">Предки</button><button data-direction="descendants" type="button">Потомки</button></div></div>
-          <label class="depth-control"><span class="control-label">Поколений</span><select id="depthSelect" aria-label="Число поколений"><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option selected>8</option><option>9</option><option>10</option></select></label>
           <div class="toolbar-spacer"></div>
           <div class="search-wrap">
             <button class="tool-button search-toggle" id="searchToggle" type="button" aria-label="Найти человека" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4 4"/></svg><span>Найти человека</span></button>
@@ -85,7 +84,7 @@
           <aside class="person-drawer" id="personDrawer" aria-label="Карточка человека"><header><div><span class="eyebrow">Карточка человека</span><h2 id="detailName">—</h2></div><button class="drawer-close" id="closeDetails" type="button" aria-label="Закрыть карточку">×</button></header><div class="person-details" id="personDetails"></div><footer><button class="action-button primary full" id="makeRoot" type="button">Строить древо от этого человека</button></footer></aside>
         </div>
 
-        <div class="tree-statusbar"><p id="viewSummary">Прямая линия · предки</p><div class="legend"><span><i class="direct-dot"></i>прямая линия</span><span><i class="family-dot"></i>семейная ветвь</span><span><i class="spouse-line"></i>супруги</span></div></div>
+        <div class="tree-statusbar"><p id="viewSummary">Прямая линия · предки</p><div class="legend" aria-label="Цвета родов"><span><i class="clan-dot gulyaev"></i>Гуляевы</span><span><i class="clan-dot cherepanov"></i>Черепановы</span><span><i class="clan-dot arzhilovsky"></i>Аржиловские и производные</span><span><i class="clan-dot nagornov"></i>Нагорновы</span></div></div>
       </section>
     </main>
   </div>
@@ -93,6 +92,6 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <dialog id="shareDialog" class="share-dialog"><form method="dialog"><button class="dialog-close" aria-label="Закрыть">×</button><span class="eyebrow">Ссылка на выбранное древо</span><h2>Скопируйте адрес</h2><p>Выделите ссылку и скопируйте её вручную.</p><input id="shareInput" readonly><button class="action-button primary" value="close">Готово</button></form></dialog>
   <script src="../../vendor/dagre.min.js?v=3.1.1"></script>
-  <script src="../../gulyaevy-tree.js?v=14" defer></script>
+  <script src="../../gulyaevy-tree.js?v=15" defer></script>
 </body>
 </html>

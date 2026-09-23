@@ -123,12 +123,11 @@ svg { display: block; }
 .tree-card { min-width: 0; min-height: 520px; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; border: 1px solid var(--line); border-radius: 15px; background: var(--card); box-shadow: 0 14px 42px rgba(54,48,36,.07); overflow: hidden; }
 .tree-card:fullscreen { width: 100vw; height: 100vh; border: 0; border-radius: 0; }
 .tree-controls { position: relative; z-index: 20; min-width: 0; min-height: 76px; display: flex; align-items: center; gap: 18px; padding: 12px 16px; border-bottom: 1px solid var(--line); background: rgba(255,253,247,.96); }
-.control-group, .depth-control { display: grid; gap: 6px; }
+.control-group { display: grid; gap: 6px; }
 .control-label { color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
 .segmented { display: inline-flex; padding: 3px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper-2); }
 .segmented button { min-height: 33px; padding: 0 13px; border: 0; border-radius: 6px; color: #777269; background: transparent; cursor: pointer; font-size: 11px; font-weight: 700; white-space: nowrap; }
 .segmented button.active { color: var(--green); background: #fff; box-shadow: 0 2px 8px rgba(49,44,33,.08); }
-.depth-control select { height: 41px; min-width: 68px; padding: 0 25px 0 11px; border: 1px solid var(--line); border-radius: 8px; color: var(--green); background: #fff; font-size: 12px; font-weight: 700; }
 .toolbar-spacer { flex: 1 1 0; min-width: 2px; }
 .tool-button, .icon-button, .zoom-value { min-height: 39px; border: 1px solid var(--line); color: var(--green); background: #fff; cursor: pointer; }
 .tool-button { display: inline-flex; align-items: center; gap: 8px; padding: 0 12px; border-radius: 8px; font-size: 11px; font-weight: 700; white-space: nowrap; }
@@ -159,14 +158,16 @@ svg { display: block; }
 .tree-edge.direct { stroke: #3e6553; stroke-width: 2; }
 .tree-edge.spouse { stroke: var(--gold); stroke-width: 1.6; }
 .tree-edge.foster { stroke-dasharray: 4 4; }
-.tree-node { cursor: pointer; }
-.tree-node .node-card { fill: #fffefb; stroke: #cfc8ba; stroke-width: 1.2; filter: url(#nodeShadow); vector-effect: non-scaling-stroke; }
-.tree-node.branch .node-card { fill: #fbf5e7; stroke: #d9c495; }
-.tree-node.root .node-card { fill: var(--green); stroke: var(--green); stroke-width: 2.4; }
+.tree-node { --clan: #827a6e; --clan-soft: #fbfaf6; --clan-border: #d3cec4; cursor: pointer; }
+.tree-node.clan-gulyaev { --clan: #2f6652; --clan-soft: #edf5f1; --clan-border: #9fbeaf; }
+.tree-node.clan-cherepanov { --clan: #8d4e60; --clan-soft: #faeef1; --clan-border: #d7aab6; }
+.tree-node.clan-arzhilovsky { --clan: #466b8d; --clan-soft: #eef4f9; --clan-border: #a9bfd2; }
+.tree-node.clan-nagornov { --clan: #a8701f; --clan-soft: #fbf2df; --clan-border: #d9bd82; }
+.tree-node .node-card { fill: var(--clan-soft); stroke: var(--clan-border); stroke-width: 1.2; filter: url(#nodeShadow); vector-effect: non-scaling-stroke; }
+.tree-node.root .node-card { fill: var(--clan); stroke: var(--clan); stroke-width: 2.4; }
 .tree-node.selected:not(.root) .node-card { stroke: var(--gold); stroke-width: 3; }
 .tree-node:hover .node-card { stroke: var(--gold); stroke-width: 2; }
-.tree-node .node-accent { fill: var(--green); }
-.tree-node.branch .node-accent { fill: var(--gold); }
+.tree-node .node-accent { fill: var(--clan); }
 .tree-node.root .node-accent { fill: var(--gold); }
 .tree-node .node-name { fill: var(--ink); font-family: var(--serif); font-size: 13.5px; font-weight: 600; pointer-events: none; }
 .tree-node .node-life { fill: var(--muted); font-family: var(--sans); font-size: 10px; pointer-events: none; }
@@ -204,12 +205,14 @@ svg { display: block; }
 
 .tree-statusbar { min-width: 0; min-height: 38px; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 7px 15px; border-top: 1px solid var(--line); color: var(--muted); background: #fffdf7; font-size: 9px; }
 .tree-statusbar p { margin: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.legend { display: flex; align-items: center; gap: 15px; white-space: nowrap; }
+.legend { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 7px 14px; }
 .legend span { display: flex; align-items: center; gap: 6px; }
 .legend i { display: inline-block; }
-.direct-dot, .family-dot { width: 10px; height: 8px; border: 1px solid #bdb6a8; border-radius: 2px; background: #fff; }
-.family-dot { border-color: #d0b16f; background: #fbf2dc; }
-.spouse-line { width: 14px; height: 1px; border-top: 2px dashed var(--gold); }
+.clan-dot { width: 10px; height: 10px; border-radius: 3px; box-shadow: inset 0 0 0 1px rgba(46,40,30,.12); }
+.clan-dot.gulyaev { background: #2f6652; }
+.clan-dot.cherepanov { background: #8d4e60; }
+.clan-dot.arzhilovsky { background: #466b8d; }
+.clan-dot.nagornov { background: #a8701f; }
 
 .toast { position: fixed; z-index: 200; left: 50%; bottom: 28px; transform: translate(-50%, 20px); max-width: calc(100vw - 30px); padding: 11px 16px; border-radius: 8px; color: #fff; background: var(--green); box-shadow: var(--shadow); opacity: 0; pointer-events: none; transition: .22s; font-size: 11px; text-align: center; }
 .toast.show { transform: translate(-50%,0); opacity: 1; }
@@ -274,10 +277,9 @@ svg { display: block; }
   .tree-controls { min-height: 112px; flex-wrap: wrap; align-content: center; gap: 8px; }
   .scope-group { order: 1; }
   .direction-group { order: 2; }
-  .depth-control { order: 3; }
   .toolbar-spacer { display: none; }
-  .search-wrap { order: 4; margin-left: auto; }
-  .zoom-tools { order: 5; }
+  .search-wrap { order: 3; margin-left: auto; }
+  .zoom-tools { order: 4; }
   .segmented button { padding-inline: 10px; }
   .person-drawer { width: min(340px, 94vw); }
 }
@@ -291,10 +293,8 @@ svg { display: block; }
   .tree-controls { min-height: 166px; align-items: flex-end; }
   .scope-group { width: 100%; }
   .scope-group .segmented { display: grid; grid-template-columns: 1fr 1fr; }
-  .direction-group { width: calc(100% - 82px); }
+  .direction-group { width: 100%; }
   .direction-group .segmented { display: grid; grid-template-columns: 1fr 1fr; }
-  .depth-control { width: 74px; }
-  .depth-control select { width: 100%; }
   .search-wrap { margin-left: 0; }
   .tool-button span { display: none; }
   .zoom-tools { margin-left: auto; }
