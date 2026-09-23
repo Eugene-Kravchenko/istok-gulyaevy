@@ -1,0 +1,3716 @@
+﻿0 HEAD
+1 SOUR CODEX
+2 NAME Codex GEDCOM builder
+1 GEDC
+2 VERS 5.5.1
+2 FORM LINEAGE-LINKED
+1 CHAR UTF-8
+1 LANG Russian
+1 FILE Родословное_древо_Гуляевы_Черепановы_Аржиловские_Нагорновы.ged
+1 NOTE Основано на отчёте «ГЕНЕАЛОГИЧЕСКОЕ ИССЛЕДОВАНИЕ2», 2026. Поздние
+2 CONC  приложения отчёта уточняют ранние главы. Неподтверждённые связи
+2 CONC  между ветвями не добавлены.
+0 @I1@ INDI
+1 NAME Василий /Гуляев/
+2 GIVN Василий
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE BEF 1726
+1 DEAT
+2 DATE BET 1763 AND 1782
+1 FAMS @F1@
+1 SOUR @S1@
+2 PAGE Док. 48, 53, 55, 58
+0 @I2@ INDI
+1 NAME Григорий Васильевич /Гуляев/
+2 GIVN Григорий Васильевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1748
+1 DEAT
+2 DATE 1819
+1 FAMC @F1@
+1 FAMS @F4@
+1 FAMS @F5@
+1 FAMS @F9@
+1 NOTE Отчим Лаврентия и Григория Климентьевичей. Фамилия пасынков
+2 CONC  получена в его доме.
+1 SOUR @S1@
+2 PAGE Док. 48, 53, 57; гл. о Клементии Коркине
+0 @I3@ INDI
+1 NAME Михайло Васильевич /Гуляев/
+2 GIVN Михайло Васильевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1753
+1 FAMC @F1@
+1 FAMS @F15@
+1 SOUR @S1@
+2 PAGE Док. 48, 53, 58
+0 @I4@ INDI
+1 NAME Иван /Киселёв/
+2 GIVN Иван
+2 SURN Киселёв
+1 SEX M
+1 FAMS @F2@
+1 SOUR @S1@
+2 PAGE Док. 48
+0 @I5@ INDI
+1 NAME Федора Ивановна /Киселёва/
+2 GIVN Федора Ивановна
+2 SURN Киселёва
+1 SEX F
+1 BIRT
+2 DATE ABT 1742
+1 DEAT
+2 DATE BEF 1816
+1 FAMC @F2@
+1 FAMS @F3@
+1 FAMS @F4@
+1 NOTE Первый муж — Клементий Коркин; второй — Григорий Васильевич
+2 CONC  Гуляев.
+1 SOUR @S1@
+2 PAGE Док. 48, 53, 57
+0 @I6@ INDI
+1 NAME Клементий /Коркин/
+2 GIVN Клементий
+2 SURN Коркин
+1 SEX M
+1 BIRT
+2 DATE ABT 1740
+1 DEAT
+2 DATE BET 1776 AND 1782
+1 FAMS @F3@
+1 NOTE Родной отец Лаврентия и Григория. Год рождения оценочный: в
+2 CONC  отчёте также указан диапазон 1740–1750-х.
+1 SOUR @S1@
+2 PAGE Док. 48; гл. о Клементии Коркине
+0 @I7@ INDI
+1 NAME Григорий Климентьевич /Коркин/
+2 GIVN Григорий Климентьевич
+2 SURN Коркин
+1 NAME Григорий Климентьевич /Гуляев/
+2 TYPE aka
+1 NAME Григорий Григорьевич /Гуляев/
+2 TYPE aka
+1 SEX M
+1 BIRT
+2 DATE ABT 1769
+1 DEAT
+2 DATE 1840
+1 FAMC @F3@
+1 FAMC @F4@
+2 PEDI foster
+1 FAMS @F10@
+1 FAMS @F11@
+1 NOTE В документах позднее записан Гуляевым; ранняя сводка также
+2 CONC  называет его Григорием Григорьевичем. Отчество Климентьевич
+2 CONC  подтверждено ревизией 1850 года.
+1 SOUR @S1@
+2 PAGE Док. 8, 48, 58; таблицы боковой ветви
+0 @I8@ INDI
+1 NAME Лаврентий Климентьевич /Гуляев/
+2 GIVN Лаврентий Климентьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT JUL 1777
+1 DEAT
+2 DATE 21 MAR 1860
+1 FAMC @F3@
+1 FAMC @F4@
+2 PEDI foster
+1 FAMS @F18@
+1 NOTE Родной отец — Клементий Коркин, отчим — Григорий Васильевич
+2 CONC  Гуляев. В метрике смерти возраст ошибочно указан как 100 лет; в
+2 CONC  отчёте имеется разнобой 1860/1861, принят основной датированный
+2 CONC  документ 21.03.1860.
+1 SOUR @S1@
+2 PAGE Док. 2–5, 7, 14, 15, 48, 57
+0 @I9@ INDI
+1 NAME Федот Григорьевич /Гуляев/
+2 GIVN Федот Григорьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1768
+1 DEAT
+2 DATE 1800
+1 FAMC @F5@
+1 FAMS @F6@
+1 FAMS @F7@
+1 FAMS @F8@
+1 SOUR @S1@
+2 PAGE Док. 48, 50, 53, 55
+0 @I10@ INDI
+1 NAME Матрёна Семёновна //
+2 GIVN Матрёна Семёновна
+1 SEX F
+1 FAMS @F6@
+1 NOTE Первая жена Федота.
+1 SOUR @S1@
+2 PAGE Док. 48–58
+0 @I11@ INDI
+1 NAME Наталья Савельевна //
+2 GIVN Наталья Савельевна
+1 SEX F
+1 FAMS @F7@
+1 NOTE Вторая жена Федота.
+1 SOUR @S1@
+2 PAGE Док. 48–58
+0 @I12@ INDI
+1 NAME Агафья Федотовна /Гуляева/
+2 GIVN Агафья Федотовна
+2 SURN Гуляева
+1 SEX F
+1 FAMC @F8@
+1 SOUR @S1@
+2 PAGE Док. 48–58
+0 @I13@ INDI
+1 NAME Агафья Григорьевна /Гуляева/
+2 GIVN Агафья Григорьевна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1773
+1 FAMC @F9@
+1 NOTE Мать не установлена. Варианты имён и возрастов могут относиться к
+2 CONC  одним и тем же дочерям; отчёт учитывает их отдельно.
+1 SOUR @S1@
+2 PAGE Док. 48, 50, 53
+0 @I14@ INDI
+1 NAME Аграфена Григорьевна /Гуляева/
+2 GIVN Аграфена Григорьевна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1775
+1 FAMC @F9@
+1 NOTE Мать не установлена. Варианты имён и возрастов могут относиться к
+2 CONC  одним и тем же дочерям; отчёт учитывает их отдельно.
+1 SOUR @S1@
+2 PAGE Док. 48, 50, 53
+0 @I15@ INDI
+1 NAME Авдотья Григорьевна /Гуляева/
+2 GIVN Авдотья Григорьевна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1773
+1 FAMC @F9@
+1 NOTE Мать не установлена. Варианты имён и возрастов могут относиться к
+2 CONC  одним и тем же дочерям; отчёт учитывает их отдельно.
+1 SOUR @S1@
+2 PAGE Док. 48, 50, 53
+0 @I16@ INDI
+1 NAME Дарья Афанасьевна //
+2 GIVN Дарья Афанасьевна
+1 SEX F
+1 BIRT
+2 DATE ABT 1776
+1 FAMS @F10@
+1 FAMS @F11@
+1 SOUR @S1@
+2 PAGE Док. 58; ревизия 1816
+0 @I17@ INDI
+1 NAME Емельян (Ульян) Григорьевич /Гуляев/
+2 GIVN Емельян (Ульян) Григорьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1802
+1 FAMC @F11@
+1 FAMS @F12@
+1 SOUR @S1@
+2 PAGE Док. 8, 58; боковая ветвь Гуляевых
+0 @I18@ INDI
+1 NAME Григорий Григорьевич /Гуляев/
+2 GIVN Григорий Григорьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1804
+1 FAMC @F11@
+1 SOUR @S1@
+2 PAGE Док. 8, 58; боковая ветвь Гуляевых
+0 @I19@ INDI
+1 NAME Матвей Григорьевич /Гуляев/
+2 GIVN Матвей Григорьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1806
+1 FAMC @F11@
+1 FAMS @F13@
+1 SOUR @S1@
+2 PAGE Док. 8, 58; боковая ветвь Гуляевых
+0 @I20@ INDI
+1 NAME Козьма Григорьевич /Гуляев/
+2 GIVN Козьма Григорьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1810
+1 FAMC @F11@
+1 FAMS @F14@
+1 SOUR @S1@
+2 PAGE Док. 8, 58; боковая ветвь Гуляевых
+0 @I21@ INDI
+1 NAME Герасим Григорьевич /Гуляев/
+2 GIVN Герасим Григорьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1815
+1 FAMC @F11@
+1 SOUR @S1@
+2 PAGE Док. 8, 58; боковая ветвь Гуляевых
+0 @I22@ INDI
+1 NAME Настасья Григорьевна /Гуляева/
+2 GIVN Настасья Григорьевна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1798
+1 FAMC @F11@
+1 SOUR @S1@
+2 PAGE Док. 58
+0 @I23@ INDI
+1 NAME Зиновья Агафоновна //
+2 GIVN Зиновья Агафоновна
+1 SEX F
+1 BIRT
+2 DATE ABT 1802
+1 FAMS @F12@
+1 SOUR @S1@
+2 PAGE Док. 8
+0 @I24@ INDI
+1 NAME Парасковья Александровна //
+2 GIVN Парасковья Александровна
+1 SEX F
+1 BIRT
+2 DATE ABT 1817
+1 FAMS @F13@
+1 SOUR @S1@
+2 PAGE Док. 8
+0 @I25@ INDI
+1 NAME Антон Матвеевич /Гуляев/
+2 GIVN Антон Матвеевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1838
+1 FAMC @F13@
+1 SOUR @S1@
+2 PAGE Док. 8
+0 @I26@ INDI
+1 NAME Никита Матвеевич /Гуляев/
+2 GIVN Никита Матвеевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1843
+1 FAMC @F13@
+1 SOUR @S1@
+2 PAGE Док. 8
+0 @I27@ INDI
+1 NAME Акулина Егоровна //
+2 GIVN Акулина Егоровна
+1 SEX F
+1 BIRT
+2 DATE ABT 1815
+1 FAMS @F14@
+1 SOUR @S1@
+2 PAGE Док. 8
+0 @I28@ INDI
+1 NAME Анисья Козьминична /Гуляева/
+2 GIVN Анисья Козьминична
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1842
+1 FAMC @F14@
+1 SOUR @S1@
+2 PAGE Док. 8
+0 @I29@ INDI
+1 NAME Матрёна Козьминична /Гуляева/
+2 GIVN Матрёна Козьминична
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1844
+1 FAMC @F14@
+1 SOUR @S1@
+2 PAGE Док. 8
+0 @I30@ INDI
+1 NAME Харитонья Козьминична /Гуляева/
+2 GIVN Харитонья Козьминична
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1846
+1 FAMC @F14@
+1 SOUR @S1@
+2 PAGE Док. 8
+0 @I31@ INDI
+1 NAME Матрёна Михайловна //
+2 GIVN Матрёна Михайловна
+1 SEX F
+1 BIRT
+2 DATE ABT 1755
+1 FAMS @F15@
+1 SOUR @S1@
+2 PAGE Док. 48
+0 @I32@ INDI
+1 NAME Ефим Михайлович /Гуляев/
+2 GIVN Ефим Михайлович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1779
+1 FAMC @F15@
+1 FAMS @F16@
+1 SOUR @S1@
+2 PAGE Док. 48–58
+0 @I33@ INDI
+1 NAME Яким Михайлович /Гуляев/
+2 GIVN Яким Михайлович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1792
+1 FAMC @F15@
+1 FAMS @F17@
+1 SOUR @S1@
+2 PAGE Док. 48–58
+0 @I34@ INDI
+1 NAME Лукерья Михайловна /Гуляева/
+2 GIVN Лукерья Михайловна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1773
+1 FAMC @F15@
+1 SOUR @S1@
+2 PAGE Док. 48–58
+0 @I35@ INDI
+1 NAME Настасья Михайловна /Гуляева/
+2 GIVN Настасья Михайловна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1776
+1 FAMC @F15@
+1 SOUR @S1@
+2 PAGE Док. 48–58
+0 @I36@ INDI
+1 NAME Ирина Петровна //
+2 GIVN Ирина Петровна
+1 SEX F
+1 FAMS @F16@
+1 SOUR @S1@
+2 PAGE Док. 52
+0 @I37@ INDI
+1 NAME Викул Ефимович /Гуляев/
+2 GIVN Викул Ефимович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1806
+1 FAMC @F16@
+1 SOUR @S1@
+2 PAGE Док. 52, 56, 58
+0 @I38@ INDI
+1 NAME Катерина Ефимовна /Гуляева/
+2 GIVN Катерина Ефимовна
+2 SURN Гуляева
+1 SEX F
+1 FAMC @F16@
+1 SOUR @S1@
+2 PAGE Док. 52, 56, 58
+0 @I39@ INDI
+1 NAME Лукерья Ефимовна /Гуляева/
+2 GIVN Лукерья Ефимовна
+2 SURN Гуляева
+1 SEX F
+1 FAMC @F16@
+1 SOUR @S1@
+2 PAGE Док. 52, 56, 58
+0 @I40@ INDI
+1 NAME Григорий Якимович /Гуляев/
+2 GIVN Григорий Якимович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1810
+1 FAMC @F17@
+2 PEDI foster
+1 NOTE Записан «причисленным из крестьянских»; биологическое отцовство
+2 CONC  Якима не подтверждено.
+1 SOUR @S1@
+2 PAGE Док. 56, 58
+0 @I41@ INDI
+1 NAME Аксинья Герасимовна //
+2 GIVN Аксинья Герасимовна
+1 SEX F
+1 BIRT
+2 DATE ABT 1781
+1 DEAT
+2 DATE BET 1850 AND 1858
+1 FAMS @F18@
+1 SOUR @S1@
+2 PAGE Док. 4, 5, 7
+0 @I42@ INDI
+1 NAME Агафья Лаврентьевна /Гуляева/
+2 GIVN Агафья Лаврентьевна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1810
+1 FAMC @F18@
+1 SOUR @S1@
+2 PAGE Док. 4, 5, 7, 14
+0 @I43@ INDI
+1 NAME Катерина Лаврентьевна /Гуляева/
+2 GIVN Катерина Лаврентьевна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1813
+1 FAMC @F18@
+1 SOUR @S1@
+2 PAGE Док. 4, 5, 7, 14
+0 @I44@ INDI
+1 NAME Иван Лаврентьевич /Гуляев/
+2 GIVN Иван Лаврентьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1814
+1 FAMC @F18@
+1 SOUR @S1@
+2 PAGE Док. 4, 5, 7, 14
+0 @I45@ INDI
+1 NAME Ипат Лаврентьевич /Гуляев/
+2 GIVN Ипат Лаврентьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT JUL 1813
+1 FAMC @F18@
+1 FAMS @F26@
+1 SOUR @S1@
+2 PAGE Док. 4, 5, 7, 14
+0 @I46@ INDI
+1 NAME Лукерья Лаврентьевна /Гуляева/
+2 GIVN Лукерья Лаврентьевна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1815
+1 FAMC @F18@
+1 SOUR @S1@
+2 PAGE Док. 4, 5, 7, 14
+0 @I47@ INDI
+1 NAME Матвей Лаврентьевич /Гуляев/
+2 GIVN Матвей Лаврентьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1817
+1 FAMC @F18@
+1 SOUR @S1@
+2 PAGE Док. 4, 5, 7, 14
+0 @I48@ INDI
+1 NAME Марфа Лаврентьевна /Гуляева/
+2 GIVN Марфа Лаврентьевна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1820
+1 FAMC @F18@
+1 SOUR @S1@
+2 PAGE Док. 4, 5, 7, 14
+0 @I49@ INDI
+1 NAME Киприян Лаврентьевич /Гуляев/
+2 GIVN Киприян Лаврентьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1821
+1 FAMC @F18@
+1 FAMS @F20@
+1 FAMS @F21@
+1 SOUR @S1@
+2 PAGE Док. 4, 5, 7, 14
+0 @I50@ INDI
+1 NAME Борис Андреевич /Боталов/
+2 GIVN Борис Андреевич
+2 SURN Боталов
+1 SEX M
+1 BIRT
+2 DATE ABT 1800
+1 FAMC @F18@
+2 PEDI foster
+1 FAMS @F19@
+1 NOTE Принят в дом Лаврентия как приёмыш; кровное родство не
+2 CONC  утверждается. В ревизии 1816 года другой Борис Васильев тоже
+2 CONC  назван приёмышем; отождествление не подтверждено.
+1 SOUR @S1@
+2 PAGE Док. 5, 7, 14; боковые фамилии
+0 @I51@ INDI
+1 NAME Аграфена //
+2 GIVN Аграфена
+1 SEX F
+1 BIRT
+2 DATE ABT 1798
+1 FAMS @F19@
+1 SOUR @S1@
+2 PAGE Док. 5, 7
+0 @I52@ INDI
+1 NAME Степанида Борисовна /Боталова/
+2 GIVN Степанида Борисовна
+2 SURN Боталова
+1 SEX F
+1 BIRT
+2 DATE ABT 1820
+1 FAMC @F19@
+1 SOUR @S1@
+2 PAGE Док. 5
+0 @I53@ INDI
+1 NAME Домна Борисовна /Боталова/
+2 GIVN Домна Борисовна
+2 SURN Боталова
+1 SEX F
+1 BIRT
+2 DATE ABT 1832
+1 FAMC @F19@
+1 SOUR @S1@
+2 PAGE Док. 5, 7
+0 @I54@ INDI
+1 NAME Ненила Ивановна //
+2 GIVN Ненила Ивановна
+1 SEX F
+1 BIRT
+2 DATE ABT 1820
+1 FAMS @F20@
+1 SOUR @S1@
+2 PAGE Док. 7, 14
+0 @I55@ INDI
+1 NAME Афанасий Киприянович /Гуляев/
+2 GIVN Афанасий Киприянович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1845
+1 FAMC @F20@
+1 SOUR @S1@
+2 PAGE Док. 7, 14, 59, 61
+0 @I56@ INDI
+1 NAME Агафья Киприяновна /Гуляева/
+2 GIVN Агафья Киприяновна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE 1847
+1 FAMC @F20@
+1 SOUR @S1@
+2 PAGE Док. 7, 14, 59, 61
+0 @I57@ INDI
+1 NAME Марья Киприяновна /Гуляева/
+2 GIVN Марья Киприяновна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE OCT 1857
+1 FAMC @F20@
+1 SOUR @S1@
+2 PAGE Док. 7, 14, 59, 61
+0 @I58@ INDI
+1 NAME Ефрем Киприянович /Гуляев/
+2 GIVN Ефрем Киприянович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1866
+1 FAMC @F21@
+1 FAMS @F22@
+1 FAMS @F23@
+1 SOUR @S1@
+2 PAGE Док. 7, 14, 59, 61
+0 @I59@ INDI
+1 NAME Фёдор Киприянович /Гуляев/
+2 GIVN Фёдор Киприянович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1868
+1 FAMC @F21@
+1 FAMS @F24@
+1 SOUR @S1@
+2 PAGE Док. 7, 14, 59, 61
+0 @I60@ INDI
+1 NAME Марина Васильевна //
+2 GIVN Марина Васильевна
+1 SEX F
+1 BIRT
+2 DATE ABT 1875
+1 FAMS @F22@
+1 NOTE Вторая жена Ефрема; материнство старших детей неизвестно.
+1 SOUR @S1@
+2 PAGE Док. 59
+0 @I61@ INDI
+1 NAME Анисья Ефремовна /Гуляева/
+2 GIVN Анисья Ефремовна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1886
+1 FAMC @F23@
+1 SOUR @S1@
+2 PAGE Док. 59
+0 @I62@ INDI
+1 NAME Федосья Ефремовна /Гуляева/
+2 GIVN Федосья Ефремовна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1889
+1 FAMC @F23@
+1 SOUR @S1@
+2 PAGE Док. 59
+0 @I63@ INDI
+1 NAME Константин Ефремович /Гуляев/
+2 GIVN Константин Ефремович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1891
+1 FAMC @F23@
+1 SOUR @S1@
+2 PAGE Док. 59
+0 @I64@ INDI
+1 NAME Мавра Степановна /Родюшкина/
+2 GIVN Мавра Степановна
+2 SURN Родюшкина
+1 SEX F
+1 BIRT
+2 DATE ABT 1868
+1 FAMC @F25@
+1 FAMS @F24@
+1 SOUR @S1@
+2 PAGE Док. 61
+0 @I65@ INDI
+1 NAME Парасковья Степановна /Родюшкина/
+2 GIVN Парасковья Степановна
+2 SURN Родюшкина
+1 SEX F
+1 BIRT
+2 DATE ABT 1883
+1 FAMC @F25@
+1 SOUR @S1@
+2 PAGE Док. 61
+0 @I66@ INDI
+1 NAME Григорий Фёдорович /Гуляев/
+2 GIVN Григорий Фёдорович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1895
+1 FAMC @F24@
+1 SOUR @S1@
+2 PAGE Док. 61
+0 @I67@ INDI
+1 NAME Анна Фёдоровна /Гуляева/
+2 GIVN Анна Фёдоровна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1892
+1 FAMC @F24@
+1 SOUR @S1@
+2 PAGE Док. 61
+0 @I68@ INDI
+1 NAME Матрёна Фёдоровна //
+2 GIVN Матрёна Фёдоровна
+1 SEX F
+1 BIRT
+2 DATE ABT 1815
+1 FAMS @F26@
+1 SOUR @S1@
+2 PAGE Док. 5, 7, 14
+0 @I69@ INDI
+1 NAME Катерина Ипатьевна /Гуляева/
+2 GIVN Катерина Ипатьевна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1837
+1 FAMC @F26@
+1 SOUR @S1@
+2 PAGE Док. 6, 7, 14
+0 @I70@ INDI
+1 NAME Гликерия Ипатьевна /Гуляева/
+2 GIVN Гликерия Ипатьевна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1840
+1 DEAT
+2 DATE 14 AUG 1842
+1 FAMC @F26@
+1 SOUR @S1@
+2 PAGE Док. 6, 7, 14
+0 @I71@ INDI
+1 NAME Ефрем Ипатьевич /Гуляев/
+2 GIVN Ефрем Ипатьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1841
+1 DEAT
+2 DATE 4 MAR 1847
+1 FAMC @F26@
+1 SOUR @S1@
+2 PAGE Док. 6, 7, 14
+0 @I72@ INDI
+1 NAME Яким Ипатьевич /Гуляев/
+2 GIVN Яким Ипатьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1845
+1 FAMC @F26@
+1 FAMS @F27@
+1 SOUR @S1@
+2 PAGE Док. 6, 7, 14
+0 @I73@ INDI
+1 NAME Гордей Ипатьевич /Гуляев/
+2 GIVN Гордей Ипатьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE JAN 1849
+1 DEAT
+2 DATE 5 AUG 1849
+1 FAMC @F26@
+1 SOUR @S1@
+2 PAGE Док. 6, 7, 14
+0 @I74@ INDI
+1 NAME Фёдор Ипатьевич /Гуляев/
+2 GIVN Фёдор Ипатьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1854
+1 FAMC @F26@
+1 SOUR @S1@
+2 PAGE Док. 6, 7, 14
+0 @I75@ INDI
+1 NAME Ефим Ипатьевич /Гуляев/
+2 GIVN Ефим Ипатьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1857
+1 FAMC @F26@
+1 FAMS @F29@
+1 SOUR @S1@
+2 PAGE Док. 6, 7, 14
+0 @I76@ INDI
+1 NAME Дарья Ипатьевна /Гуляева/
+2 GIVN Дарья Ипатьевна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE FEB 1858
+1 FAMC @F26@
+1 SOUR @S1@
+2 PAGE Док. 6, 7, 14
+0 @I77@ INDI
+1 NAME Филипп Якимович /Гуляев/
+2 GIVN Филипп Якимович
+2 SURN Гуляев
+1 SEX M
+1 FAMC @F27@
+1 SOUR @S1@
+2 PAGE Док. 22
+0 @I78@ INDI
+1 NAME Иоаким (Яким) //
+2 GIVN Иоаким (Яким)
+1 SEX M
+1 FAMS @F28@
+1 NOTE Установлен по отчеству Наталии в метрике 1893 года.
+1 SOUR @S1@
+2 PAGE Док. 16
+0 @I79@ INDI
+1 NAME Наталия Иоакимовна //
+2 GIVN Наталия Иоакимовна
+1 SEX F
+1 BIRT
+2 DATE ABT 1859
+1 FAMC @F28@
+1 FAMS @F29@
+1 NOTE В переписи 1897 года ошибочно названа Ефимовной.
+1 SOUR @S1@
+2 PAGE Док. 16, 18
+0 @I80@ INDI
+1 NAME Пантелеймон Ефимович /Гуляев/
+2 GIVN Пантелеймон Ефимович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1878
+1 FAMC @F29@
+1 FAMS @F30@
+1 SOUR @S1@
+2 PAGE Док. 16, 18, 24; семейная память
+0 @I81@ INDI
+1 NAME Агафья Ефимовна /Гуляева/
+2 GIVN Агафья Ефимовна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE ABT 1881
+1 FAMC @F29@
+1 SOUR @S1@
+2 PAGE Док. 16, 18, 24; семейная память
+0 @I82@ INDI
+1 NAME Филипп Ефимович /Гуляев/
+2 GIVN Филипп Ефимович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1883
+1 FAMC @F29@
+1 FAMS @F32@
+1 SOUR @S1@
+2 PAGE Док. 16, 18, 24; семейная память
+0 @I83@ INDI
+1 NAME Николай Ефимович /Гуляев/
+2 GIVN Николай Ефимович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1890
+1 FAMC @F29@
+1 SOUR @S1@
+2 PAGE Док. 16, 18, 24; семейная память
+0 @I84@ INDI
+1 NAME Леонтий (Леонид) Ефимович /Гуляев/
+2 GIVN Леонтий (Леонид) Ефимович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE 31 JUL 1893
+1 DEAT
+2 DATE 1962
+1 FAMC @F29@
+1 FAMS @F38@
+1 SOUR @S1@
+2 PAGE Док. 16, 18, 24; семейная память
+0 @I85@ INDI
+1 NAME Афанасий Ефимович /Гуляев/
+2 GIVN Афанасий Ефимович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1896
+1 FAMC @F29@
+1 SOUR @S1@
+2 PAGE Док. 16, 18, 24; семейная память
+0 @I86@ INDI
+1 NAME Константин Ефимович /Гуляев/
+2 GIVN Константин Ефимович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE AFT JAN 1897
+1 FAMC @F29@
+1 SOUR @S1@
+2 PAGE Док. 16, 18, 24; семейная память
+0 @I87@ INDI
+1 NAME Михаил Ефимович /Гуляев/
+2 GIVN Михаил Ефимович
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE ABT 1899
+1 FAMC @F29@
+1 SOUR @S1@
+2 PAGE Док. 16, 18, 24; семейная память
+0 @I88@ INDI
+1 NAME Прасковья Семёновна //
+2 GIVN Прасковья Семёновна
+1 SEX F
+1 BIRT
+2 DATE ABT 1880
+1 FAMS @F30@
+1 SOUR @S1@
+2 PAGE Док. 18
+0 @I89@ INDI
+1 NAME Емельян /Лумпов/
+2 GIVN Емельян
+2 SURN Лумпов
+1 SEX M
+1 FAMS @F31@
+1 SOUR @S1@
+2 PAGE Док. 22
+0 @I90@ INDI
+1 NAME Анна Емельяновна /Лумпова/
+2 GIVN Анна Емельяновна
+2 SURN Лумпова
+1 SEX F
+1 BIRT
+2 DATE ABT 1882
+1 FAMC @F31@
+1 FAMS @F32@
+1 SOUR @S1@
+2 PAGE Док. 22
+0 @I91@ INDI
+1 NAME Михаил Емельянович /Лумпов/
+2 GIVN Михаил Емельянович
+2 SURN Лумпов
+1 SEX M
+1 FAMC @F31@
+1 SOUR @S1@
+2 PAGE Док. 22
+0 @I92@ INDI
+1 NAME Семён Фролович /Ярков/
+2 GIVN Семён Фролович
+2 SURN Ярков
+1 SEX M
+1 BIRT
+2 DATE ABT 1839
+1 FAMS @F33@
+1 SOUR @S1@
+2 PAGE Док. 64
+0 @I93@ INDI
+1 NAME Авдотья Абрамовна /Яркова/
+2 GIVN Авдотья Абрамовна
+2 SURN Яркова
+1 SEX F
+1 BIRT
+2 DATE ABT 1839
+1 FAMS @F33@
+1 SOUR @S1@
+2 PAGE Док. 64
+0 @I94@ INDI
+1 NAME Апросинья Семёновна /Яркова/
+2 GIVN Апросинья Семёновна
+2 SURN Яркова
+1 SEX F
+1 BIRT
+2 DATE ABT 1866
+1 FAMC @F33@
+1 FAMS @F35@
+1 FAMS @F37@
+1 SOUR @S1@
+2 PAGE Док. 64
+0 @I95@ INDI
+1 NAME Абрам /Иванищев/
+2 GIVN Абрам
+2 SURN Иванищев
+1 SEX M
+1 FAMS @F34@
+1 SOUR @S1@
+2 PAGE Док. 64
+0 @I96@ INDI
+1 NAME Данило Абрамович /Иванищев/
+2 GIVN Данило Абрамович
+2 SURN Иванищев
+1 SEX M
+1 BIRT
+2 DATE ABT 1845
+1 FAMC @F34@
+1 FAMS @F35@
+1 FAMS @F36@
+1 SOUR @S1@
+2 PAGE Док. 64
+0 @I97@ INDI
+1 NAME Родион Данилович /Иванищев/
+2 GIVN Родион Данилович
+2 SURN Иванищев
+1 SEX M
+1 BIRT
+2 DATE ABT 1895
+1 FAMC @F35@
+1 SOUR @S1@
+2 PAGE Док. 24, 64
+0 @I98@ INDI
+1 NAME Александр Данилович /Иванищев/
+2 GIVN Александр Данилович
+2 SURN Иванищев
+1 SEX M
+1 BIRT
+2 DATE ABT NOV 1896
+1 FAMC @F35@
+1 SOUR @S1@
+2 PAGE Док. 24, 64
+0 @I99@ INDI
+1 NAME Анастасия Даниловна /Иванищева/
+2 GIVN Анастасия Даниловна
+2 SURN Иванищева
+1 SEX F
+1 BIRT
+2 DATE ABT 1893
+1 FAMC @F35@
+1 FAMS @F38@
+1 SOUR @S1@
+2 PAGE Док. 24, 64
+0 @I100@ INDI
+1 NAME Иродион Данилович /Иванищев/
+2 GIVN Иродион Данилович
+2 SURN Иванищев
+1 SEX M
+1 FAMC @F36@
+1 SOUR @S1@
+2 PAGE Док. 24, 64
+0 @I101@ INDI
+1 NAME Марфа Семёновна /Иванищева/
+2 GIVN Марфа Семёновна
+2 SURN Иванищева
+1 SEX F
+1 BIRT
+2 DATE ABT 1879
+1 FAMC @F37@
+1 SOUR @S1@
+2 PAGE Док. 64
+0 @I102@ INDI
+1 NAME Александра Семёновна /Иванищева/
+2 GIVN Александра Семёновна
+2 SURN Иванищева
+1 SEX F
+1 BIRT
+2 DATE ABT 1891
+1 FAMC @F37@
+1 SOUR @S1@
+2 PAGE Док. 64
+0 @I103@ INDI
+1 NAME Геннадий Леонтьевич /Гуляев/
+2 GIVN Геннадий Леонтьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE 23 JAN 1916
+1 DEAT
+2 DATE 3 OCT 1979
+1 FAMC @F38@
+1 FAMS @F39@
+1 SOUR @S1@
+2 PAGE Док. 25, 27
+0 @I104@ INDI
+1 NAME Степанида Леонтьевна /Гуляева/
+2 GIVN Степанида Леонтьевна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE 26 OCT 1919
+1 FAMC @F38@
+1 SOUR @S1@
+2 PAGE Док. 25, 27
+0 @I105@ INDI
+1 NAME Клавдия Леонтьевна /Гуляева/
+2 GIVN Клавдия Леонтьевна
+2 SURN Гуляева
+1 SEX F
+1 BIRT
+2 DATE 1923
+1 FAMC @F38@
+1 SOUR @S1@
+2 PAGE Док. 25, 27
+0 @I106@ INDI
+1 NAME Василий Леонтьевич /Гуляев/
+2 GIVN Василий Леонтьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE BET 1925 AND 1926
+1 FAMC @F38@
+1 SOUR @S1@
+2 PAGE Док. 25, 27
+0 @I107@ INDI
+1 NAME Александр Леонтьевич /Гуляев/
+2 GIVN Александр Леонтьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE 1930
+1 FAMC @F38@
+1 SOUR @S1@
+2 PAGE Док. 25, 27
+0 @I108@ INDI
+1 NAME Ирина Михайловна /Мальцева/
+2 GIVN Ирина Михайловна
+2 SURN Мальцева
+1 SEX F
+1 BIRT
+2 DATE 1916
+1 DEAT
+2 DATE 1998
+1 FAMS @F39@
+1 SOUR @S1@
+2 PAGE Биография Юрия, семейные сведения
+0 @I109@ INDI
+1 NAME Юрий Геннадьевич /Гуляев/
+2 GIVN Юрий Геннадьевич
+2 SURN Гуляев
+1 SEX M
+1 BIRT
+2 DATE 1939
+1 FAMC @F39@
+1 SOUR @S1@
+2 PAGE Док. 27
+0 @I110@ INDI
+1 NAME Матвей /Ржиловский/
+2 GIVN Матвей
+2 SURN Ржиловский
+1 SEX M
+1 BIRT
+2 DATE ABT 1655
+1 FAMS @F40@
+1 SOUR @S1@
+2 PAGE Перепись 1700 года; гл. об Аржиловских
+0 @I111@ INDI
+1 NAME Фёдор Матвеевич /Ржиловский/
+2 GIVN Фёдор Матвеевич
+2 SURN Ржиловский
+1 SEX M
+1 FAMC @F40@
+1 SOUR @S1@
+2 PAGE Перепись 1700 года
+0 @I112@ INDI
+1 NAME Тимофей Матвеевич /Ржиловский/
+2 GIVN Тимофей Матвеевич
+2 SURN Ржиловский
+1 SEX M
+1 BIRT
+2 DATE ABT 1676
+1 DEAT
+2 DATE 1748
+1 FAMC @F40@
+1 FAMS @F42@
+1 SOUR @S1@
+2 PAGE Перепись 1700 года; ревизия 1763 года
+0 @I113@ INDI
+1 NAME Иван /Малышев/
+2 GIVN Иван
+2 SURN Малышев
+1 SEX M
+1 FAMS @F41@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года
+0 @I114@ INDI
+1 NAME Прасковья Ивановна /Малышева/
+2 GIVN Прасковья Ивановна
+2 SURN Малышева
+1 SEX F
+1 BIRT
+2 DATE ABT 1693
+1 FAMC @F41@
+1 FAMS @F42@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года
+0 @I115@ INDI
+1 NAME Иван Тимофеевич /Аржиловский/
+2 GIVN Иван Тимофеевич
+2 SURN Аржиловский
+1 SEX M
+1 BIRT
+2 DATE ABT 1717
+1 FAMC @F42@
+1 FAMS @F48@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года
+0 @I116@ INDI
+1 NAME Василий Тимофеевич /Аржиловский/
+2 GIVN Василий Тимофеевич
+2 SURN Аржиловский
+1 SEX M
+1 BIRT
+2 DATE ABT 1720
+1 FAMC @F42@
+1 FAMS @F44@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года
+0 @I117@ INDI
+1 NAME Никифор Тимофеевич /Аржиловский/
+2 GIVN Никифор Тимофеевич
+2 SURN Аржиловский
+1 SEX M
+1 BIRT
+2 DATE ABT 1738
+1 FAMC @F42@
+1 FAMS @F46@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года
+0 @I118@ INDI
+1 NAME Григорий /Кокушкин/
+2 GIVN Григорий
+2 SURN Кокушкин
+1 SEX M
+1 FAMS @F43@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года
+0 @I119@ INDI
+1 NAME Афимья Григорьевна /Кокушкина/
+2 GIVN Афимья Григорьевна
+2 SURN Кокушкина
+1 SEX F
+1 BIRT
+2 DATE ABT 1713
+1 FAMC @F43@
+1 FAMS @F44@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года
+0 @I120@ INDI
+1 NAME Михаил /Дроголев/
+2 GIVN Михаил
+2 SURN Дроголев
+1 SEX M
+1 FAMS @F45@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года
+0 @I121@ INDI
+1 NAME Меланья Михайловна /Дроголева/
+2 GIVN Меланья Михайловна
+2 SURN Дроголева
+1 SEX F
+1 BIRT
+2 DATE ABT 1728
+1 FAMC @F45@
+1 FAMS @F46@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года
+0 @I122@ INDI
+1 NAME Михаил /Вилижанин/
+2 GIVN Михаил
+2 SURN Вилижанин
+1 SEX M
+1 FAMS @F47@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года
+0 @I123@ INDI
+1 NAME Хавронья Михайловна /Вилижанина/
+2 GIVN Хавронья Михайловна
+2 SURN Вилижанина
+1 SEX F
+1 BIRT
+2 DATE ABT 1713
+1 FAMC @F47@
+1 FAMS @F48@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года
+0 @I124@ INDI
+1 NAME Григорий Иванович /Аржиловский/
+2 GIVN Григорий Иванович
+2 SURN Аржиловский
+1 SEX M
+1 BIRT
+2 DATE ABT 1730
+1 FAMC @F48@
+1 FAMS @F50@
+1 FAMS @F51@
+1 FAMS @F52@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года; гл. об Аржиловских
+0 @I125@ INDI
+1 NAME Дмитрий Иванович /Аржиловский/
+2 GIVN Дмитрий Иванович
+2 SURN Аржиловский
+1 SEX M
+1 FAMC @F48@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года; гл. об Аржиловских
+0 @I126@ INDI
+1 NAME Пётр Иванович /Аржиловский/
+2 GIVN Пётр Иванович
+2 SURN Аржиловский
+1 SEX M
+1 DEAT
+2 DATE 1748
+1 FAMC @F48@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года; гл. об Аржиловских
+0 @I127@ INDI
+1 NAME Афанасий Иванович /Аржиловский/
+2 GIVN Афанасий Иванович
+2 SURN Аржиловский
+1 SEX M
+1 DEAT
+2 DATE 1748
+1 FAMC @F48@
+1 SOUR @S1@
+2 PAGE Ревизия 1763 года; гл. об Аржиловских
+0 @I128@ INDI
+1 NAME Андрей /Чмутин/
+2 GIVN Андрей
+2 SURN Чмутин
+1 SEX M
+1 FAMS @F49@
+1 SOUR @S1@
+2 PAGE Ревизия 1782 года
+0 @I129@ INDI
+1 NAME Апросинья Андреевна /Чмутина/
+2 GIVN Апросинья Андреевна
+2 SURN Чмутина
+1 SEX F
+1 BIRT
+2 DATE ABT 1736
+1 FAMC @F49@
+1 FAMS @F50@
+1 SOUR @S1@
+2 PAGE Ревизия 1782 года
+0 @I130@ INDI
+1 NAME Настасья Ивановна //
+2 GIVN Настасья Ивановна
+1 SEX F
+1 BIRT
+2 DATE ABT 1732
+1 FAMS @F51@
+1 SOUR @S1@
+2 PAGE Ревизия 1782 года
+0 @I131@ INDI
+1 NAME Никон Григорьевич /Аржиловский/
+2 GIVN Никон Григорьевич
+2 SURN Аржиловский
+1 SEX M
+1 BIRT
+2 DATE ABT 1755
+1 FAMC @F50@
+1 FAMS @F53@
+1 SOUR @S1@
+2 PAGE Ревизии 1782–1850 годов
+0 @I132@ INDI
+1 NAME Прасковья Григорьевна /Аржиловская/
+2 GIVN Прасковья Григорьевна
+2 SURN Аржиловская
+1 SEX F
+1 BIRT
+2 DATE ABT 1761
+1 FAMC @F50@
+1 SOUR @S1@
+2 PAGE Ревизии 1782–1850 годов
+0 @I133@ INDI
+1 NAME Ананий Григорьевич /Аржиловский/
+2 GIVN Ананий Григорьевич
+2 SURN Аржиловский
+1 SEX M
+1 BIRT
+2 DATE ABT 1770
+1 FAMC @F51@
+1 SOUR @S1@
+2 PAGE Ревизии 1782–1850 годов
+0 @I134@ INDI
+1 NAME Фёдор Григорьевич /Аржиловский/
+2 GIVN Фёдор Григорьевич
+2 SURN Аржиловский
+1 SEX M
+1 BIRT
+2 DATE ABT 1772
+1 DEAT
+2 DATE 1843
+1 FAMC @F51@
+1 FAMS @F56@
+1 SOUR @S1@
+2 PAGE Ревизии 1782–1850 годов
+0 @I135@ INDI
+1 NAME Фекла Григорьевна /Аржиловская/
+2 GIVN Фекла Григорьевна
+2 SURN Аржиловская
+1 SEX F
+1 FAMC @F52@
+1 FAMS @F54@
+1 SOUR @S1@
+2 PAGE Ревизии 1782–1850 годов
+0 @I136@ INDI
+1 NAME Степанида Семёновна //
+2 GIVN Степанида Семёновна
+1 SEX F
+1 FAMS @F53@
+1 SOUR @S1@
+2 PAGE Гл. о Григории Ивановиче
+0 @I137@ INDI
+1 NAME Иван Фёдорович /Ананьин/
+2 GIVN Иван Фёдорович
+2 SURN Ананьин
+1 SEX M
+1 FAMS @F54@
+1 SOUR @S1@
+2 PAGE Гл. о Фёдоре Григорьевиче
+0 @I138@ INDI
+1 NAME Дмитрий /Рябов/
+2 GIVN Дмитрий
+2 SURN Рябов
+1 SEX M
+1 FAMS @F55@
+1 SOUR @S1@
+2 PAGE Гл. о Фёдоре Григорьевиче
+0 @I139@ INDI
+1 NAME Татьяна Дмитриевна /Рябова/
+2 GIVN Татьяна Дмитриевна
+2 SURN Рябова
+1 SEX F
+1 BIRT
+2 DATE ABT 1775
+1 FAMC @F55@
+1 FAMS @F56@
+1 SOUR @S1@
+2 PAGE Ревизии 1795–1850 годов
+0 @I140@ INDI
+1 NAME Семён Фёдорович /Аржиловский/
+2 GIVN Семён Фёдорович
+2 SURN Аржиловский
+1 SEX M
+1 BIRT
+2 DATE 1794
+1 FAMC @F56@
+1 FAMS @F57@
+1 SOUR @S1@
+2 PAGE Ревизии 1812–1850 годов
+0 @I141@ INDI
+1 NAME Акулина Фёдоровна /Аржиловская/
+2 GIVN Акулина Фёдоровна
+2 SURN Аржиловская
+1 SEX F
+1 BIRT
+2 DATE 1815
+1 FAMC @F56@
+1 SOUR @S1@
+2 PAGE Гл. о Фёдоре Григорьевиче
+0 @I142@ INDI
+1 NAME Авдотья Ивановна //
+2 GIVN Авдотья Ивановна
+1 SEX F
+1 BIRT
+2 DATE ABT 1796
+1 FAMS @F57@
+1 SOUR @S1@
+2 PAGE Ревизии 1834, 1850 годов
+0 @I143@ INDI
+1 NAME Евфросинья Семёновна /Аржиловская/
+2 GIVN Евфросинья Семёновна
+2 SURN Аржиловская
+1 SEX F
+1 BIRT
+2 DATE ABT 1817
+1 FAMC @F57@
+1 SOUR @S1@
+2 PAGE Ревизия 1834 года
+0 @I144@ INDI
+1 NAME Минодора Семёновна /Аржиловская/
+2 GIVN Минодора Семёновна
+2 SURN Аржиловская
+1 SEX F
+1 BIRT
+2 DATE ABT 1823
+1 FAMC @F57@
+1 SOUR @S1@
+2 PAGE Ревизия 1834 года
+0 @I145@ INDI
+1 NAME Агафья Семёновна /Аржиловская/
+2 GIVN Агафья Семёновна
+2 SURN Аржиловская
+1 SEX F
+1 BIRT
+2 DATE ABT 1824
+1 FAMC @F57@
+1 SOUR @S1@
+2 PAGE Ревизия 1834 года
+0 @I146@ INDI
+1 NAME Дмитрий Семёнович /Аржиловский/
+2 GIVN Дмитрий Семёнович
+2 SURN Аржиловский
+1 SEX M
+1 BIRT
+2 DATE ABT 1826
+1 FAMC @F57@
+1 FAMS @F58@
+1 SOUR @S1@
+2 PAGE Ревизия 1834 года
+0 @I147@ INDI
+1 NAME Анисья Семёновна /Аржиловская/
+2 GIVN Анисья Семёновна
+2 SURN Аржиловская
+1 SEX F
+1 BIRT
+2 DATE ABT 1827
+1 FAMC @F57@
+1 SOUR @S1@
+2 PAGE Ревизия 1834 года
+0 @I148@ INDI
+1 NAME Марфа Семёновна /Аржиловская/
+2 GIVN Марфа Семёновна
+2 SURN Аржиловская
+1 SEX F
+1 BIRT
+2 DATE ABT 1832
+1 FAMC @F57@
+1 SOUR @S1@
+2 PAGE Ревизия 1834 года
+0 @I149@ INDI
+1 NAME Соломия Семёновна /Аржиловская/
+2 GIVN Соломия Семёновна
+2 SURN Аржиловская
+1 SEX F
+1 BIRT
+2 DATE 1834
+1 FAMC @F57@
+1 SOUR @S1@
+2 PAGE Ревизия 1834 года
+0 @I150@ INDI
+1 NAME Ирина Васильевна //
+2 GIVN Ирина Васильевна
+1 SEX F
+1 FAMS @F58@
+1 SOUR @S1@
+2 PAGE Метрическая книга 1853 года
+0 @I151@ INDI
+1 NAME Ларион Дмитриевич /Аржиловский/
+2 GIVN Ларион Дмитриевич
+2 SURN Аржиловский
+1 SEX M
+1 BIRT
+2 DATE ABT 1847
+1 FAMC @F58@
+1 SOUR @S1@
+2 PAGE Перепись 1897 года
+0 @I152@ INDI
+1 NAME Степан Дмитриевич /Аржиловский/
+2 GIVN Степан Дмитриевич
+2 SURN Аржиловский
+1 SEX M
+1 BIRT
+2 DATE 27 NOV 1853
+1 FAMC @F58@
+1 FAMS @F59@
+1 FAMS @F60@
+1 SOUR @S1@
+2 PAGE Метрика 1853 года; перепись 1897 года
+0 @I153@ INDI
+1 NAME Евфросинья Никифоровна //
+2 GIVN Евфросинья Никифоровна
+1 SEX F
+1 BIRT
+2 DATE ABT 1870
+1 FAMS @F60@
+1 NOTE Вторая жена Степана Дмитриевича; уроженка деревни Селезнёвой.
+1 SOUR @S1@
+2 PAGE Док. 19
+0 @I154@ INDI
+1 NAME Евдокия Степановна /Аржиловская/
+2 GIVN Евдокия Степановна
+2 SURN Аржиловская
+1 SEX F
+1 BIRT
+2 DATE ABT 1874
+1 FAMC @F59@
+1 FAMS @F62@
+1 SOUR @S1@
+2 PAGE Док. 19, 17–23, 40–47
+0 @I155@ INDI
+1 NAME Тимофей Степанович /Аржиловский/
+2 GIVN Тимофей Степанович
+2 SURN Аржиловский
+1 SEX M
+1 BIRT
+2 DATE ABT 14 JAN 1897
+1 FAMC @F60@
+1 SOUR @S1@
+2 PAGE Док. 19
+0 @I156@ INDI
+1 NAME Михаил /Черепанов/
+2 GIVN Михаил
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE BET 1845 AND 1853
+1 FAMS @F61@
+1 NOTE Отец Андрея Михайловича по отчеству. Не отождествлять с Михаилом
+2 CONC  Григорьевичем из деревни Селезнёвой; связь с восемью дворами
+2 CONC  Яровской не установлена.
+1 SOUR @S1@
+2 PAGE Гл. «Михаил Черепанов»; границы исследования
+0 @I157@ INDI
+1 NAME Андрей Михайлович /Черепанов/
+2 GIVN Андрей Михайлович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE BET 1873 AND 1874
+1 FAMC @F61@
+1 FAMS @F62@
+1 SOUR @S1@
+2 PAGE Док. 17, 19–23, 40–47
+0 @I158@ INDI
+1 NAME Александра /Черепанова/
+2 GIVN Александра
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE 30 OCT 1894
+1 DEAT
+2 DATE BEF 28 JAN 1897
+1 FAMC @F62@
+1 SOUR @S1@
+2 PAGE Док. 17, 20, 21, 23, 40–47; сводка 12 детей
+0 @I159@ INDI
+1 NAME Константин /Черепанов/
+2 GIVN Константин
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE 12 MAY 1897
+1 FAMC @F62@
+1 SOUR @S1@
+2 PAGE Док. 17, 20, 21, 23, 40–47; сводка 12 детей
+0 @I160@ INDI
+1 NAME Иоанн /Черепанов/
+2 GIVN Иоанн
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE 29 MAY 1898
+1 FAMC @F62@
+1 SOUR @S1@
+2 PAGE Док. 17, 20, 21, 23, 40–47; сводка 12 детей
+0 @I161@ INDI
+1 NAME Иулиания /Черепанова/
+2 GIVN Иулиания
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE 10 AUG 1899
+1 FAMC @F62@
+1 SOUR @S1@
+2 PAGE Док. 17, 20, 21, 23, 40–47; сводка 12 детей
+0 @I162@ INDI
+1 NAME Пётр /Черепанов/
+2 GIVN Пётр
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE 4 OCT 1900
+1 FAMC @F62@
+1 SOUR @S1@
+2 PAGE Док. 17, 20, 21, 23, 40–47; сводка 12 детей
+0 @I163@ INDI
+1 NAME Василиса /Черепанова/
+2 GIVN Василиса
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT JAN 1902
+1 DEAT
+2 DATE 3 JUN 1902
+1 FAMC @F62@
+1 SOUR @S1@
+2 PAGE Док. 17, 20, 21, 23, 40–47; сводка 12 детей
+0 @I164@ INDI
+1 NAME Мариамна /Черепанова/
+2 GIVN Мариамна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE 17 FEB 1903
+1 FAMC @F62@
+1 SOUR @S1@
+2 PAGE Док. 17, 20, 21, 23, 40–47; сводка 12 детей
+0 @I165@ INDI
+1 NAME Любовь /Черепанова/
+2 GIVN Любовь
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE 17 SEP 1904
+1 FAMC @F62@
+1 SOUR @S1@
+2 PAGE Док. 17, 20, 21, 23, 40–47; сводка 12 детей
+0 @I166@ INDI
+1 NAME Анастасия /Черепанова/
+2 GIVN Анастасия
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE 18 DEC 1905
+1 FAMC @F62@
+1 SOUR @S1@
+2 PAGE Док. 17, 20, 21, 23, 40–47; сводка 12 детей
+0 @I167@ INDI
+1 NAME Михаил Андреевич /Черепанов/
+2 GIVN Михаил Андреевич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE 22 NOV 1909
+1 DEAT
+2 DATE 1958
+1 FAMC @F62@
+1 FAMS @F65@
+1 SOUR @S1@
+2 PAGE Док. 17, 20, 21, 23, 40–47; сводка 12 детей
+0 @I168@ INDI
+1 NAME Феодора /Черепанова/
+2 GIVN Феодора
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE 10 SEP 1911
+1 FAMC @F62@
+1 SOUR @S1@
+2 PAGE Док. 17, 20, 21, 23, 40–47; сводка 12 детей
+0 @I169@ INDI
+1 NAME Иулитта /Черепанова/
+2 GIVN Иулитта
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE 31 JUL 1913
+1 FAMC @F62@
+1 SOUR @S1@
+2 PAGE Док. 17, 20, 21, 23, 40–47; сводка 12 детей
+0 @I170@ INDI
+1 NAME Пётр /Нагорнов/
+2 GIVN Пётр
+2 SURN Нагорнов
+1 SEX M
+1 BIRT
+2 DATE ABT 1840
+1 DEAT
+2 DATE BEF 1897
+1 FAMS @F63@
+1 NOTE Имя восстановлено по отчествам сыновей.
+1 SOUR @S1@
+2 PAGE Док. 62/65, перепись 1897 года
+0 @I171@ INDI
+1 NAME Мария Александровна //
+2 GIVN Мария Александровна
+1 SEX F
+1 BIRT
+2 DATE ABT 1848
+1 FAMS @F63@
+1 SOUR @S1@
+2 PAGE Док. 62/65, перепись 1897 года
+0 @I172@ INDI
+1 NAME Иван Петрович /Нагорнов/
+2 GIVN Иван Петрович
+2 SURN Нагорнов
+1 SEX M
+1 BIRT
+2 DATE ABT 1869
+1 FAMC @F63@
+1 SOUR @S1@
+2 PAGE Перепись 1897 года, двор Василия Петровича
+0 @I173@ INDI
+1 NAME Степан Петрович /Нагорнов/
+2 GIVN Степан Петрович
+2 SURN Нагорнов
+1 SEX M
+1 BIRT
+2 DATE ABT 1871
+1 FAMC @F63@
+1 SOUR @S1@
+2 PAGE Перепись 1897 года, двор Василия Петровича
+0 @I174@ INDI
+1 NAME Василий Петрович /Нагорнов/
+2 GIVN Василий Петрович
+2 SURN Нагорнов
+1 SEX M
+1 BIRT
+2 DATE ABT 1875
+1 FAMC @F63@
+1 FAMS @F64@
+1 SOUR @S1@
+2 PAGE Перепись 1897 года, двор Василия Петровича
+0 @I175@ INDI
+1 NAME Михаил Петрович /Нагорнов/
+2 GIVN Михаил Петрович
+2 SURN Нагорнов
+1 SEX M
+1 BIRT
+2 DATE ABT 1881
+1 FAMC @F63@
+1 SOUR @S1@
+2 PAGE Перепись 1897 года, двор Василия Петровича
+0 @I176@ INDI
+1 NAME Елена Васильевна //
+2 GIVN Елена Васильевна
+1 SEX F
+1 BIRT
+2 DATE ABT 1878
+1 FAMS @F64@
+1 SOUR @S1@
+2 PAGE Перепись 1897 года; метрика 1913 года
+0 @I177@ INDI
+1 NAME Евлампия Васильевна /Нагорнова/
+2 GIVN Евлампия Васильевна
+2 SURN Нагорнова
+1 SEX F
+1 BIRT
+2 DATE 8 OCT 1913
+1 DEAT
+2 DATE 2012
+1 FAMC @F64@
+1 FAMS @F65@
+1 NOTE Метрика 1913 года указывает рождение 8 октября; семейная память —
+2 CONC  1907–2012. Дата смерти и альтернативный год рождения только по
+2 CONC  семейной памяти.
+1 SOUR @S1@
+2 PAGE Док. 66; семейная память
+0 @I178@ INDI
+1 NAME Анатолий Михайлович /Черепанов/
+2 GIVN Анатолий Михайлович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE 1938
+1 DEAT
+2 DATE 1999
+1 FAMC @F65@
+1 SOUR @S1@
+2 PAGE Док. 28
+0 @I179@ INDI
+1 NAME Юрий Михайлович /Черепанов/
+2 GIVN Юрий Михайлович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE 1942
+1 FAMC @F65@
+1 SOUR @S1@
+2 PAGE Док. 28
+0 @I180@ INDI
+1 NAME Антон /Черепанов/
+2 GIVN Антон
+2 SURN Черепанов
+1 SEX M
+1 FAMS @F66@
+1 SOUR @S1@
+2 PAGE Док. 9; ревизия Яровской 1850 года
+0 @I181@ INDI
+1 NAME Никифор Антонович /Черепанов/
+2 GIVN Никифор Антонович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1794
+1 FAMC @F66@
+1 FAMS @F67@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I182@ INDI
+1 NAME Симон Антонович /Черепанов/
+2 GIVN Симон Антонович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1789
+1 DEAT
+2 DATE 1848
+1 FAMC @F66@
+1 FAMS @F69@
+1 FAMS @F70@
+1 FAMS @F71@
+1 SOUR @S1@
+2 PAGE Док. 9, 30–32
+0 @I183@ INDI
+1 NAME Параскевья Фёдоровна //
+2 GIVN Параскевья Фёдоровна
+1 SEX F
+1 BIRT
+2 DATE ABT 1792
+1 FAMS @F67@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I184@ INDI
+1 NAME Никита Никифорович /Черепанов/
+2 GIVN Никита Никифорович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1822
+1 FAMC @F67@
+1 FAMS @F68@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I185@ INDI
+1 NAME Василий Никифорович /Черепанов/
+2 GIVN Василий Никифорович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1837
+1 FAMC @F67@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I186@ INDI
+1 NAME Агафья Ануфриевна //
+2 GIVN Агафья Ануфриевна
+1 SEX F
+1 BIRT
+2 DATE ABT 1815
+1 FAMS @F68@
+1 NOTE Отчество в источнике читается с сомнением.
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I187@ INDI
+1 NAME Екатерина Никитична /Черепанова/
+2 GIVN Екатерина Никитична
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1843
+1 FAMC @F68@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I188@ INDI
+1 NAME Акулина Никитична /Черепанова/
+2 GIVN Акулина Никитична
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1848
+1 FAMC @F68@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I189@ INDI
+1 NAME Александра Максимовна //
+2 GIVN Александра Максимовна
+1 SEX F
+1 BIRT
+2 DATE ABT 1807
+1 FAMS @F70@
+1 FAMS @F71@
+1 NOTE Вторая жена Симона; мать детей от первого брака не установлена.
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I190@ INDI
+1 NAME Матвей Симонович /Черепанов/
+2 GIVN Матвей Симонович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1813
+1 FAMC @F69@
+1 FAMS @F72@
+1 FAMS @F73@
+1 SOUR @S1@
+2 PAGE Док. 9, 30–32
+0 @I191@ INDI
+1 NAME Фёдор Симонович /Черепанов/
+2 GIVN Фёдор Симонович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1817
+1 FAMC @F69@
+1 FAMS @F74@
+1 SOUR @S1@
+2 PAGE Док. 9, 30–32
+0 @I192@ INDI
+1 NAME Кирилл Симонович /Черепанов/
+2 GIVN Кирилл Симонович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1827
+1 FAMC @F69@
+1 FAMS @F75@
+1 SOUR @S1@
+2 PAGE Док. 9, 30–32
+0 @I193@ INDI
+1 NAME Григорий Симонович /Черепанов/
+2 GIVN Григорий Симонович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1830
+1 FAMC @F70@
+1 FAMS @F76@
+1 SOUR @S1@
+2 PAGE Док. 9, 30–32
+0 @I194@ INDI
+1 NAME Архип Симонович /Черепанов/
+2 GIVN Архип Симонович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1841
+1 FAMC @F70@
+1 FAMS @F79@
+1 SOUR @S1@
+2 PAGE Док. 9, 30–32
+0 @I195@ INDI
+1 NAME Оксинья Симоновна /Черепанова/
+2 GIVN Оксинья Симоновна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1835
+1 FAMC @F71@
+1 NOTE Положение в дворе 1850 года допускает отцовство Симона; в сводке
+2 CONC  указана как дочь без ясной привязки.
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I196@ INDI
+1 NAME Марфа Симоновна /Черепанова/
+2 GIVN Марфа Симоновна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1837
+1 FAMC @F71@
+1 NOTE Отнесена к детям Симона по составу двора; связь требует проверки.
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I197@ INDI
+1 NAME Александра Симоновна /Черепанова/
+2 GIVN Александра Симоновна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1840
+1 FAMC @F71@
+1 NOTE Отнесена к детям Симона по составу двора; связь требует проверки.
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I198@ INDI
+1 NAME Матрёна Симоновна /Черепанова/
+2 GIVN Матрёна Симоновна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1847
+1 FAMC @F71@
+1 NOTE Отнесена к детям Симона по составу двора; связь требует проверки.
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I199@ INDI
+1 NAME Василиса Фёдоровна //
+2 GIVN Василиса Фёдоровна
+1 SEX F
+1 BIRT
+2 DATE ABT 1810
+1 FAMS @F72@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I200@ INDI
+1 NAME Ксения Матвеевна /Певина/
+2 GIVN Ксения Матвеевна
+2 SURN Певина
+1 SEX F
+1 BIRT
+2 DATE ABT 1837
+1 FAMC @F73@
+1 NOTE Фамилия мужа в переписи читается как [Певина].
+1 SOUR @S1@
+2 PAGE Док. 32
+0 @I201@ INDI
+1 NAME Ларион Фёдорович /Черепанов/
+2 GIVN Ларион Фёдорович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1841
+1 FAMC @F74@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I202@ INDI
+1 NAME Никита Фёдорович /Черепанов/
+2 GIVN Никита Фёдорович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1843
+1 FAMC @F74@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I203@ INDI
+1 NAME Хевронья Макаровна //
+2 GIVN Хевронья Макаровна
+1 SEX F
+1 BIRT
+2 DATE ABT 1827
+1 FAMS @F75@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I204@ INDI
+1 NAME Агафья Климентьевна //
+2 GIVN Агафья Климентьевна
+1 SEX F
+1 BIRT
+2 DATE ABT 1825
+1 FAMS @F76@
+1 SOUR @S1@
+2 PAGE Док. 9, 30
+0 @I205@ INDI
+1 NAME Антон Григорьевич /Черепанов/
+2 GIVN Антон Григорьевич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1857
+1 FAMC @F76@
+1 FAMS @F77@
+1 SOUR @S1@
+2 PAGE Док. 30
+0 @I206@ INDI
+1 NAME Степан Григорьевич /Черепанов/
+2 GIVN Степан Григорьевич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1868
+1 FAMC @F76@
+1 FAMS @F78@
+1 SOUR @S1@
+2 PAGE Док. 30
+0 @I207@ INDI
+1 NAME Давид Григорьевич /Черепанов/
+2 GIVN Давид Григорьевич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1877
+1 FAMC @F76@
+1 SOUR @S1@
+2 PAGE Док. 30
+0 @I208@ INDI
+1 NAME Любовь Ивановна //
+2 GIVN Любовь Ивановна
+1 SEX F
+1 BIRT
+2 DATE ABT 1857
+1 FAMS @F77@
+1 SOUR @S1@
+2 PAGE Док. 30
+0 @I209@ INDI
+1 NAME Парасковья Назаровна //
+2 GIVN Парасковья Назаровна
+1 SEX F
+1 BIRT
+2 DATE ABT 1870
+1 FAMS @F78@
+1 SOUR @S1@
+2 PAGE Док. 30
+0 @I210@ INDI
+1 NAME Андрей Степанович /Черепанов/
+2 GIVN Андрей Степанович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1889
+1 FAMC @F78@
+1 SOUR @S1@
+2 PAGE Док. 30
+0 @I211@ INDI
+1 NAME Василий Степанович /Черепанов/
+2 GIVN Василий Степанович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1892
+1 FAMC @F78@
+1 SOUR @S1@
+2 PAGE Док. 30
+0 @I212@ INDI
+1 NAME Евлампия Матвеевна //
+2 GIVN Евлампия Матвеевна
+1 SEX F
+1 BIRT
+2 DATE ABT 1840
+1 FAMS @F79@
+1 SOUR @S1@
+2 PAGE Док. 31
+0 @I213@ INDI
+1 NAME Пётр Архипович /Черепанов/
+2 GIVN Пётр Архипович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1875
+1 FAMC @F79@
+1 FAMS @F80@
+1 SOUR @S1@
+2 PAGE Док. 31
+0 @I214@ INDI
+1 NAME Евгения Савельевна //
+2 GIVN Евгения Савельевна
+1 SEX F
+1 BIRT
+2 DATE ABT 1875
+1 FAMS @F80@
+1 SOUR @S1@
+2 PAGE Док. 31
+0 @I215@ INDI
+1 NAME Данило /Черепанов/
+2 GIVN Данило
+2 SURN Черепанов
+1 SEX M
+1 FAMS @F81@
+1 SOUR @S1@
+2 PAGE Док. 9, 36; отчества потомков
+0 @I216@ INDI
+1 NAME Василий Данилович /Черепанов/
+2 GIVN Василий Данилович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1778
+1 DEAT
+2 DATE 1840
+1 FAMC @F81@
+1 FAMS @F82@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I217@ INDI
+1 NAME Семён Данилович /Черепанов/
+2 GIVN Семён Данилович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1769
+1 DEAT
+2 DATE 1836
+1 FAMC @F81@
+1 FAMS @F88@
+1 SOUR @S1@
+2 PAGE Док. 9, 36
+0 @I218@ INDI
+1 NAME Платон Васильевич /Черепанов/
+2 GIVN Платон Васильевич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1803
+1 FAMC @F82@
+1 FAMS @F83@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I219@ INDI
+1 NAME Пелагея Даниловна //
+2 GIVN Пелагея Даниловна
+1 SEX F
+1 BIRT
+2 DATE ABT 1799
+1 FAMS @F83@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I220@ INDI
+1 NAME Герасим Платонович /Черепанов/
+2 GIVN Герасим Платонович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1823
+1 FAMC @F83@
+1 FAMS @F84@
+1 SOUR @S1@
+2 PAGE Док. 9, 34
+0 @I221@ INDI
+1 NAME Акулина Демидовна //
+2 GIVN Акулина Демидовна
+1 SEX F
+1 BIRT
+2 DATE ABT 1823
+1 FAMS @F84@
+1 SOUR @S1@
+2 PAGE Док. 9, 34
+0 @I222@ INDI
+1 NAME Андрей Герасимович /Черепанов/
+2 GIVN Андрей Герасимович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1843
+1 FAMC @F84@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I223@ INDI
+1 NAME Ларион Герасимович /Черепанов/
+2 GIVN Ларион Герасимович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1845
+1 FAMC @F84@
+1 FAMS @F85@
+1 SOUR @S1@
+2 PAGE Док. 9, 34
+0 @I224@ INDI
+1 NAME Евдокия Фёдоровна //
+2 GIVN Евдокия Фёдоровна
+1 SEX F
+1 BIRT
+2 DATE ABT 1847
+1 FAMS @F85@
+1 SOUR @S1@
+2 PAGE Док. 34
+0 @I225@ INDI
+1 NAME Тимофей Ларионович /Черепанов/
+2 GIVN Тимофей Ларионович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1875
+1 FAMC @F85@
+1 FAMS @F86@
+1 SOUR @S1@
+2 PAGE Док. 34; Док. 26 для возможного Евлампия
+0 @I226@ INDI
+1 NAME Авдей Ларионович /Черепанов/
+2 GIVN Авдей Ларионович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1881
+1 FAMC @F85@
+1 SOUR @S1@
+2 PAGE Док. 34; Док. 26 для возможного Евлампия
+0 @I227@ INDI
+1 NAME Ев[…]ий Ларионович /Черепанов/
+2 GIVN Ев[…]ий Ларионович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1886
+1 FAMC @F85@
+1 NOTE Имя в переписи читается неуверенно; это может быть Евлампий из
+2 CONC  старообрядческой метрики, но доказательства нет.
+1 SOUR @S1@
+2 PAGE Док. 34; Док. 26 для возможного Евлампия
+0 @I228@ INDI
+1 NAME Марина Ларионовна /Черепанова/
+2 GIVN Марина Ларионовна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1884
+1 FAMC @F85@
+1 SOUR @S1@
+2 PAGE Док. 34; Док. 26 для возможного Евлампия
+0 @I229@ INDI
+1 NAME Прасковья Андреевна //
+2 GIVN Прасковья Андреевна
+1 SEX F
+1 BIRT
+2 DATE ABT 1875
+1 FAMS @F86@
+1 SOUR @S1@
+2 PAGE Док. 34
+0 @I230@ INDI
+1 NAME Автоном Тимофеевич /Черепанов/
+2 GIVN Автоном Тимофеевич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1896
+1 FAMC @F86@
+1 SOUR @S1@
+2 PAGE Док. 34
+0 @I231@ INDI
+1 NAME Николай Тимофеевич /Черепанов/
+2 GIVN Николай Тимофеевич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT DEC 1896
+1 FAMC @F86@
+1 SOUR @S1@
+2 PAGE Док. 34
+0 @I232@ INDI
+1 NAME Фекла Александровна //
+2 GIVN Фекла Александровна
+1 SEX F
+1 FAMS @F87@
+1 SOUR @S1@
+2 PAGE Док. 26
+0 @I233@ INDI
+1 NAME Евлампий Ларионович /Черепанов/
+2 GIVN Евлампий Ларионович
+2 SURN Черепанов
+1 SEX M
+1 FAMS @F87@
+1 NOTE Старообрядец деревни Яровской. Возможно, это младший брат Тимофея
+2 CONC  из переписи 1897 года; личность не отождествлена.
+1 SOUR @S1@
+2 PAGE Док. 26
+0 @I234@ INDI
+1 NAME Феодора Евлампиевна /Черепанова/
+2 GIVN Феодора Евлампиевна
+2 SURN Черепанова
+1 SEX F
+1 FAMC @F87@
+1 NOTE Умерла в возрасте 5 лет 4 месяцев; год смерти в метрической книге
+2 CONC  не указан. Родители — Евлампий Ларионович и Фекла Александровна.
+1 SOUR @S1@
+2 PAGE Док. 26
+0 @I235@ INDI
+1 NAME Демид Семёнович /Черепанов/
+2 GIVN Демид Семёнович
+2 SURN Черепанов
+1 SEX M
+1 DEAT
+2 DATE 1842
+1 FAMC @F88@
+1 FAMS @F89@
+1 SOUR @S1@
+2 PAGE Док. 9, 36
+0 @I236@ INDI
+1 NAME Дмитрий Демидович /Черепанов/
+2 GIVN Дмитрий Демидович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1809
+1 FAMC @F89@
+1 FAMS @F90@
+1 FAMS @F91@
+1 SOUR @S1@
+2 PAGE Док. 9, 36
+0 @I237@ INDI
+1 NAME Орина Евсеевна //
+2 GIVN Орина Евсеевна
+1 SEX F
+1 BIRT
+2 DATE ABT 1807
+1 FAMS @F90@
+1 FAMS @F91@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I238@ INDI
+1 NAME Иван Дмитриевич /Черепанов/
+2 GIVN Иван Дмитриевич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1828
+1 FAMC @F90@
+1 FAMS @F92@
+1 SOUR @S1@
+2 PAGE Док. 9, 36
+0 @I239@ INDI
+1 NAME Василий Дмитриевич /Черепанов/
+2 GIVN Василий Дмитриевич
+2 SURN Черепанов
+1 SEX M
+1 DEAT
+2 DATE 1834
+1 FAMC @F90@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I240@ INDI
+1 NAME Екатерина Дмитриевна /Черепанова/
+2 GIVN Екатерина Дмитриевна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1832
+1 FAMC @F91@
+1 NOTE По составу двора 1850 года вероятная дочь Дмитрия; отчество
+2 CONC  восстановлено предположительно.
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I241@ INDI
+1 NAME Анфиса Дмитриевна /Черепанова/
+2 GIVN Анфиса Дмитриевна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1843
+1 FAMC @F91@
+1 NOTE Имя читается неуверенно, принадлежность к детям Дмитрия не
+2 CONC  доказана.
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I242@ INDI
+1 NAME Парасковья Егоровна //
+2 GIVN Парасковья Егоровна
+1 SEX F
+1 BIRT
+2 DATE ABT 1824
+1 FAMS @F92@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I243@ INDI
+1 NAME Константин Иванович /Черепанов/
+2 GIVN Константин Иванович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1852
+1 FAMC @F92@
+1 FAMS @F93@
+1 SOUR @S1@
+2 PAGE Док. 36
+0 @I244@ INDI
+1 NAME Меланья Яковлевна //
+2 GIVN Меланья Яковлевна
+1 SEX F
+1 BIRT
+2 DATE ABT 1851
+1 FAMS @F93@
+1 SOUR @S1@
+2 PAGE Док. 36
+0 @I245@ INDI
+1 NAME Яков Константинович /Черепанов/
+2 GIVN Яков Константинович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1883
+1 FAMC @F93@
+1 SOUR @S1@
+2 PAGE Док. 36
+0 @I246@ INDI
+1 NAME Егор Константинович /Черепанов/
+2 GIVN Егор Константинович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1885
+1 FAMC @F93@
+1 SOUR @S1@
+2 PAGE Док. 36
+0 @I247@ INDI
+1 NAME Фёдор Константинович /Черепанов/
+2 GIVN Фёдор Константинович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1886
+1 FAMC @F93@
+1 SOUR @S1@
+2 PAGE Док. 36
+0 @I248@ INDI
+1 NAME Гаврило /Черепанов/
+2 GIVN Гаврило
+2 SURN Черепанов
+1 SEX M
+1 FAMS @F94@
+1 SOUR @S1@
+2 PAGE Док. 9, 35; отчество Филиппа
+0 @I249@ INDI
+1 NAME Филипп Гаврилович /Черепанов/
+2 GIVN Филипп Гаврилович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1812
+1 FAMC @F94@
+1 FAMS @F95@
+1 NOTE В сводке 1850 года возраст Никиты ошибочно близок к возрасту
+2 CONC  отца; отчество Никиты подтверждено документом 35.
+1 SOUR @S1@
+2 PAGE Док. 9, 35
+0 @I250@ INDI
+1 NAME Никита Филиппович /Черепанов/
+2 GIVN Никита Филиппович
+2 SURN Черепанов
+1 SEX M
+1 FAMC @F95@
+1 FAMS @F96@
+1 SOUR @S1@
+2 PAGE Док. 9, 35
+0 @I251@ INDI
+1 NAME Устинья Павловна //
+2 GIVN Устинья Павловна
+1 SEX F
+1 BIRT
+2 DATE ABT 1809
+1 FAMS @F96@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I252@ INDI
+1 NAME Иван Никитич /Черепанов/
+2 GIVN Иван Никитич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1834
+1 FAMC @F96@
+1 SOUR @S1@
+2 PAGE Док. 9, 35
+0 @I253@ INDI
+1 NAME Пётр Никитич /Черепанов/
+2 GIVN Пётр Никитич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1837
+1 FAMC @F96@
+1 SOUR @S1@
+2 PAGE Док. 9, 35
+0 @I254@ INDI
+1 NAME Игнатий Никитич /Черепанов/
+2 GIVN Игнатий Никитич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1843
+1 FAMC @F96@
+1 FAMS @F97@
+1 SOUR @S1@
+2 PAGE Док. 9, 35
+0 @I255@ INDI
+1 NAME Домна Никитична /Черепанова/
+2 GIVN Домна Никитична
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1834
+1 FAMC @F96@
+1 SOUR @S1@
+2 PAGE Док. 9, 35
+0 @I256@ INDI
+1 NAME Парасковья Никитична /Черепанова/
+2 GIVN Парасковья Никитична
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1837
+1 FAMC @F96@
+1 SOUR @S1@
+2 PAGE Док. 9, 35
+0 @I257@ INDI
+1 NAME Лукерья Никитична /Черепанова/
+2 GIVN Лукерья Никитична
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1838
+1 FAMC @F96@
+1 SOUR @S1@
+2 PAGE Док. 9, 35
+0 @I258@ INDI
+1 NAME Наталья Ивановна //
+2 GIVN Наталья Ивановна
+1 SEX F
+1 BIRT
+2 DATE ABT 1847
+1 FAMS @F97@
+1 SOUR @S1@
+2 PAGE Док. 35
+0 @I259@ INDI
+1 NAME Матвей /Черепанов/
+2 GIVN Матвей
+2 SURN Черепанов
+1 SEX M
+1 FAMS @F98@
+1 SOUR @S1@
+2 PAGE Док. 9, семья 24; отчество Антона
+0 @I260@ INDI
+1 NAME Антон Матвеевич /Черепанов/
+2 GIVN Антон Матвеевич
+2 SURN Черепанов
+1 SEX M
+1 DEAT
+2 DATE 1844
+1 FAMC @F98@
+1 FAMS @F99@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I261@ INDI
+1 NAME Акулина Фоминична //
+2 GIVN Акулина Фоминична
+1 SEX F
+1 BIRT
+2 DATE ABT 1786
+1 FAMS @F99@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I262@ INDI
+1 NAME Гаврило Антонович /Черепанов/
+2 GIVN Гаврило Антонович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1812
+1 FAMC @F99@
+1 FAMS @F100@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I263@ INDI
+1 NAME Ульяна Гавриловна //
+2 GIVN Ульяна Гавриловна
+1 SEX F
+1 BIRT
+2 DATE ABT 1810
+1 FAMS @F100@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I264@ INDI
+1 NAME Федосья Гавриловна /Черепанова/
+2 GIVN Федосья Гавриловна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1832
+1 FAMC @F100@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I265@ INDI
+1 NAME Мавра Гавриловна /Черепанова/
+2 GIVN Мавра Гавриловна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1835
+1 FAMC @F100@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I266@ INDI
+1 NAME Онисья Гавриловна /Черепанова/
+2 GIVN Онисья Гавриловна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1843
+1 FAMC @F100@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I267@ INDI
+1 NAME Матрёна Гавриловна /Черепанова/
+2 GIVN Матрёна Гавриловна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1847
+1 FAMC @F100@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I268@ INDI
+1 NAME Лаврентий /Черепанов/
+2 GIVN Лаврентий
+2 SURN Черепанов
+1 SEX M
+1 FAMS @F101@
+1 SOUR @S1@
+2 PAGE Док. 9, семья 25; отчества Александра и Анны
+0 @I269@ INDI
+1 NAME Александр Лаврентьевич /Черепанов/
+2 GIVN Александр Лаврентьевич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1790
+1 FAMC @F101@
+1 FAMS @F102@
+1 SOUR @S1@
+2 PAGE Док. 9, 37
+0 @I270@ INDI
+1 NAME Анна Лаврентьевна /Черепанова/
+2 GIVN Анна Лаврентьевна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1786
+1 FAMC @F101@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I271@ INDI
+1 NAME Соломея Петровна //
+2 GIVN Соломея Петровна
+1 SEX F
+1 BIRT
+2 DATE ABT 1804
+1 FAMS @F102@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I272@ INDI
+1 NAME Иона Александрович /Черепанов/
+2 GIVN Иона Александрович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1841
+1 FAMC @F102@
+1 SOUR @S1@
+2 PAGE Док. 9, 37
+0 @I273@ INDI
+1 NAME Григорий Александрович /Черепанов/
+2 GIVN Григорий Александрович
+2 SURN Черепанов
+1 SEX M
+1 DEAT
+2 DATE 1847
+1 FAMC @F102@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I274@ INDI
+1 NAME Наталья Александровна /Черепанова/
+2 GIVN Наталья Александровна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1832
+1 FAMC @F102@
+1 SOUR @S1@
+2 PAGE Док. 9
+0 @I275@ INDI
+1 NAME Григорий /Черепанов/
+2 GIVN Григорий
+2 SURN Черепанов
+1 SEX M
+1 FAMS @F103@
+1 NOTE Отец Михаила и Григория по отчеству. Их братство в отчёте названо
+2 CONC  почти несомненным, прямого доказательства нет.
+1 SOUR @S1@
+2 PAGE Док. 38, 39
+0 @I276@ INDI
+1 NAME Михаил Григорьевич /Черепанов/
+2 GIVN Михаил Григорьевич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1850
+1 FAMC @F103@
+1 FAMS @F104@
+1 SOUR @S1@
+2 PAGE Док. 38
+0 @I277@ INDI
+1 NAME Григорий Григорьевич /Черепанов/
+2 GIVN Григорий Григорьевич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1859
+1 FAMC @F103@
+1 FAMS @F107@
+1 SOUR @S1@
+2 PAGE Док. 39
+0 @I278@ INDI
+1 NAME Катерина Фёдоровна //
+2 GIVN Катерина Фёдоровна
+1 SEX F
+1 BIRT
+2 DATE ABT 1847
+1 FAMS @F104@
+1 SOUR @S1@
+2 PAGE Док. 38
+0 @I279@ INDI
+1 NAME Андрей Михайлович /Черепанов/
+2 GIVN Андрей Михайлович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1872
+1 FAMC @F104@
+1 FAMS @F105@
+1 NOTE Другой человек, не Андрей Михайлович из Боровлянки.
+1 SOUR @S1@
+2 PAGE Док. 38
+0 @I280@ INDI
+1 NAME Софрон Михайлович /Черепанов/
+2 GIVN Софрон Михайлович
+2 SURN Черепанов
+1 SEX M
+1 FAMC @F104@
+1 FAMS @F106@
+1 NOTE Имя в метрике 1898 года читается с сомнением.
+1 SOUR @S1@
+2 PAGE Док. 41
+0 @I281@ INDI
+1 NAME Татьяна Ефимовна //
+2 GIVN Татьяна Ефимовна
+1 SEX F
+1 BIRT
+2 DATE ABT 1871
+1 FAMS @F105@
+1 SOUR @S1@
+2 PAGE Док. 38
+0 @I282@ INDI
+1 NAME Анна Степановна //
+2 GIVN Анна Степановна
+1 SEX F
+1 FAMS @F106@
+1 SOUR @S1@
+2 PAGE Док. 41
+0 @I283@ INDI
+1 NAME Мария Софроновна /Черепанова/
+2 GIVN Мария Софроновна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE 1898
+1 FAMC @F106@
+1 SOUR @S1@
+2 PAGE Док. 41, соседняя запись
+0 @I284@ INDI
+1 NAME Фёдора Григорьевна //
+2 GIVN Фёдора Григорьевна
+1 SEX F
+1 BIRT
+2 DATE ABT 1857
+1 FAMS @F107@
+1 SOUR @S1@
+2 PAGE Док. 39
+0 @I285@ INDI
+1 NAME Григорий Григорьевич /Черепанов/
+2 GIVN Григорий Григорьевич
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1887
+1 FAMC @F107@
+1 SOUR @S1@
+2 PAGE Док. 39
+0 @I286@ INDI
+1 NAME Анна Григорьевна /Черепанова/
+2 GIVN Анна Григорьевна
+2 SURN Черепанова
+1 SEX F
+1 BIRT
+2 DATE ABT 1892
+1 FAMC @F107@
+1 SOUR @S1@
+2 PAGE Док. 39
+0 @I287@ INDI
+1 NAME Фёдор /Черепанов/
+2 GIVN Фёдор
+2 SURN Черепанов
+1 SEX M
+1 FAMS @F108@
+1 NOTE Известен по отчеству Архипа; личность не установлена.
+1 SOUR @S1@
+2 PAGE Док. 33
+0 @I288@ INDI
+1 NAME Архип Фёдорович /Черепанов/
+2 GIVN Архип Фёдорович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1839
+1 FAMC @F108@
+1 FAMS @F109@
+1 SOUR @S1@
+2 PAGE Док. 33
+0 @I289@ INDI
+1 NAME Прасковья Павловна //
+2 GIVN Прасковья Павловна
+1 SEX F
+1 BIRT
+2 DATE ABT 1847
+1 FAMS @F109@
+1 NOTE Уроженка Вилкомирского уезда Ковенской губернии.
+1 SOUR @S1@
+2 PAGE Док. 33
+0 @I290@ INDI
+1 NAME Ефрем Архипович /Черепанов/
+2 GIVN Ефрем Архипович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1873
+1 FAMC @F109@
+1 FAMS @F110@
+1 SOUR @S1@
+2 PAGE Док. 33
+0 @I291@ INDI
+1 NAME Лаврентий Архипович /Черепанов/
+2 GIVN Лаврентий Архипович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1880
+1 FAMC @F109@
+1 SOUR @S1@
+2 PAGE Док. 33
+0 @I292@ INDI
+1 NAME Прокопий Архипович /Черепанов/
+2 GIVN Прокопий Архипович
+2 SURN Черепанов
+1 SEX M
+1 BIRT
+2 DATE ABT 1885
+1 FAMC @F109@
+1 SOUR @S1@
+2 PAGE Док. 33
+0 @I293@ INDI
+1 NAME Мария Степановна //
+2 GIVN Мария Степановна
+1 SEX F
+1 BIRT
+2 DATE ABT 1871
+1 FAMS @F110@
+1 SOUR @S1@
+2 PAGE Док. 33
+0 @F1@ FAM
+1 HUSB @I1@
+1 CHIL @I2@
+1 CHIL @I3@
+1 SOUR @S1@
+0 @F2@ FAM
+1 HUSB @I4@
+1 CHIL @I5@
+1 SOUR @S1@
+0 @F3@ FAM
+1 HUSB @I6@
+1 WIFE @I5@
+1 CHIL @I7@
+1 CHIL @I8@
+1 NOTE Кровные родители. Фамилию Гуляев сыновья приняли в доме отчима.
+1 SOUR @S1@
+0 @F4@ FAM
+1 HUSB @I2@
+1 WIFE @I5@
+1 CHIL @I7@
+1 CHIL @I8@
+1 NOTE Второй брак Федоры между 1776 и 1782 годами; её сыновья от
+2 CONC  Клементия — пасынки Григория.
+1 SOUR @S1@
+0 @F5@ FAM
+1 HUSB @I2@
+1 CHIL @I9@
+1 NOTE Имя матери Федота не установлено; вероятно, первая жена Григория.
+1 SOUR @S1@
+0 @F6@ FAM
+1 HUSB @I9@
+1 WIFE @I10@
+1 NOTE Первый брак Федота; мать Агафьи в отчёте не указана.
+1 SOUR @S1@
+0 @F7@ FAM
+1 HUSB @I9@
+1 WIFE @I11@
+1 NOTE Второй брак Федота; мать Агафьи в отчёте не указана.
+1 SOUR @S1@
+0 @F8@ FAM
+1 HUSB @I9@
+1 CHIL @I12@
+1 SOUR @S1@
+0 @F9@ FAM
+1 HUSB @I2@
+1 CHIL @I13@
+1 CHIL @I14@
+1 CHIL @I15@
+1 SOUR @S1@
+0 @F10@ FAM
+1 HUSB @I7@
+1 WIFE @I16@
+1 SOUR @S1@
+0 @F11@ FAM
+1 HUSB @I7@
+1 WIFE @I16@
+1 CHIL @I17@
+1 CHIL @I18@
+1 CHIL @I19@
+1 CHIL @I20@
+1 CHIL @I21@
+1 CHIL @I22@
+1 NOTE Идентификация имён Ульян/Емельян, Матвей и Козьма между ревизиями
+2 CONC  требует проверки; отчёт связывает их как одну ветвь.
+1 SOUR @S1@
+0 @F12@ FAM
+1 HUSB @I17@
+1 WIFE @I23@
+1 SOUR @S1@
+0 @F13@ FAM
+1 HUSB @I19@
+1 WIFE @I24@
+1 CHIL @I25@
+1 CHIL @I26@
+1 SOUR @S1@
+0 @F14@ FAM
+1 HUSB @I20@
+1 WIFE @I27@
+1 CHIL @I28@
+1 CHIL @I29@
+1 CHIL @I30@
+1 SOUR @S1@
+0 @F15@ FAM
+1 HUSB @I3@
+1 WIFE @I31@
+1 CHIL @I32@
+1 CHIL @I33@
+1 CHIL @I34@
+1 CHIL @I35@
+1 SOUR @S1@
+0 @F16@ FAM
+1 HUSB @I32@
+1 WIFE @I36@
+1 CHIL @I37@
+1 CHIL @I38@
+1 CHIL @I39@
+1 SOUR @S1@
+0 @F17@ FAM
+1 HUSB @I33@
+1 CHIL @I40@
+1 SOUR @S1@
+0 @F18@ FAM
+1 HUSB @I8@
+1 WIFE @I41@
+1 CHIL @I42@
+1 CHIL @I43@
+1 CHIL @I44@
+1 CHIL @I45@
+1 CHIL @I46@
+1 CHIL @I47@
+1 CHIL @I48@
+1 CHIL @I49@
+1 CHIL @I50@
+1 NOTE Ревизия 1816 года добавляет Ивана, Агафью и Катерину к детям
+2 CONC  позднейших ревизий. Ипат и Катерина близки по расчётным годам
+2 CONC  рождения; датировки приблизительные.
+1 SOUR @S1@
+0 @F19@ FAM
+1 HUSB @I50@
+1 WIFE @I51@
+1 CHIL @I52@
+1 CHIL @I53@
+1 SOUR @S1@
+0 @F20@ FAM
+1 HUSB @I49@
+1 WIFE @I54@
+1 CHIL @I55@
+1 CHIL @I56@
+1 CHIL @I57@
+1 SOUR @S1@
+0 @F21@ FAM
+1 HUSB @I49@
+1 CHIL @I58@
+1 CHIL @I59@
+1 NOTE Отец обоих сыновей установлен приложением к отчёту; материнство
+2 CONC  Ненилы Ивановны не доказано.
+1 SOUR @S1@
+0 @F22@ FAM
+1 HUSB @I58@
+1 WIFE @I60@
+1 NOTE Второй брак Ефрема; мать детей по переписи не доказана.
+1 SOUR @S1@
+0 @F23@ FAM
+1 HUSB @I58@
+1 CHIL @I61@
+1 CHIL @I62@
+1 CHIL @I63@
+1 NOTE Мать детей не установлена; Марина Васильевна названа второй
+2 CONC  женой.
+1 SOUR @S1@
+0 @F24@ FAM
+1 HUSB @I59@
+1 WIFE @I64@
+1 CHIL @I66@
+1 CHIL @I67@
+1 SOUR @S1@
+0 @F25@ FAM
+1 CHIL @I64@
+1 CHIL @I65@
+1 NOTE Сёстры; имена родителей не приведены.
+1 SOUR @S1@
+0 @F26@ FAM
+1 HUSB @I45@
+1 WIFE @I68@
+1 CHIL @I69@
+1 CHIL @I70@
+1 CHIL @I71@
+1 CHIL @I72@
+1 CHIL @I73@
+1 CHIL @I74@
+1 CHIL @I75@
+1 CHIL @I76@
+1 SOUR @S1@
+0 @F27@ FAM
+1 HUSB @I72@
+1 CHIL @I77@
+1 SOUR @S1@
+0 @F28@ FAM
+1 HUSB @I78@
+1 CHIL @I79@
+1 SOUR @S1@
+0 @F29@ FAM
+1 HUSB @I75@
+1 WIFE @I79@
+1 CHIL @I80@
+1 CHIL @I81@
+1 CHIL @I82@
+1 CHIL @I83@
+1 CHIL @I84@
+1 CHIL @I85@
+1 CHIL @I86@
+1 CHIL @I87@
+1 SOUR @S1@
+0 @F30@ FAM
+1 HUSB @I80@
+1 WIFE @I88@
+1 SOUR @S1@
+0 @F31@ FAM
+1 HUSB @I89@
+1 CHIL @I90@
+1 CHIL @I91@
+1 SOUR @S1@
+0 @F32@ FAM
+1 HUSB @I82@
+1 WIFE @I90@
+1 MARR
+2 DATE 30 JUN 1903
+1 SOUR @S1@
+0 @F33@ FAM
+1 HUSB @I92@
+1 WIFE @I93@
+1 CHIL @I94@
+1 SOUR @S1@
+0 @F34@ FAM
+1 HUSB @I95@
+1 CHIL @I96@
+1 SOUR @S1@
+0 @F35@ FAM
+1 HUSB @I96@
+1 WIFE @I94@
+1 CHIL @I97@
+1 CHIL @I98@
+1 CHIL @I99@
+1 NOTE Мать Анастасии вероятна по возрасту и совместному двору, но прямо
+2 CONC  в записи 1897 года не названа.
+1 SOUR @S1@
+0 @F36@ FAM
+1 HUSB @I96@
+1 CHIL @I100@
+1 NOTE Иродион установлен по отчеству и назван братом Анастасии; мать не
+2 CONC  названа.
+1 SOUR @S1@
+0 @F37@ FAM
+1 HUSB @I94@
+1 CHIL @I101@
+1 CHIL @I102@
+1 NOTE В переписи названы дочерьми хозяина, но отчество Семёновна
+2 CONC  указывает на иного отца; связь с Апросиньей как матерью вероятна,
+2 CONC  не доказана.
+1 SOUR @S1@
+0 @F38@ FAM
+1 HUSB @I84@
+1 WIFE @I99@
+1 CHIL @I103@
+1 CHIL @I104@
+1 CHIL @I105@
+1 CHIL @I106@
+1 CHIL @I107@
+1 MARR
+2 DATE 4 FEB 1913
+1 SOUR @S1@
+0 @F39@ FAM
+1 HUSB @I103@
+1 WIFE @I108@
+1 CHIL @I109@
+1 SOUR @S1@
+0 @F40@ FAM
+1 HUSB @I110@
+1 CHIL @I111@
+1 CHIL @I112@
+1 SOUR @S1@
+0 @F41@ FAM
+1 HUSB @I113@
+1 CHIL @I114@
+1 SOUR @S1@
+0 @F42@ FAM
+1 HUSB @I112@
+1 WIFE @I114@
+1 CHIL @I115@
+1 CHIL @I116@
+1 CHIL @I117@
+1 SOUR @S1@
+0 @F43@ FAM
+1 HUSB @I118@
+1 CHIL @I119@
+1 SOUR @S1@
+0 @F44@ FAM
+1 HUSB @I116@
+1 WIFE @I119@
+1 SOUR @S1@
+0 @F45@ FAM
+1 HUSB @I120@
+1 CHIL @I121@
+1 SOUR @S1@
+0 @F46@ FAM
+1 HUSB @I117@
+1 WIFE @I121@
+1 SOUR @S1@
+0 @F47@ FAM
+1 HUSB @I122@
+1 CHIL @I123@
+1 SOUR @S1@
+0 @F48@ FAM
+1 HUSB @I115@
+1 WIFE @I123@
+1 CHIL @I124@
+1 CHIL @I125@
+1 CHIL @I126@
+1 CHIL @I127@
+1 SOUR @S1@
+0 @F49@ FAM
+1 HUSB @I128@
+1 CHIL @I129@
+1 SOUR @S1@
+0 @F50@ FAM
+1 HUSB @I124@
+1 WIFE @I129@
+1 CHIL @I131@
+1 CHIL @I132@
+1 NOTE Первый брак Григория.
+1 SOUR @S1@
+0 @F51@ FAM
+1 HUSB @I124@
+1 WIFE @I130@
+1 CHIL @I133@
+1 CHIL @I134@
+1 NOTE Второй брак Григория; мать Феклы в отчёте не указана.
+1 SOUR @S1@
+0 @F52@ FAM
+1 HUSB @I124@
+1 CHIL @I135@
+1 SOUR @S1@
+0 @F53@ FAM
+1 HUSB @I131@
+1 WIFE @I136@
+1 SOUR @S1@
+0 @F54@ FAM
+1 HUSB @I137@
+1 WIFE @I135@
+1 SOUR @S1@
+0 @F55@ FAM
+1 HUSB @I138@
+1 CHIL @I139@
+1 SOUR @S1@
+0 @F56@ FAM
+1 HUSB @I134@
+1 WIFE @I139@
+1 CHIL @I140@
+1 CHIL @I141@
+1 SOUR @S1@
+0 @F57@ FAM
+1 HUSB @I140@
+1 WIFE @I142@
+1 CHIL @I143@
+1 CHIL @I144@
+1 CHIL @I145@
+1 CHIL @I146@
+1 CHIL @I147@
+1 CHIL @I148@
+1 CHIL @I149@
+1 NOTE Отчёт говорит о восьми детях, но по имени перечисляет семерых;
+2 CONC  безымянный ребёнок не добавлен.
+1 SOUR @S1@
+0 @F58@ FAM
+1 HUSB @I146@
+1 WIFE @I150@
+1 CHIL @I151@
+1 CHIL @I152@
+1 SOUR @S1@
+0 @F59@ FAM
+1 HUSB @I152@
+1 CHIL @I154@
+1 NOTE Имя первой жены, матери Евдокии, не установлено.
+1 SOUR @S1@
+0 @F60@ FAM
+1 HUSB @I152@
+1 WIFE @I153@
+1 CHIL @I155@
+1 SOUR @S1@
+0 @F61@ FAM
+1 HUSB @I156@
+1 CHIL @I157@
+1 SOUR @S1@
+0 @F62@ FAM
+1 HUSB @I157@
+1 WIFE @I154@
+1 CHIL @I158@
+1 CHIL @I159@
+1 CHIL @I160@
+1 CHIL @I161@
+1 CHIL @I162@
+1 CHIL @I163@
+1 CHIL @I164@
+1 CHIL @I165@
+1 CHIL @I166@
+1 CHIL @I167@
+1 CHIL @I168@
+1 CHIL @I169@
+1 MARR
+2 DATE BET 1894 AND 1897
+1 NOTE В ранней главе названы четыре ребёнка; позднее приложение
+2 CONC  документирует двенадцать и отменяет утверждение о девятилетнем
+2 CONC  перерыве.
+1 SOUR @S1@
+0 @F63@ FAM
+1 HUSB @I170@
+1 WIFE @I171@
+1 CHIL @I172@
+1 CHIL @I173@
+1 CHIL @I174@
+1 CHIL @I175@
+1 SOUR @S1@
+0 @F64@ FAM
+1 HUSB @I174@
+1 WIFE @I176@
+1 CHIL @I177@
+1 SOUR @S1@
+0 @F65@ FAM
+1 HUSB @I167@
+1 WIFE @I177@
+1 CHIL @I178@
+1 CHIL @I179@
+1 SOUR @S1@
+0 @F66@ FAM
+1 HUSB @I180@
+1 CHIL @I181@
+1 CHIL @I182@
+1 NOTE Братство Никифора и Симона следует из одинакового отчества;
+2 CONC  привязка к одному Антону вероятна, но его личность не
+2 CONC  установлена.
+1 SOUR @S1@
+0 @F67@ FAM
+1 HUSB @I181@
+1 WIFE @I183@
+1 CHIL @I184@
+1 CHIL @I185@
+1 SOUR @S1@
+0 @F68@ FAM
+1 HUSB @I184@
+1 WIFE @I186@
+1 CHIL @I187@
+1 CHIL @I188@
+1 SOUR @S1@
+0 @F69@ FAM
+1 HUSB @I182@
+1 CHIL @I190@
+1 CHIL @I191@
+1 CHIL @I192@
+1 NOTE Дети первого брака; имя их матери не установлено.
+1 SOUR @S1@
+0 @F70@ FAM
+1 HUSB @I182@
+1 WIFE @I189@
+1 CHIL @I193@
+1 CHIL @I194@
+1 NOTE Дети второго брака.
+1 SOUR @S1@
+0 @F71@ FAM
+1 HUSB @I182@
+1 WIFE @I189@
+1 CHIL @I195@
+1 CHIL @I196@
+1 CHIL @I197@
+1 CHIL @I198@
+1 NOTE Материнство и точная привязка дочерей в сводке двора 1850 года
+2 CONC  неявные; связь предположительная.
+1 SOUR @S1@
+0 @F72@ FAM
+1 HUSB @I190@
+1 WIFE @I199@
+1 SOUR @S1@
+0 @F73@ FAM
+1 HUSB @I190@
+1 CHIL @I200@
+1 SOUR @S1@
+0 @F74@ FAM
+1 HUSB @I191@
+1 CHIL @I201@
+1 CHIL @I202@
+1 SOUR @S1@
+0 @F75@ FAM
+1 HUSB @I192@
+1 WIFE @I203@
+1 SOUR @S1@
+0 @F76@ FAM
+1 HUSB @I193@
+1 WIFE @I204@
+1 CHIL @I205@
+1 CHIL @I206@
+1 CHIL @I207@
+1 SOUR @S1@
+0 @F77@ FAM
+1 HUSB @I205@
+1 WIFE @I208@
+1 SOUR @S1@
+0 @F78@ FAM
+1 HUSB @I206@
+1 WIFE @I209@
+1 CHIL @I210@
+1 CHIL @I211@
+1 SOUR @S1@
+0 @F79@ FAM
+1 HUSB @I194@
+1 WIFE @I212@
+1 CHIL @I213@
+1 SOUR @S1@
+0 @F80@ FAM
+1 HUSB @I213@
+1 WIFE @I214@
+1 SOUR @S1@
+0 @F81@ FAM
+1 HUSB @I215@
+1 CHIL @I216@
+1 CHIL @I217@
+1 NOTE Братство по общему отчеству вероятно; отдельного документа об их
+2 CONC  общем отце в отчёте нет.
+1 SOUR @S1@
+0 @F82@ FAM
+1 HUSB @I216@
+1 CHIL @I218@
+1 SOUR @S1@
+0 @F83@ FAM
+1 HUSB @I218@
+1 WIFE @I219@
+1 CHIL @I220@
+1 SOUR @S1@
+0 @F84@ FAM
+1 HUSB @I220@
+1 WIFE @I221@
+1 CHIL @I222@
+1 CHIL @I223@
+1 SOUR @S1@
+0 @F85@ FAM
+1 HUSB @I223@
+1 WIFE @I224@
+1 CHIL @I225@
+1 CHIL @I226@
+1 CHIL @I227@
+1 CHIL @I228@
+1 SOUR @S1@
+0 @F86@ FAM
+1 HUSB @I225@
+1 WIFE @I229@
+1 CHIL @I230@
+1 CHIL @I231@
+1 SOUR @S1@
+0 @F87@ FAM
+1 HUSB @I233@
+1 WIFE @I232@
+1 CHIL @I234@
+1 NOTE Не соединено с Ларионом Герасимовичем: отчество отца Феодоры
+2 CONC  известно, но личность Лариона не установлена.
+1 SOUR @S1@
+0 @F88@ FAM
+1 HUSB @I217@
+1 CHIL @I235@
+1 SOUR @S1@
+0 @F89@ FAM
+1 HUSB @I235@
+1 CHIL @I236@
+1 SOUR @S1@
+0 @F90@ FAM
+1 HUSB @I236@
+1 WIFE @I237@
+1 CHIL @I238@
+1 CHIL @I239@
+1 SOUR @S1@
+0 @F91@ FAM
+1 HUSB @I236@
+1 WIFE @I237@
+1 CHIL @I240@
+1 CHIL @I241@
+1 NOTE Привязка дочерей по сводной таблице 1850 года предположительная.
+1 SOUR @S1@
+0 @F92@ FAM
+1 HUSB @I238@
+1 WIFE @I242@
+1 CHIL @I243@
+1 SOUR @S1@
+0 @F93@ FAM
+1 HUSB @I243@
+1 WIFE @I244@
+1 CHIL @I245@
+1 CHIL @I246@
+1 CHIL @I247@
+1 SOUR @S1@
+0 @F94@ FAM
+1 HUSB @I248@
+1 CHIL @I249@
+1 SOUR @S1@
+0 @F95@ FAM
+1 HUSB @I249@
+1 CHIL @I250@
+1 SOUR @S1@
+0 @F96@ FAM
+1 HUSB @I250@
+1 WIFE @I251@
+1 CHIL @I252@
+1 CHIL @I253@
+1 CHIL @I254@
+1 CHIL @I255@
+1 CHIL @I256@
+1 CHIL @I257@
+1 SOUR @S1@
+0 @F97@ FAM
+1 HUSB @I254@
+1 WIFE @I258@
+1 SOUR @S1@
+0 @F98@ FAM
+1 HUSB @I259@
+1 CHIL @I260@
+1 SOUR @S1@
+0 @F99@ FAM
+1 HUSB @I260@
+1 WIFE @I261@
+1 CHIL @I262@
+1 SOUR @S1@
+0 @F100@ FAM
+1 HUSB @I262@
+1 WIFE @I263@
+1 CHIL @I264@
+1 CHIL @I265@
+1 CHIL @I266@
+1 CHIL @I267@
+1 SOUR @S1@
+0 @F101@ FAM
+1 HUSB @I268@
+1 CHIL @I269@
+1 CHIL @I270@
+1 SOUR @S1@
+0 @F102@ FAM
+1 HUSB @I269@
+1 WIFE @I271@
+1 CHIL @I272@
+1 CHIL @I273@
+1 CHIL @I274@
+1 SOUR @S1@
+0 @F103@ FAM
+1 HUSB @I275@
+1 CHIL @I276@
+1 CHIL @I277@
+1 NOTE Связь братьев вероятна; не соединять с отцом Андрея Михайловича
+2 CONC  из Яровской.
+1 SOUR @S1@
+0 @F104@ FAM
+1 HUSB @I276@
+1 WIFE @I278@
+1 CHIL @I279@
+1 CHIL @I280@
+1 SOUR @S1@
+0 @F105@ FAM
+1 HUSB @I279@
+1 WIFE @I281@
+1 SOUR @S1@
+0 @F106@ FAM
+1 HUSB @I280@
+1 WIFE @I282@
+1 CHIL @I283@
+1 SOUR @S1@
+0 @F107@ FAM
+1 HUSB @I277@
+1 WIFE @I284@
+1 CHIL @I285@
+1 CHIL @I286@
+1 SOUR @S1@
+0 @F108@ FAM
+1 HUSB @I287@
+1 CHIL @I288@
+1 SOUR @S1@
+0 @F109@ FAM
+1 HUSB @I288@
+1 WIFE @I289@
+1 CHIL @I290@
+1 CHIL @I291@
+1 CHIL @I292@
+1 SOUR @S1@
+0 @F110@ FAM
+1 HUSB @I290@
+1 WIFE @I293@
+1 SOUR @S1@
+0 @S1@ SOUR
+1 TITL ГЕНЕАЛОГИЧЕСКОЕ ИССЛЕДОВАНИЕ2. Гуляевы, Черепановы, Аржиловские, Нагорновы
+1 AUTH Родословное бюро «Исток»
+1 PUBL Итоговый отчёт, 2026
+1 NOTE Исходный файл: ГЕНЕАЛОГИЧЕСКОЕ ИССЛЕДОВАНИЕ2.docx. Номера документов и разделов указаны в ссылках отдельных записей.
+0 TRLR

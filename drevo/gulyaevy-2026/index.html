@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="referrer" content="no-referrer">
+  <title>Родословие Гуляевых — бюро «Исток»</title>
+  <meta name="description" content="Интерактивное родословное древо семьи Гуляевых по материалам архивного исследования бюро «Исток».">
+  <link rel="stylesheet" href="../../gulyaevy-tree.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="../../" aria-label="Исток — на главную">
+      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18.5"/><path d="M20 7v26M20 13c0-3 3-4.5 6-4M20 13c0-3-3-4.5-6-4M20 27c0 2.6 3.2 3.4 6 4.4M20 27c0 2.6-3.2 3.4-6 4.4"/><circle class="brand-dot" cx="20" cy="20" r="2.4"/></svg>
+      <span><b>Исток</b><small>Родословное бюро</small></span>
+    </a>
+    <div class="access-mark"><span></span>Семейный материал по ссылке</div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div>
+        <div class="eyebrow">Генеалогическое исследование</div>
+        <h1>Родословие Гуляевых</h1>
+        <p>Гуляевы · Черепановы · Аржиловские · Нагорновы<br>Ишимский уезд Тобольской губернии · XVII–XX века</p>
+      </div>
+      <div class="hero-actions">
+        <button class="button button-primary" id="copyLink" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 15l6-6M7.5 12.5l-2 2a3.5 3.5 0 005 5l2-2M16.5 11.5l2-2a3.5 3.5 0 00-5-5l-2 2"/></svg>
+          Скопировать ссылку
+        </button>
+        <a class="button button-ghost" href="../../data/gulyaevy.ged" download>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/></svg>
+          Скачать GEDCOM
+        </a>
+      </div>
+    </section>
+
+    <section class="stats" aria-label="Состав исследования">
+      <div><strong id="peopleCount">—</strong><span>человека</span></div>
+      <div><strong id="familiesCount">—</strong><span>семей</span></div>
+      <div><strong id="yearsRange">—</strong><span>охват исследования</span></div>
+      <div><strong>4</strong><span>основных рода</span></div>
+    </section>
+
+    <section class="notice">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.2"/></svg>
+      <p><b>Как смотреть:</b> выберите человека в поиске или прямо на схеме. Древо перестроится вокруг него, а справа откроются подтверждённые связи и ссылки на документы.</p>
+    </section>
+
+    <section class="workspace" aria-label="Интерактивное родословное древо">
+      <aside class="people-panel">
+        <div class="panel-heading">
+          <div>
+            <span class="section-kicker">Участники древа</span>
+            <h2>Найти человека</h2>
+          </div>
+          <button class="icon-button mobile-close" id="closePeople" aria-label="Закрыть список">×</button>
+        </div>
+        <label class="search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="M16 16l4.2 4.2"/></svg>
+          <input id="personSearch" type="search" placeholder="Имя или фамилия" autocomplete="off">
+        </label>
+        <div class="search-meta" id="searchMeta">Загрузка данных…</div>
+        <div class="people-list" id="peopleList" role="listbox" aria-label="Люди в родословной"></div>
+      </aside>
+
+      <div class="tree-panel">
+        <div class="tree-toolbar">
+          <button class="button button-small mobile-people" id="openPeople" type="button">Люди</button>
+          <div class="segmented" aria-label="Направление древа">
+            <button class="active" data-direction="ancestors" type="button">Предки</button>
+            <button data-direction="descendants" type="button">Потомки</button>
+          </div>
+          <label class="depth-control">Поколений
+            <select id="depthSelect" aria-label="Число поколений">
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5" selected>5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+            </select>
+          </label>
+          <button class="icon-button" id="fitTree" type="button" aria-label="Показать древо целиком" title="Показать целиком">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg>
+          </button>
+        </div>
+        <div class="tree-scroll" id="treeScroll">
+          <div class="state-card" id="loadingState">
+            <div class="spinner"></div>
+            <b>Собираем родословную</b>
+            <span>Читаем связи из GEDCOM</span>
+          </div>
+          <div class="state-card error" id="errorState" hidden>
+            <b>Древо не загрузилось</b>
+            <span id="errorText">Обновите страницу или попробуйте позже.</span>
+          </div>
+          <svg id="treeSvg" aria-label="Схема родственных связей" role="img" hidden></svg>
+        </div>
+        <div class="tree-legend">
+          <span><i class="legend-person"></i>человек</span>
+          <span><i class="legend-selected"></i>выбран</span>
+          <span><i class="legend-line"></i>родственная связь</span>
+        </div>
+      </div>
+
+      <aside class="person-panel" id="personPanel">
+        <div class="panel-heading detail-heading">
+          <div><span class="section-kicker">Карточка человека</span><h2 id="detailName">—</h2></div>
+          <button class="icon-button detail-close" id="closeDetails" aria-label="Закрыть карточку">×</button>
+        </div>
+        <div id="personDetails" class="person-details"></div>
+      </aside>
+    </section>
+
+    <section class="source-note">
+      <div>
+        <span class="section-kicker">Основа древа</span>
+        <h2>Архивное исследование бюро «Исток»</h2>
+        <p>Связи собраны по ревизским сказкам, метрическим книгам, переписи 1897 года и похозяйственным книгам. Спорные чтения и предположительные связи сохранены в примечаниях к людям.</p>
+      </div>
+      <p class="source-sign">Гуляевы прослежены до XVIII века, Аржиловские — до Матвея Ржиловского, родившегося около 1655 года.</p>
+    </section>
+  </main>
+
+  <footer>
+    <span>© 2026 Родословное бюро «Исток»</span>
+    <span>Материал предназначен для семейного использования</span>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <dialog id="shareDialog" class="share-dialog">
+    <form method="dialog">
+      <button class="dialog-close" aria-label="Закрыть">×</button>
+      <span class="section-kicker">Ссылка на выбранного человека</span>
+      <h2>Скопируйте адрес</h2>
+      <p>Браузер не разрешил автоматическое копирование. Выделите ссылку вручную.</p>
+      <input id="shareInput" readonly>
+      <button class="button button-primary" value="close">Готово</button>
+    </form>
+  </dialog>
+
+  <script src="../../gulyaevy-tree.js" defer></script>
+</body>
+</html>
