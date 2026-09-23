@@ -368,7 +368,7 @@
     const lines = [''];
     for (const word of words) {
       const current = lines.at(-1);
-      if (!current || `${current} ${word}`.length <= 18) lines[lines.length - 1] = compact(`${current} ${word}`);
+      if (!current || `${current} ${word}`.length <= 17) lines[lines.length - 1] = compact(`${current} ${word}`);
       else lines.push(word);
     }
     return lines;
