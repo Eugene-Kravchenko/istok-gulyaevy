@@ -284,6 +284,35 @@
     return families;
   }
 
+  function buildLayoutUnits(graph, families) {
+    const units = new Map();
+    const personToUnit = new Map();
+    const assigned = new Set();
+    const candidates = families
+      .filter((family) => family.parents.length === 2)
+      .sort((a, b) => Number(b.direct) - Number(a.direct) || b.children.length - a.children.length || a.id.localeCompare(b.id));
+
+    for (const family of candidates) {
+      if (family.parents.some((id) => assigned.has(id))) continue;
+      const memberIds = [...family.parents].sort((a, b) => {
+        const sexA = graph.nodes.get(a)?.person.sex || '';
+        const sexB = graph.nodes.get(b)?.person.sex || '';
+        return (sexA === 'M' ? -1 : sexB === 'M' ? 1 : 0) || a.localeCompare(b);
+      });
+      const unit = { id: `couple:${family.id}`, memberIds, width: CARD_W * 2 + 28, height: CARD_H };
+      units.set(unit.id, unit);
+      memberIds.forEach((id) => { assigned.add(id); personToUnit.set(id, unit.id); });
+    }
+
+    for (const node of graph.nodes.values()) {
+      if (assigned.has(node.id)) continue;
+      const unit = { id: `person:${node.id}`, memberIds: [node.id], width: CARD_W, height: CARD_H };
+      units.set(unit.id, unit);
+      personToUnit.set(node.id, unit.id);
+    }
+    return { units, personToUnit };
+  }
+
   function layoutGraph(graph) {
     if (!window.dagre?.graphlib?.Graph) throw new Error('Модуль компоновки древа не загрузился');
     const layout = new window.dagre.graphlib.Graph({ multigraph: true });
@@ -299,32 +328,39 @@
     });
     layout.setDefaultEdgeLabel(() => ({}));
 
-    for (const node of graph.nodes.values()) layout.setNode(node.id, { width: CARD_W, height: CARD_H });
     const families = visibleFamilies(graph);
+    const { units, personToUnit } = buildLayoutUnits(graph, families);
+    for (const unit of units.values()) layout.setNode(unit.id, { width: unit.width, height: unit.height });
     for (const family of families) {
       const hubId = `family:${family.id}`;
       layout.setNode(hubId, { width: 4, height: 4 });
       const weight = family.direct ? 18 : 5;
+      const parentUnits = [...new Set(family.parents.map((id) => personToUnit.get(id)).filter(Boolean))];
+      const childUnits = [...new Set(family.children.map((id) => personToUnit.get(id)).filter(Boolean))];
       if (state.direction === 'ancestors') {
-        family.children.forEach((childId, index) => layout.setEdge(childId, hubId, { minlen: 1, weight }, `child:${family.id}:${index}`));
-        family.parents.forEach((parentId, index) => layout.setEdge(hubId, parentId, { minlen: 1, weight }, `parent:${family.id}:${index}`));
+        childUnits.forEach((childId, index) => layout.setEdge(childId, hubId, { minlen: 1, weight }, `child:${family.id}:${index}`));
+        parentUnits.forEach((parentId, index) => layout.setEdge(hubId, parentId, { minlen: 1, weight }, `parent:${family.id}:${index}`));
       } else {
-        family.parents.forEach((parentId, index) => layout.setEdge(parentId, hubId, { minlen: 1, weight }, `parent:${family.id}:${index}`));
-        family.children.forEach((childId, index) => layout.setEdge(hubId, childId, { minlen: 1, weight }, `child:${family.id}:${index}`));
+        parentUnits.forEach((parentId, index) => layout.setEdge(parentId, hubId, { minlen: 1, weight }, `parent:${family.id}:${index}`));
+        childUnits.forEach((childId, index) => layout.setEdge(hubId, childId, { minlen: 1, weight }, `child:${family.id}:${index}`));
       }
     }
 
     window.dagre.layout(layout);
-    for (const node of graph.nodes.values()) {
-      const placed = layout.node(node.id);
-      node.x = placed.x - CARD_W / 2;
-      node.y = placed.y - CARD_H / 2;
+    for (const unit of units.values()) {
+      const placed = layout.node(unit.id);
+      const startX = placed.x - unit.width / 2;
+      unit.memberIds.forEach((personId, index) => {
+        const node = graph.nodes.get(personId);
+        node.x = startX + index * (CARD_W + 28);
+        node.y = placed.y - CARD_H / 2;
+      });
     }
     for (const family of families) {
       const placed = layout.node(`family:${family.id}`);
       family.hub = { x: placed.x, y: placed.y };
     }
-    return { ...graph, families, width: layout.graph().width, height: layout.graph().height };
+    return { ...graph, families, units, width: layout.graph().width, height: layout.graph().height };
   }
 
   function splitName(name) {
@@ -351,9 +387,21 @@
       const spouseY = (left.y + right.y) / 2 + CARD_H / 2;
       const leftEdge = left.x + CARD_W;
       const rightEdge = right.x;
-      trunkX = (leftEdge + rightEdge) / 2;
-      trunkStartY = spouseY;
-      paths.push({ type: 'spouse', d: `M ${leftEdge} ${spouseY} H ${rightEdge}` });
+      const adjacent = Math.abs(left.y - right.y) < 2 && rightEdge - leftEdge >= 0 && rightEdge - leftEdge <= 90;
+      if (adjacent) {
+        trunkX = (leftEdge + rightEdge) / 2;
+        trunkStartY = spouseY;
+        paths.push({ type: 'spouse', d: `M ${leftEdge} ${spouseY} H ${rightEdge}` });
+      } else {
+        const leftCenter = left.x + CARD_W / 2;
+        const rightCenter = right.x + CARD_W / 2;
+        const parentBottom = Math.max(left.y, right.y) + CARD_H;
+        const pairBusY = Math.min(family.hub.y, parentBottom + 22);
+        trunkX = (leftCenter + rightCenter) / 2;
+        trunkStartY = pairBusY;
+        paths.push({ type: 'family', d: `M ${leftCenter} ${left.y + CARD_H} V ${pairBusY} M ${rightCenter} ${right.y + CARD_H} V ${pairBusY}` });
+        paths.push({ type: 'spouse', d: `M ${leftCenter} ${pairBusY} H ${rightCenter}` });
+      }
     } else if (parents.length === 1) {
       trunkX = parents[0].x + CARD_W / 2;
       trunkStartY = parents[0].y + CARD_H;
