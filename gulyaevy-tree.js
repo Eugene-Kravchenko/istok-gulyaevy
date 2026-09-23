@@ -452,9 +452,9 @@
       group.appendChild(svgEl('path', { class: 'node-accent', d: `M0 10A10 10 0 0 1 10 0h3v${CARD_H}h-3A10 10 0 0 1 0 ${CARD_H - 10}Z` }));
       const lines = splitName(node.person.name);
       const firstLineY = datesText ? 40 - (lines.length - 1) * 8 : 51 - (lines.length - 1) * 7.5;
-      const name = svgEl('text', { class: 'node-name', x: 22, y: firstLineY });
+      const name = svgEl('text', { class: 'node-name', x: 20, y: firstLineY });
       lines.forEach((line, index) => {
-        const tspan = svgEl('tspan', { x: 22, dy: index ? 15 : 0 });
+        const tspan = svgEl('tspan', { x: 20, dy: index ? 15 : 0 });
         tspan.textContent = line;
         name.appendChild(tspan);
       });
