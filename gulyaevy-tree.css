@@ -166,6 +166,9 @@ svg { display: block; }
 .family-group { transition: opacity .18s ease; }
 .tree-card.all-relatives .family-group { opacity: 0; }
 .tree-card.all-relatives .family-group.is-focused { opacity: 1; }
+.component-label { pointer-events: none; }
+.component-label rect { fill: #fffdf8; stroke: #ded5c5; }
+.component-label text { fill: #6e604c; font: 600 11px Arial, sans-serif; }
 .tree-node { --clan: #827a6e; --clan-soft: #fbfaf6; --clan-border: #d3cec4; cursor: pointer; }
 .tree-card.all-relatives .tree-node { opacity: .78; transition: opacity .18s ease; }
 .tree-card.all-relatives .tree-node.is-family-member,

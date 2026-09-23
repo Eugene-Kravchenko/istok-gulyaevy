@@ -18,7 +18,7 @@
 
   const state = {
     people: new Map(), families: new Map(), root: '', selected: '', direction: 'ancestors', scope: 'direct',
-    graph: null, camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0, stageWidth: 0, hovered: ''
+    graph: null, components: [], camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0, stageWidth: 0, hovered: ''
   };
 
   const CARD_W = 176;
@@ -205,6 +205,31 @@
     return node;
   }
 
+  function buildComponents() {
+    const neighbors = new Map([...state.people.keys()].map((id) => [id, new Set()]));
+    for (const family of state.families.values()) {
+      const members = [family.husband, family.wife, ...family.children].filter((id) => neighbors.has(id));
+      for (const id of members.slice(1)) {
+        neighbors.get(members[0]).add(id);
+        neighbors.get(id).add(members[0]);
+      }
+    }
+    const seen = new Set();
+    const components = [];
+    for (const id of neighbors.keys()) {
+      if (seen.has(id)) continue;
+      const members = [id];
+      seen.add(id);
+      for (let index = 0; index < members.length; index++) {
+        for (const relative of neighbors.get(members[index])) {
+          if (!seen.has(relative)) { seen.add(relative); members.push(relative); }
+        }
+      }
+      components.push(members);
+    }
+    return components.sort((a, b) => b.length - a.length);
+  }
+
   function buildGraph() {
     const root = personById(state.root);
     const nodes = new Map();
@@ -230,7 +255,9 @@
       }
     }
 
-    if (state.scope === 'all') addFamilyBranches(nodes, directIds);
+    if (state.scope === 'all') {
+      for (const person of state.people.values()) addGraphNode(nodes, person, 0, directIds.has(person.id));
+    }
 
     const edges = [];
     const edgeKeys = new Set();
@@ -252,39 +279,6 @@
       }
     }
     return { nodes, edges, directIds };
-  }
-
-  function addFamilyBranches(nodes, directIds) {
-    const directNodes = [...nodes.values()].filter((node) => node.direct);
-    const addSpouses = (person, generation) => {
-      for (const { person: spouse } of spousesOf(person)) addGraphNode(nodes, spouse, generation, directIds.has(spouse.id));
-    };
-    directNodes.forEach((node) => addSpouses(node.person, node.generation));
-
-    const branchSeeds = [];
-    for (const node of directNodes) {
-      for (const sibling of siblingsOf(node.person)) {
-        const siblingNode = addGraphNode(nodes, sibling, node.generation, false);
-        branchSeeds.push(siblingNode);
-        addSpouses(sibling, node.generation);
-      }
-    }
-
-    const minGeneration = state.direction === 'ancestors' ? Number.NEGATIVE_INFINITY : 0;
-    const maxGeneration = state.direction === 'ancestors' ? 0 : Number.POSITIVE_INFINITY;
-    const queue = branchSeeds.map((node) => ({ person: node.person, generation: node.generation }));
-    const visited = new Set(branchSeeds.map((node) => node.id));
-    while (queue.length) {
-      const current = queue.shift();
-      if (current.generation >= maxGeneration) continue;
-      for (const { person: child } of childrenOf(current.person)) {
-        const generation = current.generation + 1;
-        if (generation < minGeneration || generation > maxGeneration) continue;
-        addGraphNode(nodes, child, generation, false);
-        addSpouses(child, generation);
-        if (!visited.has(child.id)) { visited.add(child.id); queue.push({ person: child, generation }); }
-      }
-    }
   }
 
   function visibleFamilies(graph) {
@@ -329,7 +323,7 @@
     return { units, personToUnit };
   }
 
-  function layoutGraph(graph) {
+  function layoutConnectedGraph(graph) {
     if (!window.dagre?.graphlib?.Graph) throw new Error('Модуль компоновки древа не загрузился');
     const layout = new window.dagre.graphlib.Graph({ multigraph: true });
     layout.setGraph({
@@ -388,6 +382,35 @@
     }
     assignRouteLanes(families, graph);
     return { ...graph, families, units, width: layout.graph().width, height: layout.graph().height };
+  }
+
+  function layoutGraph(graph) {
+    if (state.scope !== 'all') return layoutConnectedGraph(graph);
+    const components = [...state.components].sort((a, b) =>
+      Number(b.includes(state.root)) - Number(a.includes(state.root)) || b.length - a.length);
+    const families = [];
+    const componentBoxes = [];
+    let offsetX = 0;
+    let height = 0;
+    for (const members of components) {
+      const memberIds = new Set(members);
+      const nodes = new Map(members.map((id) => [id, graph.nodes.get(id)]).filter(([, node]) => node));
+      if (!nodes.size) continue;
+      const part = layoutConnectedGraph({ nodes, directIds: graph.directIds });
+      for (const node of nodes.values()) node.x += offsetX;
+      for (const family of part.families) {
+        family.hub.x += offsetX;
+        for (const route of family.routes) {
+          route.points.forEach((point) => { point.x += offsetX; });
+          route.displayPoints.forEach((point) => { point.x += offsetX; });
+        }
+        families.push(family);
+      }
+      componentBoxes.push({ x: offsetX, width: part.width, count: nodes.size, isRoot: memberIds.has(state.root) });
+      offsetX += part.width + 180;
+      height = Math.max(height, part.height);
+    }
+    return { ...graph, families, componentBoxes, width: Math.max(0, offsetX - 180), height };
   }
 
   function splitName(name) {
@@ -521,6 +544,15 @@
     defs.appendChild(filter);
     els.edges.appendChild(defs);
 
+    for (const component of graph.componentBoxes || []) {
+      const label = svgEl('g', { class: 'component-label', transform: `translate(${component.x + PAD} 20)` });
+      label.appendChild(svgEl('rect', { width: Math.min(component.width - PAD * 2, 285), height: 27, rx: 13 }));
+      const caption = svgEl('text', { x: 13, y: 18 });
+      caption.textContent = `${component.isRoot ? 'Ветвь выбранного человека' : 'Отдельная ветвь'} · ${component.count}`;
+      label.appendChild(caption);
+      els.edges.appendChild(label);
+    }
+
     for (const family of graph.families) {
       const familyGroup = svgEl('g', { class: 'family-group', 'data-family-id': family.id });
       for (const path of familyConnectionPaths(family, graph)) {
@@ -568,7 +600,7 @@
       els.nodes.appendChild(group);
     }
 
-    const mode = state.scope === 'direct' ? (state.direction === 'ancestors' ? 'Прямые предки' : 'Прямые потомки') : 'Все родственники';
+    const mode = state.scope === 'direct' ? (state.direction === 'ancestors' ? 'Прямые предки' : 'Прямые потомки') : 'Все люди';
     const direction = state.direction === 'ancestors' ? 'предки' : 'потомки';
     els.summary.textContent = `${mode} · ${direction} · ${graph.nodes.size} ${plural(graph.nodes.size, ['человек', 'человека', 'человек'])} на схеме`;
     els.svg.removeAttribute('hidden');
@@ -669,7 +701,7 @@
     $$('[data-scope]').forEach((button) => button.classList.toggle('active', button.dataset.scope === state.scope));
     els.scopeDirect.textContent = state.direction === 'ancestors' ? 'Прямые предки' : 'Прямые потомки';
     $('#pageHelp').textContent = state.scope === 'all'
-      ? 'Все люди на схеме. Наведите или нажмите на карточку, чтобы увидеть её родственные связи.'
+      ? `Все ${state.people.size} человек из GEDCOM в ${state.components.length} отдельных ветвях. Выберите человека, чтобы увидеть его связи.`
       : 'Исследуйте прямую линию предков или откройте боковые ветви семьи.';
   }
 
@@ -777,7 +809,7 @@
     });
     if (state.scope === 'all') {
       const person = personById(focusId);
-      els.summary.textContent = `Все родственники · ${state.graph.nodes.size} ${plural(state.graph.nodes.size, ['человек', 'человека', 'человек'])} · связи: ${person?.name || ''}`;
+      els.summary.textContent = `Все ${state.graph.nodes.size} человек · ${state.components.length} отдельных ветвей · связи: ${person?.name || ''}`;
     }
   }
 
@@ -939,6 +971,7 @@
       state.people = parsed.people;
       state.families = parsed.families;
       if (!state.people.size) throw new Error('В GEDCOM нет записей о людях');
+      state.components = buildComponents();
 
       const params = new URLSearchParams(location.search);
       const requested = params.get('person');
