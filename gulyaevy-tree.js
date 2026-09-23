@@ -376,7 +376,22 @@
       .sort((a, b) => Number(b.direct) - Number(a.direct) || b.children.length - a.children.length || a.id.localeCompare(b.id));
 
     for (const family of candidates) {
-      if (family.parents.some((id) => assigned.has(id))) continue;
+      const alreadyPlaced = family.parents.filter((id) => assigned.has(id));
+      if (alreadyPlaced.length === 2) continue;
+      if (alreadyPlaced.length === 1) {
+        const known = alreadyPlaced[0];
+        const newcomer = family.parents.find((id) => id !== known);
+        const unit = units.get(personToUnit.get(known));
+        const index = unit?.memberIds.indexOf(known) ?? -1;
+        if (unit && unit.memberIds.length === 2 && (index === 0 || index === 1)) {
+          if (index === 0) unit.memberIds.unshift(newcomer);
+          else unit.memberIds.push(newcomer);
+          unit.width = CARD_W * unit.memberIds.length + 20 * (unit.memberIds.length - 1);
+          assigned.add(newcomer);
+          personToUnit.set(newcomer, unit.id);
+        }
+        continue;
+      }
       const memberIds = [...family.parents].sort((a, b) => {
         const sexA = graph.nodes.get(a)?.person.sex || '';
         const sexB = graph.nodes.get(b)?.person.sex || '';
