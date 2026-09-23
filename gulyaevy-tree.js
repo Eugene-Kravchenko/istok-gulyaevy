@@ -21,9 +21,9 @@
     graph: null, camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0
   };
 
-  const CARD_W = 196;
-  const CARD_H = 96;
-  const PAD = 52;
+  const CARD_W = 176;
+  const CARD_H = 92;
+  const PAD = 44;
 
   const compact = (value = '') => String(value).replace(/\s+/g, ' ').trim();
   const cleanName = (value = '') => compact(value.replaceAll('/', ''));
@@ -299,7 +299,7 @@
         const sexB = graph.nodes.get(b)?.person.sex || '';
         return (sexA === 'M' ? -1 : sexB === 'M' ? 1 : 0) || a.localeCompare(b);
       });
-      const unit = { id: `couple:${family.id}`, memberIds, width: CARD_W * 2 + 28, height: CARD_H };
+      const unit = { id: `couple:${family.id}`, memberIds, width: CARD_W * 2 + 20, height: CARD_H };
       units.set(unit.id, unit);
       memberIds.forEach((id) => { assigned.add(id); personToUnit.set(id, unit.id); });
     }
@@ -320,9 +320,9 @@
       rankdir: state.direction === 'ancestors' ? 'BT' : 'TB',
       ranker: 'network-simplex',
       acyclicer: 'greedy',
-      nodesep: 28,
-      edgesep: 12,
-      ranksep: 72,
+      nodesep: 18,
+      edgesep: 10,
+      ranksep: 54,
       marginx: PAD,
       marginy: PAD
     });
@@ -352,7 +352,7 @@
       const startX = placed.x - unit.width / 2;
       unit.memberIds.forEach((personId, index) => {
         const node = graph.nodes.get(personId);
-        node.x = startX + index * (CARD_W + 28);
+        node.x = startX + index * (CARD_W + 20);
         node.y = placed.y - CARD_H / 2;
       });
     }
@@ -368,7 +368,7 @@
     const lines = [''];
     for (const word of words) {
       const current = lines.at(-1);
-      if (!current || `${current} ${word}`.length <= 20) lines[lines.length - 1] = compact(`${current} ${word}`);
+      if (!current || `${current} ${word}`.length <= 18) lines[lines.length - 1] = compact(`${current} ${word}`);
       else lines.push(word);
     }
     return lines;
@@ -387,7 +387,7 @@
       const spouseY = (left.y + right.y) / 2 + CARD_H / 2;
       const leftEdge = left.x + CARD_W;
       const rightEdge = right.x;
-      const adjacent = Math.abs(left.y - right.y) < 2 && rightEdge - leftEdge >= 0 && rightEdge - leftEdge <= 90;
+      const adjacent = Math.abs(left.y - right.y) < 2 && rightEdge - leftEdge >= 0 && rightEdge - leftEdge <= 70;
       if (adjacent) {
         trunkX = (leftEdge + rightEdge) / 2;
         trunkStartY = spouseY;
@@ -451,7 +451,7 @@
       group.appendChild(svgEl('rect', { class: 'node-card', width: CARD_W, height: CARD_H, rx: 10 }));
       group.appendChild(svgEl('path', { class: 'node-accent', d: `M0 10A10 10 0 0 1 10 0h3v${CARD_H}h-3A10 10 0 0 1 0 ${CARD_H - 10}Z` }));
       const lines = splitName(node.person.name);
-      const firstLineY = datesText ? 43 - (lines.length - 1) * 9 : 53 - (lines.length - 1) * 7.5;
+      const firstLineY = datesText ? 40 - (lines.length - 1) * 8 : 51 - (lines.length - 1) * 7.5;
       const name = svgEl('text', { class: 'node-name', x: 22, y: firstLineY });
       lines.forEach((line, index) => {
         const tspan = svgEl('tspan', { x: 22, dy: index ? 15 : 0 });
@@ -460,7 +460,7 @@
       });
       group.appendChild(name);
       if (datesText) {
-        const dates = svgEl('text', { class: 'node-life', x: 22, y: 81 });
+        const dates = svgEl('text', { class: 'node-life', x: 22, y: 78 });
         dates.textContent = datesText;
         group.appendChild(dates);
       }
@@ -498,6 +498,11 @@
 
   function fitTree() {
     if (!state.graph) return;
+    if (state.scope === 'all' && els.drawer.classList.contains('open')) {
+      els.drawer.classList.remove('open');
+      requestAnimationFrame(fitTree);
+      return;
+    }
     const size = visibleStageSize();
     const scale = clamp(Math.min((size.width - 44) / state.graph.width, (size.height - 44) / state.graph.height), .12, 1.15);
     state.camera.scale = scale;
@@ -512,7 +517,7 @@
     if (!node) return;
     const size = visibleStageSize();
     const fitScale = Math.min((size.width - 44) / state.graph.width, (size.height - 44) / state.graph.height);
-    const readableScale = els.stage.clientWidth < 620 ? .54 : .68;
+    const readableScale = els.stage.clientWidth < 620 ? .62 : .82;
     const scale = clamp(Math.max(fitScale, readableScale), .18, 1);
     state.camera.scale = scale;
     state.camera.x = size.width / 2 - (node.x + CARD_W / 2) * scale;
@@ -565,6 +570,7 @@
   function changeView() {
     applyControls();
     updateUrl();
+    if (state.scope === 'all') els.drawer.classList.remove('open');
     drawGraph();
   }
 
@@ -783,7 +789,7 @@
       updateUrl();
       renderPeople();
       renderDetails(personById(state.root));
-      els.drawer.classList.add('open');
+      els.drawer.classList.toggle('open', state.scope === 'direct');
       drawGraph();
     } catch (error) {
       console.error(error);
