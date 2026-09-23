@@ -97,7 +97,7 @@ svg { display: block; }
   gap: 18px;
   padding: 30px clamp(22px, 3vw, 48px) 28px;
   background: radial-gradient(circle at 80% 0, rgba(238,223,186,.22), transparent 30%), var(--paper);
-  overflow: hidden;
+  overflow: auto;
 }
 .page-heading { min-width: 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; }
 .eyebrow { color: var(--gold-dark); font-size: 10px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; }
@@ -120,7 +120,7 @@ svg { display: block; }
 .summary-card strong { overflow: hidden; font: 600 24px/1 var(--serif); text-overflow: ellipsis; white-space: nowrap; }
 .summary-card div > span { margin-top: 5px; color: var(--muted); font-size: 11px; }
 
-.tree-card { min-width: 0; min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; border: 1px solid var(--line); border-radius: 15px; background: var(--card); box-shadow: 0 14px 42px rgba(54,48,36,.07); overflow: hidden; }
+.tree-card { min-width: 0; min-height: 520px; display: grid; grid-template-rows: auto minmax(0, 1fr) auto; border: 1px solid var(--line); border-radius: 15px; background: var(--card); box-shadow: 0 14px 42px rgba(54,48,36,.07); overflow: hidden; }
 .tree-card:fullscreen { width: 100vw; height: 100vh; border: 0; border-radius: 0; }
 .tree-controls { position: relative; z-index: 20; min-width: 0; min-height: 76px; display: flex; align-items: center; gap: 18px; padding: 12px 16px; border-bottom: 1px solid var(--line); background: rgba(255,253,247,.96); }
 .control-group, .depth-control { display: grid; gap: 6px; }

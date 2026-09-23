@@ -405,7 +405,7 @@
     const mode = state.scope === 'direct' ? (state.direction === 'ancestors' ? 'Прямые предки' : 'Прямые потомки') : 'Все родственники';
     const direction = state.direction === 'ancestors' ? 'предки' : 'потомки';
     els.summary.textContent = `${mode} · ${direction} · ${graph.nodes.size} ${plural(graph.nodes.size, ['человек', 'человека', 'человек'])} на схеме`;
-    els.svg.hidden = false;
+    els.svg.removeAttribute('hidden');
     els.loading.hidden = true;
     requestAnimationFrame(() => fitTree());
   }
