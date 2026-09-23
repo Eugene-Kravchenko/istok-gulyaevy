@@ -331,11 +331,11 @@
     const lines = [''];
     for (const word of words) {
       const current = lines.at(-1);
-      if (!current || `${current} ${word}`.length <= 24) lines[lines.length - 1] = compact(`${current} ${word}`);
+      if (!current || `${current} ${word}`.length <= 19) lines[lines.length - 1] = compact(`${current} ${word}`);
       else if (lines.length < 2) lines.push(word);
       else lines[1] = `${lines[1]} ${word}`;
     }
-    return lines.slice(0, 2).map((line) => line.length > 27 ? `${line.slice(0, 26)}…` : line);
+    return lines.slice(0, 2).map((line) => line.length > 22 ? `${line.slice(0, 21)}…` : line);
   }
 
   function edgePath(edge, graph) {
@@ -367,6 +367,9 @@
     const filter = svgEl('filter', { id: 'nodeShadow', x: '-20%', y: '-20%', width: '140%', height: '150%' });
     filter.appendChild(svgEl('feDropShadow', { dx: '0', dy: '3', stdDeviation: '4', 'flood-color': '#332f25', 'flood-opacity': '.09' }));
     defs.appendChild(filter);
+    const textClip = svgEl('clipPath', { id: 'nodeTextClip', clipPathUnits: 'userSpaceOnUse' });
+    textClip.appendChild(svgEl('rect', { x: 20, y: 22, width: 184, height: 55 }));
+    defs.appendChild(textClip);
     els.edges.appendChild(defs);
 
     for (const edge of graph.edges) {
@@ -387,14 +390,14 @@
       badge.textContent = badgeText;
       group.appendChild(badge);
       const lines = splitName(node.person.name);
-      const name = svgEl('text', { class: 'node-name', x: 22, y: lines.length > 1 ? 30 : 38 });
+      const name = svgEl('text', { class: 'node-name', x: 22, y: lines.length > 1 ? 30 : 38, 'clip-path': 'url(#nodeTextClip)' });
       lines.forEach((line, index) => {
         const tspan = svgEl('tspan', { x: 22, dy: index ? 16 : 0 });
         tspan.textContent = line;
         name.appendChild(tspan);
       });
       group.appendChild(name);
-      const dates = svgEl('text', { class: 'node-life', x: 22, y: 68 });
+      const dates = svgEl('text', { class: 'node-life', x: 22, y: 68, 'clip-path': 'url(#nodeTextClip)' });
       dates.textContent = life(node.person);
       group.appendChild(dates);
       group.addEventListener('click', () => { if (!state.moved) selectPerson(node.id, true); });

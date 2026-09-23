@@ -168,7 +168,7 @@ svg { display: block; }
 .tree-node .node-accent { fill: var(--green); }
 .tree-node.branch .node-accent { fill: var(--gold); }
 .tree-node.root .node-accent { fill: var(--gold); }
-.tree-node .node-name { fill: var(--ink); font-family: var(--serif); font-size: 14px; font-weight: 600; pointer-events: none; }
+.tree-node .node-name { fill: var(--ink); font-family: var(--serif); font-size: 13.5px; font-weight: 600; pointer-events: none; }
 .tree-node .node-life { fill: var(--muted); font-family: var(--sans); font-size: 10px; pointer-events: none; }
 .tree-node .node-badge { fill: #efe9da; }
 .tree-node .node-badge-text { fill: #7e776a; font-family: var(--sans); font-size: 7.5px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; pointer-events: none; }
