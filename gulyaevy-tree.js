@@ -13,12 +13,13 @@
     error: $('#errorState'), errorText: $('#errorText'), zoomValue: $('#zoomValue'), summary: $('#viewSummary'),
     drawer: $('#personDrawer'), detailName: $('#detailName'), details: $('#personDetails'), makeRoot: $('#makeRoot'),
     copy: $('#copyLink'), toast: $('#toast'), dialog: $('#shareDialog'), shareInput: $('#shareInput'),
-    sidebar: $('#cabinetSidebar'), backdrop: $('#sidebarBackdrop')
+    sidebar: $('#cabinetSidebar'), backdrop: $('#sidebarBackdrop'), branchToggle: $('#branchToggle'),
+    branchPanel: $('#branchPanel'), branchList: $('#branchList'), branchCount: $('#branchCount'), branchTotal: $('#branchTotal')
   };
 
   const state = {
     people: new Map(), families: new Map(), root: '', selected: '', direction: 'ancestors', scope: 'direct',
-    graph: null, components: [], camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0, stageWidth: 0, hovered: ''
+    graph: null, components: [], expandedBranch: -1, camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0, stageWidth: 0, hovered: ''
   };
 
   const CARD_W = 176;
@@ -230,6 +231,78 @@
     return components.sort((a, b) => b.length - a.length);
   }
 
+  function orderedComponents() {
+    return [...state.components].sort((a, b) =>
+      Number(b.includes(state.root)) - Number(a.includes(state.root)) || b.length - a.length);
+  }
+
+  function branchRepresentative(members) {
+    if (members.includes(state.root)) return state.root;
+    return members.find((id) => personById(id)?.surname.includes('Черепанов')) || members[0];
+  }
+
+  function setBranchPanel(open) {
+    els.branchPanel.hidden = !open || state.scope !== 'all';
+    els.branchToggle.setAttribute('aria-expanded', String(!els.branchPanel.hidden));
+    els.branchToggle.setAttribute('aria-label', els.branchPanel.hidden ? 'Открыть список ветвей' : 'Закрыть список ветвей');
+  }
+
+  function renderBranchPanel() {
+    els.branchCount.textContent = state.components.length;
+    els.branchTotal.textContent = state.people.size;
+    els.branchList.replaceChildren();
+    for (const [index, members] of orderedComponents().entries()) {
+      const representativeId = branchRepresentative(members);
+      const representative = personById(representativeId);
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'branch-item';
+      button.dataset.branchIndex = index;
+      button.setAttribute('aria-expanded', String(state.expandedBranch === index));
+      button.classList.toggle('active', members.includes(state.selected));
+      const name = document.createElement('strong');
+      name.textContent = representative?.name || 'Ветвь без названия';
+      button.title = name.textContent;
+      const count = document.createElement('span');
+      count.textContent = members.length;
+      button.append(name, count);
+      els.branchList.appendChild(button);
+      const people = document.createElement('div');
+      people.className = 'branch-members';
+      people.hidden = state.expandedBranch !== index;
+      for (const id of [...members].sort((a, b) => {
+        const personA = personById(a);
+        const personB = personById(b);
+        return (Number(yearFrom(personA?.birth)) || 9999) - (Number(yearFrom(personB?.birth)) || 9999)
+          || personA.name.localeCompare(personB.name, 'ru');
+      })) {
+        const person = personById(id);
+        const entry = document.createElement('button');
+        entry.type = 'button';
+        entry.className = 'branch-person';
+        entry.dataset.personId = id;
+        entry.title = person.name;
+        const label = document.createElement('span');
+        label.textContent = person.name;
+        const year = document.createElement('small');
+        year.textContent = yearFrom(person.birth) || '';
+        entry.append(label, year);
+        people.appendChild(entry);
+      }
+      els.branchList.appendChild(people);
+    }
+  }
+
+  function updateBranchSelection() {
+    const components = orderedComponents();
+    els.branchList.querySelectorAll('.branch-item').forEach((button) => {
+      button.classList.toggle('active', components[Number(button.dataset.branchIndex)]?.includes(state.selected));
+    });
+    els.branchList.querySelectorAll('.branch-person').forEach((button) => {
+      button.classList.toggle('active', button.dataset.personId === state.selected);
+    });
+  }
+
   function buildGraph() {
     const root = personById(state.root);
     const nodes = new Map();
@@ -386,8 +459,7 @@
 
   function layoutGraph(graph) {
     if (state.scope !== 'all') return layoutConnectedGraph(graph);
-    const components = [...state.components].sort((a, b) =>
-      Number(b.includes(state.root)) - Number(a.includes(state.root)) || b.length - a.length);
+    const components = orderedComponents();
     const families = [];
     const componentBoxes = [];
     let offsetX = 0;
@@ -535,8 +607,8 @@
     els.treeCard.classList.toggle('all-relatives', state.scope === 'all');
     const desktopTip = $('#stageTip .desktop-tip');
     const mobileTip = $('#stageTip .mobile-tip');
-    desktopTip.textContent = state.scope === 'all' ? 'Наведите на человека — выделятся его семейные связи' : 'Колесо — масштаб · перетаскивание — перемещение';
-    mobileTip.textContent = state.scope === 'all' ? 'Коснитесь человека — выделятся его семейные связи' : 'Двигайте пальцем · масштабируйте двумя пальцами';
+    desktopTip.textContent = state.scope === 'all' ? 'Наведите на человека — выделится его семья · перетаскивайте схему' : 'Колесо — масштаб · перетаскивание — перемещение';
+    mobileTip.textContent = state.scope === 'all' ? 'Откройте «Ветви» или коснитесь карточки' : 'Двигайте пальцем · масштабируйте двумя пальцами';
 
     const defs = svgEl('defs');
     const filter = svgEl('filter', { id: 'nodeShadow', x: '-20%', y: '-20%', width: '140%', height: '150%' });
@@ -700,8 +772,13 @@
     $$('[data-direction]').forEach((button) => button.classList.toggle('active', button.dataset.direction === state.direction));
     $$('[data-scope]').forEach((button) => button.classList.toggle('active', button.dataset.scope === state.scope));
     els.scopeDirect.textContent = state.direction === 'ancestors' ? 'Прямые предки' : 'Прямые потомки';
+    els.branchToggle.hidden = state.scope !== 'all';
+    if (state.scope !== 'all') setBranchPanel(false);
+    const fitButton = $('#fitTree');
+    fitButton.setAttribute('aria-label', state.scope === 'all' ? 'Вернуться к центру древа' : 'Показать древо целиком');
+    fitButton.title = fitButton.getAttribute('aria-label');
     $('#pageHelp').textContent = state.scope === 'all'
-      ? `Все ${state.people.size} человек из GEDCOM в ${state.components.length} отдельных ветвях. Выберите человека, чтобы увидеть его связи.`
+      ? `В файле ${state.people.size} человек. Большую схему смотрите по частям: выберите ветвь или найдите человека.`
       : 'Исследуйте прямую линию предков или откройте боковые ветви семьи.';
   }
 
@@ -716,6 +793,8 @@
     if (!personById(id)) return;
     state.root = id;
     state.selected = id;
+    state.expandedBranch = -1;
+    renderBranchPanel();
     updateUrl();
     renderPeople(els.search.value);
     renderDetails(personById(id));
@@ -761,6 +840,8 @@
     if (!person) return;
     state.selected = id;
     state.hovered = '';
+    updateBranchSelection();
+    if (state.scope === 'all') setBranchPanel(false);
     renderDetails(person);
     if (openDrawer) els.drawer.classList.add('open');
     if (state.graph?.nodes.has(id)) {
@@ -783,6 +864,17 @@
     updateCamera();
   }
 
+  function jumpToPerson(id) {
+    selectPerson(id, true);
+    const node = state.graph?.nodes.get(id);
+    if (!node) return;
+    const { width, height } = visibleStageSize();
+    state.camera.scale = els.stage.clientWidth < 620 ? .7 : .9;
+    state.camera.x = width / 2 - (node.x + CARD_W / 2) * state.camera.scale;
+    state.camera.y = height / 2 - (node.y + CARD_H / 2) * state.camera.scale;
+    updateCamera();
+  }
+
   function setHoveredPerson(id) {
     if (state.scope !== 'all' || state.hovered === id) return;
     state.hovered = id;
@@ -792,9 +884,21 @@
   function updateFamilyFocus() {
     if (!state.graph) return;
     const focusId = state.hovered && state.graph.nodes.has(state.hovered) ? state.hovered : state.selected;
-    const activeFamilies = new Set(state.graph.families
-      .filter((family) => family.parents.includes(focusId) || family.children.includes(focusId))
-      .map((family) => family.id));
+    const touchingFamilies = state.graph.families
+      .filter((family) => family.parents.includes(focusId) || family.children.includes(focusId));
+    const focusNode = state.graph.nodes.get(focusId);
+    if (state.scope === 'all' && focusNode) {
+      const score = (family) => {
+        const distances = [...family.parents, ...family.children]
+          .filter((id) => id !== focusId)
+          .map((id) => state.graph.nodes.get(id))
+          .filter(Boolean)
+          .map((node) => Math.hypot(node.x - focusNode.x, node.y - focusNode.y));
+        return distances.filter((distance) => distance < 750).length * 10000 - Math.min(...distances);
+      };
+      touchingFamilies.sort((a, b) => score(b) - score(a));
+    }
+    const activeFamilies = new Set((state.scope === 'all' ? touchingFamilies.slice(0, 1) : touchingFamilies).map((family) => family.id));
     const activePeople = new Set([focusId]);
     for (const family of state.graph.families) {
       if (activeFamilies.has(family.id)) [...family.parents, ...family.children].forEach((id) => activePeople.add(id));
@@ -806,10 +910,11 @@
     });
     els.nodes.querySelectorAll('.tree-node').forEach((group) => {
       group.classList.toggle('is-family-member', activePeople.has(group.getAttribute('data-person-id')));
+      group.classList.toggle('is-focus-person', group.getAttribute('data-person-id') === focusId);
     });
     if (state.scope === 'all') {
       const person = personById(focusId);
-      els.summary.textContent = `Все ${state.graph.nodes.size} человек · ${state.components.length} отдельных ветвей · связи: ${person?.name || ''}`;
+      els.summary.textContent = `GEDCOM: ${state.graph.nodes.size} человек · ${state.components.length} ветвей · выделена семья: ${person?.name || ''}`;
     }
   }
 
@@ -869,14 +974,30 @@
 
   function bindEvents() {
     $$('[data-direction]').forEach((button) => button.addEventListener('click', () => { state.direction = button.dataset.direction; changeView(); }));
-    $$('[data-scope]').forEach((button) => button.addEventListener('click', () => { state.scope = button.dataset.scope; changeView(); }));
+    $$('[data-scope]').forEach((button) => button.addEventListener('click', () => { state.scope = button.dataset.scope; changeView(); setBranchPanel(state.scope === 'all' && els.stage.clientWidth > 820); }));
+    els.branchToggle.addEventListener('click', () => setBranchPanel(els.branchPanel.hidden));
+    $('#closeBranches').addEventListener('click', () => setBranchPanel(false));
+    els.branchList.addEventListener('click', (event) => {
+      const person = event.target.closest('.branch-person');
+      if (person) { jumpToPerson(person.dataset.personId); return; }
+      const branch = event.target.closest('.branch-item');
+      if (!branch) return;
+      const index = Number(branch.dataset.branchIndex);
+      state.expandedBranch = state.expandedBranch === index ? -1 : index;
+      els.branchList.querySelectorAll('.branch-item').forEach((button) => {
+        button.setAttribute('aria-expanded', String(Number(button.dataset.branchIndex) === state.expandedBranch));
+      });
+      els.branchList.querySelectorAll('.branch-members').forEach((people, position) => {
+        people.hidden = position !== state.expandedBranch;
+      });
+    });
     els.searchToggle.addEventListener('click', () => toggleSearch());
     els.search.addEventListener('input', () => renderPeople(els.search.value));
     document.addEventListener('click', (event) => { if (!event.target.closest('.search-wrap')) toggleSearch(false); });
     $('#zoomIn').addEventListener('click', () => zoomAt(1.22));
     $('#zoomOut').addEventListener('click', () => zoomAt(1 / 1.22));
     els.zoomValue.addEventListener('click', centerAtActualSize);
-    $('#fitTree').addEventListener('click', fitTree);
+    $('#fitTree').addEventListener('click', () => state.scope === 'all' ? focusRoot() : fitTree());
     $('#fullScreen').addEventListener('click', async () => {
       if (!document.fullscreenElement) await els.treeCard.requestFullscreen?.();
       else await document.exitFullscreen?.();
@@ -984,7 +1105,9 @@
       els.peopleCount.textContent = state.people.size;
       els.familiesCount.textContent = state.families.size;
       els.yearsRange.textContent = yearRange();
+      renderBranchPanel();
       applyControls();
+      setBranchPanel(state.scope === 'all' && els.stage.clientWidth > 820);
       updateUrl();
       renderPeople();
       renderDetails(personById(state.root));

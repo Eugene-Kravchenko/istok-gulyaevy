@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer">
   <title>Древо рода Гуляевых — кабинет «Исток»</title>
   <meta name="description" content="Интерактивное родословное древо семьи Гуляевых в личном кабинете родословного бюро «Исток».">
-  <link rel="stylesheet" href="../../gulyaevy-tree.css?v=15">
+  <link rel="stylesheet" href="../../gulyaevy-tree.css?v=17">
 </head>
 <body>
   <header class="site-header">
@@ -64,10 +64,11 @@
           <div class="control-group scope-group"><span class="control-label">Состав древа</span><div class="segmented" aria-label="Состав древа"><button class="active" id="scopeDirect" data-scope="direct" type="button">Прямые предки</button><button id="scopeAll" data-scope="all" type="button">Показать всех</button></div></div>
           <div class="control-group direction-group"><span class="control-label">Направление</span><div class="segmented" aria-label="Направление древа"><button class="active" data-direction="ancestors" type="button">Предки</button><button data-direction="descendants" type="button">Потомки</button></div></div>
           <div class="toolbar-spacer"></div>
+          <div class="tree-shortcuts"><button class="tool-button branch-toggle" id="branchToggle" type="button" aria-label="Открыть список ветвей" aria-expanded="false" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="5" r="2"/><circle cx="6" cy="18" r="2"/><path d="M12 7v5M6 16v-3h12v3"/></svg><span>Ветви <b id="branchCount">9</b></span></button>
           <div class="search-wrap">
             <button class="tool-button search-toggle" id="searchToggle" type="button" aria-label="Найти человека" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4 4"/></svg><span>Найти человека</span></button>
             <div class="search-panel" id="searchPanel" hidden><label><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4 4"/></svg><input id="personSearch" type="search" placeholder="Имя или фамилия" autocomplete="off"></label><div class="search-meta" id="searchMeta">Загрузка данных…</div><div class="people-list" id="peopleList" role="listbox" aria-label="Люди в родословной"></div></div>
-          </div>
+          </div></div>
           <div class="zoom-tools" aria-label="Масштаб дерева">
             <button class="icon-button" id="zoomOut" type="button" aria-label="Уменьшить" title="Уменьшить">−</button><button class="zoom-value" id="zoomValue" type="button" title="Вернуть масштаб 100%">100%</button><button class="icon-button" id="zoomIn" type="button" aria-label="Увеличить" title="Увеличить">+</button>
             <button class="icon-button" id="fitTree" type="button" aria-label="Показать древо целиком" title="Показать древо целиком"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
@@ -76,6 +77,7 @@
         </div>
 
         <div class="tree-stage" id="treeStage">
+          <aside class="branch-panel" id="branchPanel" aria-label="Ветви родословной" hidden><div class="branch-panel-head"><div><strong>Ветви родословной</strong><small>Откройте ветвь и выберите человека из <span id="branchTotal">299</span></small></div><button id="closeBranches" type="button" aria-label="Закрыть список ветвей">×</button></div><div class="branch-list" id="branchList"></div><p>Между отдельными ветвями в GEDCOM пока не указана связь.</p></aside>
           <div class="stage-tip" id="stageTip"><span class="desktop-tip"><b>Колесо</b> — масштаб · <b>перетаскивание</b> — перемещение</span><span class="mobile-tip"><b>Двигайте пальцем</b> · масштабируйте двумя пальцами</span></div>
           <div class="state-card" id="loadingState"><span class="spinner"></span><b>Собираем родословную</b><small>Читаем связи из GEDCOM</small></div>
           <div class="state-card error" id="errorState" hidden><b>Древо не загрузилось</b><small id="errorText">Обновите страницу или попробуйте позже.</small></div>
@@ -91,6 +93,6 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <dialog id="shareDialog" class="share-dialog"><form method="dialog"><button class="dialog-close" aria-label="Закрыть">×</button><span class="eyebrow">Ссылка на выбранное древо</span><h2>Скопируйте адрес</h2><p>Выделите ссылку и скопируйте её вручную.</p><input id="shareInput" readonly><button class="action-button primary" value="close">Готово</button></form></dialog>
   <script src="../../vendor/dagre.min.js?v=3.1.1"></script>
-  <script src="../../gulyaevy-tree.js?v=22" defer></script>
+  <script src="../../gulyaevy-tree.js?v=24" defer></script>
 </body>
 </html>
