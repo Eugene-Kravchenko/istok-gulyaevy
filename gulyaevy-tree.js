@@ -386,6 +386,7 @@
       family.clan = familyClan(state.families.get(family.id));
       family.routes = family.routeSpecs.map((route) => ({ ...route, points: layout.edge({ v: route.from, w: route.to, name: route.name })?.points || [] }));
     }
+    assignRouteLanes(families, graph);
     return { ...graph, families, units, width: layout.graph().width, height: layout.graph().height };
   }
 
@@ -400,21 +401,72 @@
     return lines;
   }
 
-  function orthogonalPath(points) {
+  function routeDisplayPoints(family, route, graph) {
+    const points = route.points.map((point) => ({ x: point.x, y: point.y }));
+    if (route.from !== `family:${family.id}`) points.reverse();
+    const relatives = route.personIds.map((id) => graph.nodes.get(id)).filter(Boolean).sort((a, b) => a.x - b.x);
+    if (!points.length || !relatives.length) return [];
+    let target;
+    if (route.role === 'parent' && relatives.length >= 2) {
+      const left = relatives[0];
+      const right = relatives.at(-1);
+      target = { x: (left.x + CARD_W + right.x) / 2, y: Math.max(left.y, right.y) + CARD_H };
+    } else {
+      const relative = relatives[0];
+      target = { x: relative.x + CARD_W / 2, y: route.role === 'parent' ? relative.y + CARD_H : relative.y };
+    }
+    points[points.length - 1] = target;
+    return points;
+  }
+
+  function assignRouteLanes(families, graph) {
+    const groups = new Map();
+    for (const family of families) {
+      for (const route of family.routes || []) {
+        route.displayPoints = routeDisplayPoints(family, route, graph);
+        route.laneYs = [];
+        route.displayPoints.slice(1).forEach((point, index) => {
+          const previous = route.displayPoints[index];
+          if (Math.abs(point.x - previous.x) < .5 || Math.abs(point.y - previous.y) < .5) return;
+          const minY = Math.min(previous.y, point.y);
+          const maxY = Math.max(previous.y, point.y);
+          const item = { familyId: family.id, route, index, left: Math.min(previous.x, point.x), right: Math.max(previous.x, point.x), minY, maxY };
+          const key = `${Math.round(minY)}:${Math.round(maxY)}`;
+          if (!groups.has(key)) groups.set(key, []);
+          groups.get(key).push(item);
+        });
+      }
+    }
+
+    for (const items of groups.values()) {
+      const lanes = [];
+      items.sort((a, b) => a.left - b.left || a.right - b.right || a.familyId.localeCompare(b.familyId));
+      for (const item of items) {
+        let lane = lanes.findIndex((entry) => entry.familyIds.has(item.familyId) || item.left > entry.right + 12);
+        if (lane < 0) { lane = lanes.length; lanes.push({ familyIds: new Set([item.familyId]), right: item.right }); }
+        else { lanes[lane].familyIds.add(item.familyId); lanes[lane].right = Math.max(lanes[lane].right, item.right); }
+        item.lane = lane;
+      }
+      const laneCount = lanes.length;
+      for (const item of items) item.route.laneYs[item.index] = item.minY + (item.maxY - item.minY) * (item.lane + 1) / (laneCount + 1);
+    }
+  }
+
+  function orthogonalPath(points, laneYs = []) {
     if (points.length < 2) return '';
     let previous = points[0];
     let d = `M ${previous.x} ${previous.y}`;
-    for (const point of points.slice(1)) {
+    points.slice(1).forEach((point, index) => {
       const sameX = Math.abs(point.x - previous.x) < .5;
       const sameY = Math.abs(point.y - previous.y) < .5;
       if (sameX) d += ` V ${point.y}`;
       else if (sameY) d += ` H ${point.x}`;
       else {
-        const middleY = (previous.y + point.y) / 2;
+        const middleY = laneYs[index] ?? (previous.y + point.y) / 2;
         d += ` V ${middleY} H ${point.x} V ${point.y}`;
       }
       previous = point;
-    }
+    });
     return d;
   }
 
@@ -444,22 +496,9 @@
     }
 
     for (const route of family.routes || []) {
-      let points = route.points.map((point) => ({ x: point.x, y: point.y }));
-      if (route.from !== `family:${family.id}`) points.reverse();
-      const relatives = route.personIds.map((id) => graph.nodes.get(id)).filter(Boolean).sort((a, b) => a.x - b.x);
-      if (!points.length || !relatives.length) continue;
-      let target;
-      if (route.role === 'parent' && relatives.length >= 2) {
-        const left = relatives[0];
-        const right = relatives.at(-1);
-        target = { x: (left.x + CARD_W + right.x) / 2, y: Math.max(left.y, right.y) + CARD_H };
-      } else {
-        const relative = relatives[0];
-        target = { x: relative.x + CARD_W / 2, y: route.role === 'parent' ? relative.y + CARD_H : relative.y };
-      }
-      points[points.length - 1] = target;
+      if (!route.displayPoints?.length) continue;
       const foster = route.role === 'child' && route.personIds.some((id) => personById(id)?.famc.find((ref) => ref.id === family.id && ref.pedi === 'foster'));
-      paths.push({ type: 'family', foster, d: orthogonalPath(points) });
+      paths.push({ type: 'family', foster, d: orthogonalPath(route.displayPoints, route.laneYs) });
     }
     return paths;
   }
