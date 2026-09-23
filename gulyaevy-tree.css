@@ -187,8 +187,8 @@ svg { display: block; }
 .tree-edge.clan-related { stroke: #8b8377; }
 .tree-edge.edge-halo { stroke: #f9f6ee !important; stroke-width: 6; stroke-dasharray: none; stroke-linecap: butt; }
 .family-group { transition: opacity .18s ease; }
-.tree-card.all-relatives .family-group { opacity: 0; }
-.tree-card.all-relatives .family-group.direct { opacity: .36; }
+.tree-card.all-relatives .family-group { opacity: .64; }
+.tree-card.all-relatives .family-group.direct { opacity: .88; }
 .tree-card.all-relatives .family-group.is-focused { opacity: 1; }
 .tree-card.all-relatives .family-group.is-focused .tree-edge:not(.edge-halo) { stroke: #b68827 !important; stroke-width: 3.6; }
 .tree-card.all-relatives .family-group.is-focused .tree-edge.edge-halo { stroke-width: 8; }

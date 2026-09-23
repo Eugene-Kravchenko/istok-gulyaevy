@@ -567,33 +567,36 @@
 
   function familyConnectionPaths(family, graph) {
     const parents = family.parents.map((id) => graph.nodes.get(id)).filter(Boolean).sort((a, b) => a.x - b.x);
+    const children = family.children.map((id) => graph.nodes.get(id)).filter(Boolean).sort((a, b) => a.x - b.x);
     const paths = [];
-
+    const centerX = (node) => node.x + CARD_W / 2;
+    if (children.length) {
+      const parentBottom = Math.max(...parents.map((node) => node.y + CARD_H));
+      const childTop = Math.min(...children.map((node) => node.y));
+      const between = childTop - parentBottom;
+      const busY = between > 24 ? parentBottom + between * .5 : parentBottom + 18;
+      const xs = [...parents, ...children].map(centerX);
+      const left = Math.min(...xs);
+      const right = Math.max(...xs);
+      const stems = parents.map((node) => `M ${centerX(node)} ${node.y + CARD_H} V ${busY}`);
+      const childStems = children.map((node) => {
+        const foster = Boolean(node.person.famc.find((ref) => ref.id === family.id && ref.pedi === 'foster'));
+        const path = `M ${centerX(node)} ${busY} V ${node.y}`;
+        if (foster) paths.push({ type: 'family', foster: true, d: path });
+        return foster ? '' : path;
+      }).filter(Boolean);
+      paths.push({ type: 'family', d: [...stems, `M ${left} ${busY} H ${right}`, ...childStems].join(' ') });
+    }
     if (parents.length >= 2) {
       const left = parents[0];
       const right = parents.at(-1);
-      const spouseY = (left.y + right.y) / 2 + CARD_H / 2;
-      const leftEdge = left.x + CARD_W;
-      const rightEdge = right.x;
-      const adjacent = Math.abs(left.y - right.y) < 2 && rightEdge - leftEdge >= 0 && rightEdge - leftEdge <= 70;
-      if (adjacent) {
-        const gapX = (leftEdge + rightEdge) / 2;
-        paths.push({ type: 'spouse', d: `M ${leftEdge} ${spouseY} H ${rightEdge}` });
-        paths.push({ type: 'family', d: `M ${gapX} ${spouseY} V ${left.y + CARD_H}` });
-      } else {
-        const leftCenter = left.x + CARD_W / 2;
-        const rightCenter = right.x + CARD_W / 2;
-        const parentBottom = Math.max(left.y, right.y) + CARD_H;
-        const pairBusY = Math.min(family.hub.y, parentBottom + 22);
-        paths.push({ type: 'family', d: `M ${leftCenter} ${left.y + CARD_H} V ${pairBusY} M ${rightCenter} ${right.y + CARD_H} V ${pairBusY}` });
-        paths.push({ type: 'spouse', d: `M ${leftCenter} ${pairBusY} H ${rightCenter}` });
+      const gap = right.x - (left.x + CARD_W);
+      if (Math.abs(left.y - right.y) < 2 && gap >= 0 && gap <= 70) {
+        paths.push({ type: 'spouse', d: `M ${left.x + CARD_W} ${left.y + CARD_H / 2} H ${right.x}` });
+      } else if (!children.length) {
+        const y = Math.max(left.y, right.y) + CARD_H + 18;
+        paths.push({ type: 'spouse', d: `M ${centerX(left)} ${left.y + CARD_H} V ${y} H ${centerX(right)} V ${right.y + CARD_H}` });
       }
-    }
-
-    for (const route of family.routes || []) {
-      if (!route.displayPoints?.length) continue;
-      const foster = route.role === 'child' && route.personIds.some((id) => personById(id)?.famc.find((ref) => ref.id === family.id && ref.pedi === 'foster'));
-      paths.push({ type: 'family', foster, d: orthogonalPath(route.displayPoints, route.laneYs) });
     }
     return paths;
   }
@@ -730,7 +733,9 @@
     state.camera.scale = scale;
     state.camera.x = size.width / 2 - (node.x + CARD_W / 2) * scale;
     state.camera.y = state.direction === 'ancestors'
-      ? size.height - 38 - (node.y + CARD_H) * scale
+      ? (els.stage.clientWidth < 620
+        ? Math.min(els.stage.clientHeight * .45, 260) - (node.y + CARD_H / 2) * scale
+        : size.height - 38 - (node.y + CARD_H) * scale)
       : 38 - node.y * scale;
     updateCamera();
   }
