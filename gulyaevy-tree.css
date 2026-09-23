@@ -236,6 +236,15 @@ svg { display: block; }
   .tool-button { width: 39px; padding: 0; justify-content: center; }
 }
 
+@media (max-height: 820px) and (min-width: 821px) {
+  .site-header { height: 78px; }
+  .cabinet-shell { height: calc(100vh - 78px); }
+  .cabinet-main { gap: 12px; padding-top: 18px; padding-bottom: 16px; }
+  .page-heading h1 { font-size: 34px; }
+  .summary-card { min-height: 58px; }
+  .tree-card { min-height: 500px; }
+}
+
 @media (max-width: 1120px) {
   .site-nav { display: none; }
   .header-cta { margin-left: auto; }
