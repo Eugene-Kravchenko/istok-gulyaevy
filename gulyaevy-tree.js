@@ -351,14 +351,22 @@
       const hubId = `family:${family.id}`;
       layout.setNode(hubId, { width: 4, height: 4 });
       const weight = family.direct ? 18 : 5;
-      const parentUnits = [...new Set(family.parents.map((id) => personToUnit.get(id)).filter(Boolean))];
-      const childUnits = [...new Set(family.children.map((id) => personToUnit.get(id)).filter(Boolean))];
+      const describeUnits = (ids) => [...new Set(ids.map((id) => personToUnit.get(id)).filter(Boolean))]
+        .map((unitId) => ({ unitId, personIds: ids.filter((id) => personToUnit.get(id) === unitId) }));
+      const parentUnits = describeUnits(family.parents);
+      const childUnits = describeUnits(family.children);
+      family.routeSpecs = [];
+      const connect = (from, to, role, unit, index) => {
+        const name = `${role}:${family.id}:${index}`;
+        layout.setEdge(from, to, { minlen: 1, weight }, name);
+        family.routeSpecs.push({ from, to, name, role, unitId: unit.unitId, personIds: unit.personIds });
+      };
       if (state.direction === 'ancestors') {
-        childUnits.forEach((childId, index) => layout.setEdge(childId, hubId, { minlen: 1, weight }, `child:${family.id}:${index}`));
-        parentUnits.forEach((parentId, index) => layout.setEdge(hubId, parentId, { minlen: 1, weight }, `parent:${family.id}:${index}`));
+        childUnits.forEach((unit, index) => connect(unit.unitId, hubId, 'child', unit, index));
+        parentUnits.forEach((unit, index) => connect(hubId, unit.unitId, 'parent', unit, index));
       } else {
-        parentUnits.forEach((parentId, index) => layout.setEdge(parentId, hubId, { minlen: 1, weight }, `parent:${family.id}:${index}`));
-        childUnits.forEach((childId, index) => layout.setEdge(hubId, childId, { minlen: 1, weight }, `child:${family.id}:${index}`));
+        parentUnits.forEach((unit, index) => connect(unit.unitId, hubId, 'parent', unit, index));
+        childUnits.forEach((unit, index) => connect(hubId, unit.unitId, 'child', unit, index));
       }
     }
 
@@ -376,43 +384,9 @@
       const placed = layout.node(`family:${family.id}`);
       family.hub = { x: placed.x, y: placed.y };
       family.clan = familyClan(state.families.get(family.id));
+      family.routes = family.routeSpecs.map((route) => ({ ...route, points: layout.edge({ v: route.from, w: route.to, name: route.name })?.points || [] }));
     }
-    assignFamilyLanes(families, graph);
     return { ...graph, families, units, width: layout.graph().width, height: layout.graph().height };
-  }
-
-  function assignFamilyLanes(families, graph) {
-    const groups = new Map();
-    for (const family of families) {
-      const parents = family.parents.map((id) => graph.nodes.get(id)).filter(Boolean);
-      const children = family.children.map((id) => graph.nodes.get(id)).filter(Boolean);
-      if (!parents.length || !children.length) continue;
-      const parentBottom = Math.max(...parents.map((node) => node.y + CARD_H));
-      const childTop = Math.min(...children.map((node) => node.y));
-      const centers = [...parents, ...children].map((node) => node.x + CARD_W / 2);
-      const top = parentBottom + 12;
-      const bottom = childTop - 12;
-      const key = `${Math.round(parentBottom)}:${Math.round(childTop)}`;
-      const item = { family, left: Math.min(...centers), right: Math.max(...centers), top, bottom, lane: 0 };
-      if (!groups.has(key)) groups.set(key, []);
-      groups.get(key).push(item);
-    }
-
-    for (const items of groups.values()) {
-      const laneEnds = [];
-      items.sort((a, b) => a.left - b.left || a.right - b.right || a.family.id.localeCompare(b.family.id));
-      for (const item of items) {
-        let lane = laneEnds.findIndex((right) => item.left > right + 18);
-        if (lane < 0) lane = laneEnds.length;
-        laneEnds[lane] = Math.max(laneEnds[lane] ?? Number.NEGATIVE_INFINITY, item.right);
-        item.lane = lane;
-      }
-      const laneCount = laneEnds.length;
-      for (const item of items) {
-        const available = Math.max(8, item.bottom - item.top);
-        item.family.busY = item.top + available * (item.lane + 1) / (laneCount + 1);
-      }
-    }
   }
 
   function splitName(name) {
@@ -426,12 +400,27 @@
     return lines;
   }
 
+  function orthogonalPath(points) {
+    if (points.length < 2) return '';
+    let previous = points[0];
+    let d = `M ${previous.x} ${previous.y}`;
+    for (const point of points.slice(1)) {
+      const sameX = Math.abs(point.x - previous.x) < .5;
+      const sameY = Math.abs(point.y - previous.y) < .5;
+      if (sameX) d += ` V ${point.y}`;
+      else if (sameY) d += ` H ${point.x}`;
+      else {
+        const middleY = (previous.y + point.y) / 2;
+        d += ` V ${middleY} H ${point.x} V ${point.y}`;
+      }
+      previous = point;
+    }
+    return d;
+  }
+
   function familyConnectionPaths(family, graph) {
     const parents = family.parents.map((id) => graph.nodes.get(id)).filter(Boolean).sort((a, b) => a.x - b.x);
-    const children = family.children.map((id) => graph.nodes.get(id)).filter(Boolean).sort((a, b) => a.x - b.x);
     const paths = [];
-    let trunkX = family.hub.x;
-    let trunkStartY = family.hub.y;
 
     if (parents.length >= 2) {
       const left = parents[0];
@@ -441,32 +430,36 @@
       const rightEdge = right.x;
       const adjacent = Math.abs(left.y - right.y) < 2 && rightEdge - leftEdge >= 0 && rightEdge - leftEdge <= 70;
       if (adjacent) {
-        trunkX = (leftEdge + rightEdge) / 2;
-        trunkStartY = spouseY;
+        const gapX = (leftEdge + rightEdge) / 2;
         paths.push({ type: 'spouse', d: `M ${leftEdge} ${spouseY} H ${rightEdge}` });
+        paths.push({ type: 'family', d: `M ${gapX} ${spouseY} V ${left.y + CARD_H}` });
       } else {
         const leftCenter = left.x + CARD_W / 2;
         const rightCenter = right.x + CARD_W / 2;
         const parentBottom = Math.max(left.y, right.y) + CARD_H;
         const pairBusY = Math.min(family.hub.y, parentBottom + 22);
-        trunkX = (leftCenter + rightCenter) / 2;
-        trunkStartY = pairBusY;
         paths.push({ type: 'family', d: `M ${leftCenter} ${left.y + CARD_H} V ${pairBusY} M ${rightCenter} ${right.y + CARD_H} V ${pairBusY}` });
         paths.push({ type: 'spouse', d: `M ${leftCenter} ${pairBusY} H ${rightCenter}` });
       }
-    } else if (parents.length === 1) {
-      trunkX = parents[0].x + CARD_W / 2;
-      trunkStartY = parents[0].y + CARD_H;
     }
 
-    if (children.length) {
-      const nearestChildY = Math.min(...children.map((child) => child.y));
-      const parentBottom = parents.length ? Math.max(...parents.map((parent) => parent.y + CARD_H)) : family.hub.y;
-      const busY = family.busY ?? clamp(family.hub.y, parentBottom + 20, nearestChildY - 20);
-      paths.push({ type: 'family', d: `M ${trunkX} ${trunkStartY} V ${busY}` });
-      const childCenters = children.map((child) => child.x + CARD_W / 2);
-      paths.push({ type: 'family', d: `M ${Math.min(...childCenters, trunkX)} ${busY} H ${Math.max(...childCenters, trunkX)}` });
-      children.forEach((child) => paths.push({ type: 'family', foster: Boolean(personById(child.id)?.famc.find((ref) => ref.id === family.id && ref.pedi === 'foster')), d: `M ${child.x + CARD_W / 2} ${busY} V ${child.y}` }));
+    for (const route of family.routes || []) {
+      let points = route.points.map((point) => ({ x: point.x, y: point.y }));
+      if (route.from !== `family:${family.id}`) points.reverse();
+      const relatives = route.personIds.map((id) => graph.nodes.get(id)).filter(Boolean).sort((a, b) => a.x - b.x);
+      if (!points.length || !relatives.length) continue;
+      let target;
+      if (route.role === 'parent' && relatives.length >= 2) {
+        const left = relatives[0];
+        const right = relatives.at(-1);
+        target = { x: (left.x + CARD_W + right.x) / 2, y: Math.max(left.y, right.y) + CARD_H };
+      } else {
+        const relative = relatives[0];
+        target = { x: relative.x + CARD_W / 2, y: route.role === 'parent' ? relative.y + CARD_H : relative.y };
+      }
+      points[points.length - 1] = target;
+      const foster = route.role === 'child' && route.personIds.some((id) => personById(id)?.famc.find((ref) => ref.id === family.id && ref.pedi === 'foster'));
+      paths.push({ type: 'family', foster, d: orthogonalPath(points) });
     }
     return paths;
   }
