@@ -5,143 +5,93 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="robots" content="noindex,nofollow,noarchive">
   <meta name="referrer" content="no-referrer">
-  <title>Родословие Гуляевых — бюро «Исток»</title>
-  <meta name="description" content="Интерактивное родословное древо семьи Гуляевых по материалам архивного исследования бюро «Исток».">
-  <link rel="stylesheet" href="../../gulyaevy-tree.css?v=3">
+  <title>Древо рода Гуляевых — кабинет «Исток»</title>
+  <meta name="description" content="Интерактивное родословное древо семьи Гуляевых в личном кабинете родословного бюро «Исток».">
+  <link rel="stylesheet" href="../../gulyaevy-tree.css?v=5">
 </head>
 <body>
-  <header class="topbar">
+  <header class="site-header">
+    <button class="mobile-menu" id="openSidebar" type="button" aria-label="Открыть меню"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
     <a class="brand" href="../../" aria-label="Исток — на главную">
-      <svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="18.5"/><path d="M20 7v26M20 13c0-3 3-4.5 6-4M20 13c0-3-3-4.5-6-4M20 27c0 2.6 3.2 3.4 6 4.4M20 27c0 2.6-3.2 3.4-6 4.4"/><circle class="brand-dot" cx="20" cy="20" r="2.4"/></svg>
+      <svg class="brand-mark" viewBox="0 0 48 48" aria-hidden="true"><circle cx="24" cy="24" r="21.5"/><path d="M24 8v32M24 15c0-4 4-6 8-6M24 15c0-4-4-6-8-6M24 32c0 3.5 4 4.7 8 6M24 32c0 3.5-4 4.7-8 6"/><circle cx="24" cy="24" r="2.6" class="brand-center"/></svg>
       <span><b>Исток</b><small>Родословное бюро</small></span>
     </a>
-    <div class="access-mark"><span></span>Семейный материал по ссылке</div>
+    <nav class="site-nav" aria-label="Основная навигация"><a href="../../#services">Услуги</a><a href="../../#process">Как работаем</a><a href="../../#examples">Примеры</a><a href="../../#about">О бюро</a><a href="../../#contacts">Контакты</a></nav>
+    <div class="header-contact"><b>+7 495 000-00-00</b><span>Пн–Сб, 10:00–20:00</span></div>
+    <a class="header-cta" href="../../#contact">Узнать о своём роде</a>
   </header>
 
-  <main>
-    <section class="hero">
-      <div>
-        <div class="eyebrow">Генеалогическое исследование</div>
-        <h1>Родословие Гуляевых</h1>
-        <p>Гуляевы · Черепановы · Аржиловские · Нагорновы<br>Ишимский уезд Тобольской губернии · XVII–XX века</p>
+  <div class="cabinet-shell">
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    <aside class="cabinet-sidebar" id="cabinetSidebar">
+      <button class="sidebar-close" id="closeSidebar" type="button" aria-label="Закрыть меню">×</button>
+      <div class="project-card">
+        <div class="project-avatar">Г</div>
+        <div><strong>Род<br>Гуляевых</strong><span>Семейное древо</span><small>№2026–ГУЛ</small></div>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 8 3 3 3-3M9 16l3-3 3 3"/></svg>
       </div>
-      <div class="hero-actions">
-        <button class="button button-primary" id="copyLink" type="button">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 15l6-6M7.5 12.5l-2 2a3.5 3.5 0 005 5l2-2M16.5 11.5l2-2a3.5 3.5 0 00-5-5l-2 2"/></svg>
-          Скопировать ссылку
-        </button>
-        <a class="button button-ghost" href="../../data/gulyaevy.ged" download>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/></svg>
-          Скачать GEDCOM
-        </a>
-      </div>
-    </section>
+      <nav class="cabinet-nav" aria-label="Разделы личного кабинета">
+        <button class="locked-nav" type="button" aria-disabled="true" data-locked><span class="nav-icon">▦</span>Обзор<span class="lock">●</span></button>
+        <button class="locked-nav" type="button" aria-disabled="true" data-locked><span class="nav-icon">◷</span>Ход исследования<span class="lock">●</span></button>
+        <button class="locked-nav" type="button" aria-disabled="true" data-locked><span class="nav-icon">▯</span>Документы<span class="lock">●</span></button>
+        <button class="active" type="button"><span class="nav-icon tree-icon">⌘</span>Древо рода</button>
+        <button class="locked-nav" type="button" aria-disabled="true" data-locked><span class="nav-icon">▤</span>Отчёты<span class="lock">●</span></button>
+        <p class="nav-heading">Общение и данные</p>
+        <button class="locked-nav" type="button" aria-disabled="true" data-locked><span class="nav-icon">□</span>Сообщения<span class="lock">●</span></button>
+        <button class="locked-nav" type="button" aria-disabled="true" data-locked><span class="nav-icon">♧</span>Анкета рода<span class="lock">●</span></button>
+        <button class="locked-nav" type="button" aria-disabled="true" data-locked><span class="nav-icon">▱</span>Договор и оплата<span class="lock">●</span></button>
+        <button class="locked-nav" type="button" aria-disabled="true" data-locked><span class="nav-icon">☼</span>Настройки<span class="lock">●</span></button>
+      </nav>
+      <div class="client-card"><div class="client-avatar">ПГ</div><div><strong>Павел Гуляев</strong><span>Клиент кабинета</span></div><span class="online-dot" title="Доступ активен"></span></div>
+    </aside>
 
-    <section class="stats" aria-label="Состав исследования">
-      <div><strong id="peopleCount">—</strong><span>человека</span></div>
-      <div><strong id="familiesCount">—</strong><span>семей</span></div>
-      <div><strong id="yearsRange">—</strong><span>охват исследования</span></div>
-      <div><strong>4</strong><span>основных рода</span></div>
-    </section>
+    <main class="cabinet-main">
+      <section class="page-heading">
+        <div><span class="eyebrow">Личный кабинет · Род Гуляевых</span><h1>Древо рода</h1><p>Исследуйте прямую линию предков или откройте боковые ветви семьи.</p></div>
+        <div class="heading-actions">
+          <button class="action-button secondary" id="copyLink" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 15l6-6M7.5 12.5l-2 2a3.5 3.5 0 0 0 5 5l2-2M16.5 11.5l2-2a3.5 3.5 0 0 0-5-5l-2 2"/></svg>Скопировать ссылку</button>
+          <a class="action-button primary" href="../../data/gulyaevy.ged" download><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11m0 0-4-4m4 4 4-4M5 20h14"/></svg>Скачать GEDCOM</a>
+        </div>
+      </section>
 
-    <section class="notice">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.2"/></svg>
-      <p><b>Как смотреть:</b> выберите человека в поиске или прямо на схеме. Древо перестроится вокруг него, а справа откроются подтверждённые связи и ссылки на документы.</p>
-    </section>
+      <section class="summary-row" aria-label="Сведения о древе">
+        <div class="summary-card"><span class="summary-icon people">♧</span><div><strong id="peopleCount">—</strong><span>человек в базе</span></div></div>
+        <div class="summary-card"><span class="summary-icon families">⌘</span><div><strong id="familiesCount">—</strong><span>семейных связей</span></div></div>
+        <div class="summary-card"><span class="summary-icon years">◷</span><div><strong id="yearsRange">—</strong><span>охват исследования</span></div></div>
+      </section>
 
-    <section class="workspace" aria-label="Интерактивное родословное древо">
-      <aside class="people-panel">
-        <div class="panel-heading">
-          <div>
-            <span class="section-kicker">Участники древа</span>
-            <h2>Найти человека</h2>
+      <section class="tree-card" id="treeCard" aria-label="Интерактивное древо рода Гуляевых">
+        <div class="tree-controls">
+          <div class="control-group scope-group"><span class="control-label">Состав древа</span><div class="segmented" aria-label="Состав древа"><button class="active" id="scopeDirect" data-scope="direct" type="button">Прямые предки</button><button id="scopeAll" data-scope="all" type="button">Показать всех</button></div></div>
+          <div class="control-group direction-group"><span class="control-label">Направление</span><div class="segmented" aria-label="Направление древа"><button class="active" data-direction="ancestors" type="button">Предки</button><button data-direction="descendants" type="button">Потомки</button></div></div>
+          <label class="depth-control"><span class="control-label">Поколений</span><select id="depthSelect" aria-label="Число поколений"><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option selected>8</option><option>9</option><option>10</option></select></label>
+          <div class="toolbar-spacer"></div>
+          <div class="search-wrap">
+            <button class="tool-button search-toggle" id="searchToggle" type="button" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4 4"/></svg><span>Найти человека</span></button>
+            <div class="search-panel" id="searchPanel" hidden><label><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 4 4"/></svg><input id="personSearch" type="search" placeholder="Имя или фамилия" autocomplete="off"></label><div class="search-meta" id="searchMeta">Загрузка данных…</div><div class="people-list" id="peopleList" role="listbox" aria-label="Люди в родословной"></div></div>
           </div>
-          <button class="icon-button mobile-close" id="closePeople" aria-label="Закрыть список">×</button>
-        </div>
-        <label class="search">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"/><path d="M16 16l4.2 4.2"/></svg>
-          <input id="personSearch" type="search" placeholder="Имя или фамилия" autocomplete="off">
-        </label>
-        <div class="search-meta" id="searchMeta">Загрузка данных…</div>
-        <div class="people-list" id="peopleList" role="listbox" aria-label="Люди в родословной"></div>
-      </aside>
-
-      <div class="tree-panel">
-        <div class="tree-toolbar">
-          <button class="button button-small mobile-people" id="openPeople" type="button">Люди</button>
-          <div class="segmented" aria-label="Направление древа">
-            <button class="active" data-direction="ancestors" type="button">Предки</button>
-            <button data-direction="descendants" type="button">Потомки</button>
+          <div class="zoom-tools" aria-label="Масштаб дерева">
+            <button class="icon-button" id="zoomOut" type="button" aria-label="Уменьшить" title="Уменьшить">−</button><button class="zoom-value" id="zoomValue" type="button" title="Вернуть масштаб 100%">100%</button><button class="icon-button" id="zoomIn" type="button" aria-label="Увеличить" title="Увеличить">+</button>
+            <button class="icon-button" id="fitTree" type="button" aria-label="Показать древо целиком" title="Показать древо целиком"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg></button>
+            <button class="icon-button" id="fullScreen" type="button" aria-label="Во весь экран" title="Во весь экран"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/><path d="M9 9h6v6H9z"/></svg></button>
           </div>
-          <label class="depth-control">Поколений
-            <select id="depthSelect" aria-label="Число поколений">
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5" selected>5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-            </select>
-          </label>
-          <button class="icon-button" id="fitTree" type="button" aria-label="Показать древо целиком" title="Показать целиком">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg>
-          </button>
         </div>
-        <div class="tree-scroll" id="treeScroll">
-          <div class="state-card" id="loadingState">
-            <div class="spinner"></div>
-            <b>Собираем родословную</b>
-            <span>Читаем связи из GEDCOM</span>
-          </div>
-          <div class="state-card error" id="errorState" hidden>
-            <b>Древо не загрузилось</b>
-            <span id="errorText">Обновите страницу или попробуйте позже.</span>
-          </div>
-          <svg id="treeSvg" aria-label="Схема родственных связей" role="img" hidden></svg>
-        </div>
-        <div class="tree-legend">
-          <span><i class="legend-person"></i>человек</span>
-          <span><i class="legend-selected"></i>выбран</span>
-          <span><i class="legend-line"></i>родственная связь</span>
-        </div>
-      </div>
 
-      <aside class="person-panel" id="personPanel">
-        <div class="panel-heading detail-heading">
-          <div><span class="section-kicker">Карточка человека</span><h2 id="detailName">—</h2></div>
-          <button class="icon-button detail-close" id="closeDetails" aria-label="Закрыть карточку">×</button>
+        <div class="tree-stage" id="treeStage">
+          <div class="stage-tip" id="stageTip"><b>Колесо</b> — масштаб · <b>перетаскивание</b> — перемещение</div>
+          <div class="state-card" id="loadingState"><span class="spinner"></span><b>Собираем родословную</b><small>Читаем связи из GEDCOM</small></div>
+          <div class="state-card error" id="errorState" hidden><b>Древо не загрузилось</b><small id="errorText">Обновите страницу или попробуйте позже.</small></div>
+          <svg id="treeSvg" role="img" aria-label="Схема родственных связей" tabindex="0" hidden><g id="treeViewport"><g id="treeEdges"></g><g id="treeNodes"></g></g></svg>
+          <aside class="person-drawer" id="personDrawer" aria-label="Карточка человека"><header><div><span class="eyebrow">Карточка человека</span><h2 id="detailName">—</h2></div><button class="drawer-close" id="closeDetails" type="button" aria-label="Закрыть карточку">×</button></header><div class="person-details" id="personDetails"></div><footer><button class="action-button primary full" id="makeRoot" type="button">Строить древо от этого человека</button></footer></aside>
         </div>
-        <div id="personDetails" class="person-details"></div>
-      </aside>
-    </section>
 
-    <section class="source-note">
-      <div>
-        <span class="section-kicker">Основа древа</span>
-        <h2>Архивное исследование бюро «Исток»</h2>
-        <p>Связи собраны по ревизским сказкам, метрическим книгам, переписи 1897 года и похозяйственным книгам. Спорные чтения и предположительные связи сохранены в примечаниях к людям.</p>
-      </div>
-      <p class="source-sign">Гуляевы прослежены до XVIII века, Аржиловские — до Матвея Ржиловского, родившегося около 1655 года.</p>
-    </section>
-  </main>
-
-  <footer>
-    <span>© 2026 Родословное бюро «Исток»</span>
-    <span>Материал предназначен для семейного использования</span>
-  </footer>
+        <div class="tree-statusbar"><p id="viewSummary">Прямая линия · предки</p><div class="legend"><span><i class="direct-dot"></i>прямая линия</span><span><i class="family-dot"></i>семейная ветвь</span><span><i class="spouse-line"></i>супруги</span></div></div>
+      </section>
+    </main>
+  </div>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <dialog id="shareDialog" class="share-dialog">
-    <form method="dialog">
-      <button class="dialog-close" aria-label="Закрыть">×</button>
-      <span class="section-kicker">Ссылка на выбранного человека</span>
-      <h2>Скопируйте адрес</h2>
-      <p>Браузер не разрешил автоматическое копирование. Выделите ссылку вручную.</p>
-      <input id="shareInput" readonly>
-      <button class="button button-primary" value="close">Готово</button>
-    </form>
-  </dialog>
-
-  <script src="../../gulyaevy-tree.js?v=3" defer></script>
+  <dialog id="shareDialog" class="share-dialog"><form method="dialog"><button class="dialog-close" aria-label="Закрыть">×</button><span class="eyebrow">Ссылка на выбранное древо</span><h2>Скопируйте адрес</h2><p>Выделите ссылку и скопируйте её вручную.</p><input id="shareInput" readonly><button class="action-button primary" value="close">Готово</button></form></dialog>
+  <script src="../../gulyaevy-tree.js?v=5" defer></script>
 </body>
 </html>
