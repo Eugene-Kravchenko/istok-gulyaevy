@@ -407,7 +407,7 @@
     els.summary.textContent = `${mode} · ${direction} · ${graph.nodes.size} ${plural(graph.nodes.size, ['человек', 'человека', 'человек'])} на схеме`;
     els.svg.removeAttribute('hidden');
     els.loading.hidden = true;
-    requestAnimationFrame(() => fitTree());
+    requestAnimationFrame(() => focusRoot());
   }
 
   function plural(number, forms) {
@@ -436,6 +436,22 @@
     state.camera.scale = scale;
     state.camera.x = (size.width - state.graph.width * scale) / 2;
     state.camera.y = (size.height - state.graph.height * scale) / 2;
+    updateCamera();
+  }
+
+  function focusRoot() {
+    if (!state.graph) return;
+    const node = state.graph.nodes.get(state.root);
+    if (!node) return;
+    const size = visibleStageSize();
+    const fitScale = Math.min((size.width - 44) / state.graph.width, (size.height - 44) / state.graph.height);
+    const readableScale = els.stage.clientWidth < 620 ? .54 : .68;
+    const scale = clamp(Math.max(fitScale, readableScale), .18, 1);
+    state.camera.scale = scale;
+    state.camera.x = size.width / 2 - (node.x + CARD_W / 2) * scale;
+    state.camera.y = state.direction === 'ancestors'
+      ? size.height - 38 - (node.y + CARD_H) * scale
+      : 38 - node.y * scale;
     updateCamera();
   }
 
