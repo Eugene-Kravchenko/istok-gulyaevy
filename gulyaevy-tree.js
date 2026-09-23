@@ -21,11 +21,9 @@
     graph: null, camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0
   };
 
-  const CARD_W = 214;
-  const CARD_H = 82;
-  const GAP_X = 34;
-  const GAP_Y = 90;
-  const PAD = 64;
+  const CARD_W = 196;
+  const CARD_H = 96;
+  const PAD = 52;
 
   const compact = (value = '') => String(value).replace(/\s+/g, ' ').trim();
   const cleanName = (value = '') => compact(value.replaceAll('/', ''));
@@ -167,12 +165,12 @@
     const birth = person.birth || '';
     const death = person.death || '';
     if (detailed) {
-      if (!birth && !death) return 'Даты жизни уточняются';
+      if (!birth && !death) return '';
       return compact(`${birth ? `р. ${birth}` : ''}${birth && death ? ' · ' : ''}${death ? `ум. ${death}` : ''}`);
     }
     const born = yearFrom(birth);
     const died = yearFrom(death);
-    if (!born && !died) return 'Даты уточняются';
+    if (!born && !died) return '';
     return `${born || '?'}–${death ? died || '?' : ''}`;
   }
 
@@ -273,57 +271,60 @@
     }
   }
 
+  function visibleFamilies(graph) {
+    const families = [];
+    for (const family of state.families.values()) {
+      const parents = [family.husband, family.wife].filter((id) => graph.nodes.has(id));
+      const children = family.children.filter((id) => graph.nodes.has(id));
+      if (!children.length && parents.length < 2) continue;
+      if (!parents.length) continue;
+      const direct = parents.some((id) => graph.directIds.has(id)) && (children.some((id) => graph.directIds.has(id)) || parents.every((id) => graph.directIds.has(id)));
+      families.push({ id: family.id, parents, children, direct });
+    }
+    return families;
+  }
+
   function layoutGraph(graph) {
-    const layers = new Map();
-    for (const node of graph.nodes.values()) {
-      if (!layers.has(node.generation)) layers.set(node.generation, []);
-      layers.get(node.generation).push(node);
-    }
-    const generations = [...layers.keys()].sort((a, b) => a - b);
-    for (const layer of layers.values()) layer.sort((a, b) => `${a.person.surname} ${a.person.given}`.localeCompare(`${b.person.surname} ${b.person.given}`, 'ru'));
-
-    const adjacency = new Map();
-    for (const node of graph.nodes.values()) adjacency.set(node.id, []);
-    for (const edge of graph.edges) {
-      adjacency.get(edge.from)?.push(edge.to);
-      adjacency.get(edge.to)?.push(edge.from);
-    }
-
-    const reorder = (orderedGenerations) => {
-      const positions = new Map();
-      for (const layer of layers.values()) layer.forEach((node, index) => positions.set(node.id, index));
-      for (const generation of orderedGenerations) {
-        const layer = layers.get(generation);
-        layer.forEach((node, index) => { node._previous = index; });
-        layer.sort((a, b) => {
-          const score = (node) => {
-            const neighbors = (adjacency.get(node.id) || []).filter((id) => positions.has(id));
-            if (!neighbors.length) return node._previous;
-            return neighbors.reduce((sum, id) => sum + positions.get(id), 0) / neighbors.length;
-          };
-          return score(a) - score(b) || a._previous - b._previous;
-        });
-      }
-    };
-    for (let pass = 0; pass < 5; pass++) {
-      reorder(generations);
-      reorder([...generations].reverse());
-    }
-
-    const maxCount = Math.max(...[...layers.values()].map((layer) => layer.length), 1);
-    const contentW = maxCount * CARD_W + Math.max(0, maxCount - 1) * GAP_X;
-    const width = contentW + PAD * 2;
-    const height = generations.length * CARD_H + Math.max(0, generations.length - 1) * GAP_Y + PAD * 2;
-    generations.forEach((generation, rank) => {
-      const layer = layers.get(generation);
-      const layerW = layer.length * CARD_W + Math.max(0, layer.length - 1) * GAP_X;
-      const startX = PAD + (contentW - layerW) / 2;
-      layer.forEach((node, index) => {
-        node.x = startX + index * (CARD_W + GAP_X);
-        node.y = PAD + rank * (CARD_H + GAP_Y);
-      });
+    if (!window.dagre?.graphlib?.Graph) throw new Error('Модуль компоновки древа не загрузился');
+    const layout = new window.dagre.graphlib.Graph({ multigraph: true });
+    layout.setGraph({
+      rankdir: state.direction === 'ancestors' ? 'BT' : 'TB',
+      ranker: 'network-simplex',
+      acyclicer: 'greedy',
+      nodesep: 28,
+      edgesep: 12,
+      ranksep: 72,
+      marginx: PAD,
+      marginy: PAD
     });
-    return { ...graph, width, height, generations };
+    layout.setDefaultEdgeLabel(() => ({}));
+
+    for (const node of graph.nodes.values()) layout.setNode(node.id, { width: CARD_W, height: CARD_H });
+    const families = visibleFamilies(graph);
+    for (const family of families) {
+      const hubId = `family:${family.id}`;
+      layout.setNode(hubId, { width: 4, height: 4 });
+      const weight = family.direct ? 18 : 5;
+      if (state.direction === 'ancestors') {
+        family.children.forEach((childId, index) => layout.setEdge(childId, hubId, { minlen: 1, weight }, `child:${family.id}:${index}`));
+        family.parents.forEach((parentId, index) => layout.setEdge(hubId, parentId, { minlen: 1, weight }, `parent:${family.id}:${index}`));
+      } else {
+        family.parents.forEach((parentId, index) => layout.setEdge(parentId, hubId, { minlen: 1, weight }, `parent:${family.id}:${index}`));
+        family.children.forEach((childId, index) => layout.setEdge(hubId, childId, { minlen: 1, weight }, `child:${family.id}:${index}`));
+      }
+    }
+
+    window.dagre.layout(layout);
+    for (const node of graph.nodes.values()) {
+      const placed = layout.node(node.id);
+      node.x = placed.x - CARD_W / 2;
+      node.y = placed.y - CARD_H / 2;
+    }
+    for (const family of families) {
+      const placed = layout.node(`family:${family.id}`);
+      family.hub = { x: placed.x, y: placed.y };
+    }
+    return { ...graph, families, width: layout.graph().width, height: layout.graph().height };
   }
 
   function splitName(name) {
@@ -331,30 +332,43 @@
     const lines = [''];
     for (const word of words) {
       const current = lines.at(-1);
-      if (!current || `${current} ${word}`.length <= 19) lines[lines.length - 1] = compact(`${current} ${word}`);
-      else if (lines.length < 2) lines.push(word);
-      else lines[1] = `${lines[1]} ${word}`;
+      if (!current || `${current} ${word}`.length <= 20) lines[lines.length - 1] = compact(`${current} ${word}`);
+      else lines.push(word);
     }
-    return lines.slice(0, 2).map((line) => line.length > 22 ? `${line.slice(0, 21)}…` : line);
+    return lines;
   }
 
-  function edgePath(edge, graph) {
-    const from = graph.nodes.get(edge.from);
-    const to = graph.nodes.get(edge.to);
-    if (!from || !to) return '';
-    if (edge.type === 'spouse') {
-      const left = from.x <= to.x ? from : to;
-      const right = left === from ? to : from;
-      return `M ${left.x + CARD_W} ${left.y + CARD_H / 2} H ${right.x}`;
+  function familyConnectionPaths(family, graph) {
+    const parents = family.parents.map((id) => graph.nodes.get(id)).filter(Boolean).sort((a, b) => a.x - b.x);
+    const children = family.children.map((id) => graph.nodes.get(id)).filter(Boolean).sort((a, b) => a.x - b.x);
+    const paths = [];
+    let trunkX = family.hub.x;
+    let trunkStartY = family.hub.y;
+
+    if (parents.length >= 2) {
+      const left = parents[0];
+      const right = parents.at(-1);
+      const spouseY = (left.y + right.y) / 2 + CARD_H / 2;
+      const leftEdge = left.x + CARD_W;
+      const rightEdge = right.x;
+      trunkX = (leftEdge + rightEdge) / 2;
+      trunkStartY = spouseY;
+      paths.push({ type: 'spouse', d: `M ${leftEdge} ${spouseY} H ${rightEdge}` });
+    } else if (parents.length === 1) {
+      trunkX = parents[0].x + CARD_W / 2;
+      trunkStartY = parents[0].y + CARD_H;
     }
-    const parent = from.generation < to.generation ? from : to;
-    const child = parent === from ? to : from;
-    const sx = parent.x + CARD_W / 2;
-    const sy = parent.y + CARD_H;
-    const ex = child.x + CARD_W / 2;
-    const ey = child.y;
-    const bend = sy + (ey - sy) * .52;
-    return `M ${sx} ${sy} C ${sx} ${bend}, ${ex} ${bend}, ${ex} ${ey}`;
+
+    if (children.length) {
+      const nearestChildY = Math.min(...children.map((child) => child.y));
+      const parentBottom = parents.length ? Math.max(...parents.map((parent) => parent.y + CARD_H)) : family.hub.y;
+      const busY = clamp(family.hub.y, parentBottom + 20, nearestChildY - 20);
+      paths.push({ type: 'family', d: `M ${trunkX} ${trunkStartY} V ${busY}` });
+      const childCenters = children.map((child) => child.x + CARD_W / 2);
+      paths.push({ type: 'family', d: `M ${Math.min(...childCenters, trunkX)} ${busY} H ${Math.max(...childCenters, trunkX)}` });
+      children.forEach((child) => paths.push({ type: 'family', foster: Boolean(personById(child.id)?.famc.find((ref) => ref.id === family.id && ref.pedi === 'foster')), d: `M ${child.x + CARD_W / 2} ${busY} V ${child.y}` }));
+    }
+    return paths;
   }
 
   function drawGraph() {
@@ -367,13 +381,12 @@
     const filter = svgEl('filter', { id: 'nodeShadow', x: '-20%', y: '-20%', width: '140%', height: '150%' });
     filter.appendChild(svgEl('feDropShadow', { dx: '0', dy: '3', stdDeviation: '4', 'flood-color': '#332f25', 'flood-opacity': '.09' }));
     defs.appendChild(filter);
-    const textClip = svgEl('clipPath', { id: 'nodeTextClip', clipPathUnits: 'userSpaceOnUse' });
-    textClip.appendChild(svgEl('rect', { x: 20, y: 22, width: 184, height: 55 }));
-    defs.appendChild(textClip);
     els.edges.appendChild(defs);
 
-    for (const edge of graph.edges) {
-      els.edges.appendChild(svgEl('path', { d: edgePath(edge, graph), class: `tree-edge ${edge.type}${edge.direct ? ' direct' : ''}${edge.foster ? ' foster' : ''}` }));
+    for (const family of graph.families) {
+      for (const path of familyConnectionPaths(family, graph)) {
+        els.edges.appendChild(svgEl('path', { d: path.d, class: `tree-edge ${path.type}${family.direct ? ' direct' : ''}${path.foster ? ' foster' : ''}` }));
+      }
     }
 
     for (const node of graph.nodes.values()) {
@@ -381,25 +394,28 @@
       if (!node.direct) classes.push('branch');
       if (node.id === state.root) classes.push('root');
       if (node.id === state.selected) classes.push('selected');
-      const group = svgEl('g', { class: classes.join(' '), transform: `translate(${node.x} ${node.y})`, role: 'button', tabindex: '0', 'data-person-id': node.id, 'aria-label': `${node.person.name}, ${life(node.person)}` });
+      const datesText = life(node.person);
+      const fullLife = life(node.person, true);
+      const group = svgEl('g', { class: classes.join(' '), transform: `translate(${node.x} ${node.y})`, role: 'button', tabindex: '0', 'data-person-id': node.id, 'aria-label': compact(`${node.person.name} ${datesText}`) });
+      const title = svgEl('title');
+      title.textContent = compact(`${node.person.name}${fullLife ? ` · ${fullLife}` : ''}`);
+      group.appendChild(title);
       group.appendChild(svgEl('rect', { class: 'node-card', width: CARD_W, height: CARD_H, rx: 10 }));
-      group.appendChild(svgEl('path', { class: 'node-accent', d: `M0 10a10 10 0 0 1 10-10h2v82h-2A10 10 0 0 1 0 72Z` }));
-      const badgeText = node.id === state.root ? 'Центр' : (!node.direct ? 'Ветвь' : 'Линия');
-      group.appendChild(svgEl('rect', { class: 'node-badge', x: 159, y: 10, width: 43, height: 15, rx: 7.5 }));
-      const badge = svgEl('text', { class: 'node-badge-text', x: 180.5, y: 20.5, 'text-anchor': 'middle' });
-      badge.textContent = badgeText;
-      group.appendChild(badge);
+      group.appendChild(svgEl('path', { class: 'node-accent', d: `M0 10A10 10 0 0 1 10 0h3v${CARD_H}h-3A10 10 0 0 1 0 ${CARD_H - 10}Z` }));
       const lines = splitName(node.person.name);
-      const name = svgEl('text', { class: 'node-name', x: 22, y: lines.length > 1 ? 30 : 38, 'clip-path': 'url(#nodeTextClip)' });
+      const firstLineY = datesText ? 43 - (lines.length - 1) * 9 : 53 - (lines.length - 1) * 7.5;
+      const name = svgEl('text', { class: 'node-name', x: 22, y: firstLineY });
       lines.forEach((line, index) => {
-        const tspan = svgEl('tspan', { x: 22, dy: index ? 16 : 0 });
+        const tspan = svgEl('tspan', { x: 22, dy: index ? 15 : 0 });
         tspan.textContent = line;
         name.appendChild(tspan);
       });
       group.appendChild(name);
-      const dates = svgEl('text', { class: 'node-life', x: 22, y: 68, 'clip-path': 'url(#nodeTextClip)' });
-      dates.textContent = life(node.person);
-      group.appendChild(dates);
+      if (datesText) {
+        const dates = svgEl('text', { class: 'node-life', x: 22, y: 81 });
+        dates.textContent = datesText;
+        group.appendChild(dates);
+      }
       group.addEventListener('click', () => { if (!state.moved) selectPerson(node.id, true); });
       group.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectPerson(node.id, true); } });
       els.nodes.appendChild(group);
@@ -520,7 +536,8 @@
     return `<section class="relation-section"><h3>${esc(title)}</h3><div class="relation-list">${entries.map((entry) => {
       const person = entry.person || entry;
       const foster = fosterAware && entry.foster;
-      return `<button class="relation${foster ? ' foster' : ''}" data-detail-person="${esc(person.id)}" type="button"><b>${esc(person.name)}</b><span>${foster ? 'приёмная связь' : esc(life(person))}</span></button>`;
+      const relationInfo = foster ? 'приёмная связь' : life(person);
+      return `<button class="relation${foster ? ' foster' : ''}" data-detail-person="${esc(person.id)}" type="button"><b>${esc(person.name)}</b>${relationInfo ? `<span>${esc(relationInfo)}</span>` : ''}</button>`;
     }).join('')}</div></section>`;
   }
 
@@ -532,9 +549,10 @@
     const siblings = siblingsOf(person);
     const notes = person.notes.filter((note) => !/добавлено по (семейной схеме|предоставленной)/i.test(note));
     const sources = person.sources.filter((source) => source.page);
+    const detailedLife = life(person, true);
     els.details.innerHTML = `
       ${person.id === state.root ? '<span class="root-mark">● Центр текущего древа</span>' : ''}
-      <p class="life-line">${esc(life(person, true))}</p>
+      ${detailedLife ? `<p class="life-line">${esc(detailedLife)}</p>` : ''}
       ${relationMarkup('Родители', parents, true)}
       ${relationMarkup('Супруги', spouses)}
       ${relationMarkup('Дети', children)}
@@ -567,7 +585,10 @@
     const matches = term ? all.filter((person) => person.search.includes(term)) : all;
     const shown = matches.slice(0, 70);
     els.searchMeta.textContent = term ? `Найдено: ${matches.length}` : `${all.length} человек · начните вводить имя`;
-    els.peopleList.innerHTML = shown.map((person) => `<button class="person-option${person.id === state.root ? ' active' : ''}" data-search-person="${esc(person.id)}" type="button" role="option"><b>${esc(person.name)}</b><span>${esc(life(person))}</span></button>`).join('') || '<p class="empty-small">Совпадений нет</p>';
+    els.peopleList.innerHTML = shown.map((person) => {
+      const personLife = life(person);
+      return `<button class="person-option${person.id === state.root ? ' active' : ''}" data-search-person="${esc(person.id)}" type="button" role="option"><b>${esc(person.name)}</b>${personLife ? `<span>${esc(personLife)}</span>` : ''}</button>`;
+    }).join('') || '<p class="empty-small">Совпадений нет</p>';
     els.peopleList.querySelectorAll('[data-search-person]').forEach((button) => button.addEventListener('click', () => {
       setRoot(button.dataset.searchPerson);
       toggleSearch(false);
@@ -631,6 +652,10 @@
 
     els.svg.addEventListener('wheel', (event) => { event.preventDefault(); zoomAt(event.deltaY < 0 ? 1.12 : 1 / 1.12, event.clientX, event.clientY); }, { passive: false });
     els.svg.addEventListener('pointerdown', (event) => {
+      if (event.target.closest?.('.tree-node')) {
+        state.moved = false;
+        return;
+      }
       els.svg.setPointerCapture(event.pointerId);
       state.pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
       state.moved = false;

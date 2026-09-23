@@ -155,9 +155,9 @@ svg { display: block; }
 #treeSvg { width: 100%; height: 100%; min-height: 300px; outline: 0; cursor: grab; touch-action: none; user-select: none; }
 #treeSvg.dragging { cursor: grabbing; }
 #treeViewport { transform-origin: 0 0; }
-.tree-edge { fill: none; stroke: #a29c91; stroke-width: 1.5; vector-effect: non-scaling-stroke; }
-.tree-edge.direct { stroke: #426454; stroke-width: 2; }
-.tree-edge.spouse { stroke: var(--gold); stroke-width: 1.7; stroke-dasharray: 5 4; }
+.tree-edge { fill: none; stroke: #9d998f; stroke-width: 1.4; stroke-linecap: square; stroke-linejoin: miter; vector-effect: non-scaling-stroke; }
+.tree-edge.direct { stroke: #3e6553; stroke-width: 2; }
+.tree-edge.spouse { stroke: var(--gold); stroke-width: 1.6; }
 .tree-edge.foster { stroke-dasharray: 4 4; }
 .tree-node { cursor: pointer; }
 .tree-node .node-card { fill: #fffefb; stroke: #cfc8ba; stroke-width: 1.2; filter: url(#nodeShadow); vector-effect: non-scaling-stroke; }
@@ -170,12 +170,8 @@ svg { display: block; }
 .tree-node.root .node-accent { fill: var(--gold); }
 .tree-node .node-name { fill: var(--ink); font-family: var(--serif); font-size: 13.5px; font-weight: 600; pointer-events: none; }
 .tree-node .node-life { fill: var(--muted); font-family: var(--sans); font-size: 10px; pointer-events: none; }
-.tree-node .node-badge { fill: #efe9da; }
-.tree-node .node-badge-text { fill: #7e776a; font-family: var(--sans); font-size: 7.5px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; pointer-events: none; }
 .tree-node.root .node-name { fill: #fffaf0; }
 .tree-node.root .node-life { fill: #c7d2cb; }
-.tree-node.root .node-badge { fill: rgba(255,255,255,.13); }
-.tree-node.root .node-badge-text { fill: #e3c572; }
 .stage-tip { position: absolute; z-index: 4; left: 13px; bottom: 12px; padding: 7px 10px; border: 1px solid rgba(218,211,197,.82); border-radius: 7px; color: #8f897e; background: rgba(255,253,247,.86); backdrop-filter: blur(6px); font-size: 9px; pointer-events: none; }
 .state-card { position: absolute; z-index: 8; inset: 50% auto auto 50%; transform: translate(-50%,-50%); min-width: 245px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 26px; border: 1px solid var(--line); border-radius: 13px; background: rgba(255,253,247,.95); box-shadow: var(--shadow); text-align: center; }
 .state-card b { font-family: var(--serif); }
