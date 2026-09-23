@@ -68,7 +68,7 @@ main { width: min(1600px, 100%); margin: 0 auto; padding: 0 clamp(16px, 3.5vw, 5
 .notice svg { width: 21px; min-width: 21px; fill: none; stroke: var(--gold); stroke-width: 1.6; stroke-linecap: round; }
 .notice p { margin: 0; color: var(--text); font-size: 13px; line-height: 1.55; }
 
-.workspace { height: min(760px, calc(100vh - 120px)); min-height: 610px; display: grid; grid-template-columns: 260px minmax(480px, 1fr) 300px; border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--card); box-shadow: var(--shadow); }
+.workspace { height: min(760px, calc(100vh - 120px)); min-height: 610px; display: grid; grid-template-columns: 260px minmax(480px, 1fr) 300px; grid-template-rows: minmax(0, 1fr); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--card); box-shadow: var(--shadow); }
 .people-panel, .person-panel { min-width: 0; display: flex; flex-direction: column; background: #f9f6ef; }
 .people-panel { border-right: 1px solid var(--line); }
 .person-panel { border-left: 1px solid var(--line); }
