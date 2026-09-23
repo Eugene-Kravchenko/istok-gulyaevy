@@ -18,7 +18,7 @@
 
   const state = {
     people: new Map(), families: new Map(), root: '', selected: '', direction: 'ancestors', scope: 'direct',
-    graph: null, camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0
+    graph: null, camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0, stageWidth: 0
   };
 
   const CARD_W = 176;
@@ -561,7 +561,10 @@
     els.summary.textContent = `${mode} · ${direction} · ${graph.nodes.size} ${plural(graph.nodes.size, ['человек', 'человека', 'человек'])} на схеме`;
     els.svg.removeAttribute('hidden');
     els.loading.hidden = true;
-    requestAnimationFrame(() => focusRoot());
+    requestAnimationFrame(() => {
+      focusRoot();
+      state.stageWidth = els.stage.clientWidth;
+    });
   }
 
   function plural(number, forms) {
@@ -834,7 +837,20 @@
     };
     els.svg.addEventListener('pointerup', endPointer);
     els.svg.addEventListener('pointercancel', endPointer);
-    window.addEventListener('resize', () => { clearTimeout(state.resizeTimer); state.resizeTimer = setTimeout(fitTree, 130); });
+    window.addEventListener('resize', () => {
+      clearTimeout(state.resizeTimer);
+      state.resizeTimer = setTimeout(() => {
+        const width = els.stage.clientWidth;
+        if (!state.stageWidth) {
+          state.stageWidth = width;
+          return;
+        }
+        if (Math.abs(width - state.stageWidth) > 40) {
+          state.stageWidth = width;
+          focusRoot();
+        }
+      }, 160);
+    });
   }
 
   function yearRange() {
