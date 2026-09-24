@@ -188,7 +188,7 @@ svg { display: block; }
 .tree-edge.clan-related { stroke: #8b8377; }
 .tree-edge.edge-halo { stroke: #f9f6ee !important; stroke-width: 6; stroke-dasharray: none; stroke-linecap: butt; }
 .family-group { transition: opacity .18s ease; }
-.tree-card.all-relatives .family-group { opacity: .64; }
+.tree-card.all-relatives .family-group { opacity: .88; }
 .tree-card.all-relatives .family-group.direct { opacity: .88; }
 .tree-card.all-relatives .family-group.is-focused { opacity: 1; }
 .tree-card.all-relatives .family-group.is-focused .tree-edge:not(.edge-halo) { stroke: #b68827 !important; stroke-width: 3.6; }
@@ -197,7 +197,7 @@ svg { display: block; }
 .component-label rect { fill: #fffdf8; stroke: #ded5c5; }
 .component-label text { fill: #6e604c; font: 600 11px Arial, sans-serif; }
 .tree-node { --clan: #827a6e; --clan-soft: #fbfaf6; --clan-border: #d3cec4; cursor: pointer; }
-.tree-card.all-relatives .tree-node { opacity: .78; transition: opacity .18s ease; }
+.tree-card.all-relatives .tree-node { opacity: .96; transition: opacity .18s ease; }
 .tree-card.all-relatives .tree-node.is-family-member,
 .tree-card.all-relatives .tree-node:hover { opacity: 1; }
 .tree-card.all-relatives .tree-node.is-family-member .node-card { stroke: var(--gold); stroke-width: 2.3; }
