@@ -193,6 +193,7 @@ svg { display: block; }
 .tree-card.all-relatives .family-group.direct { opacity: .88; }
 .tree-card.all-relatives .family-group.is-focused { opacity: 1; }
 .tree-card.all-relatives .family-group.is-focused .tree-edge:not(.edge-halo) { stroke: #b68827 !important; stroke-width: 3.6; }
+.tree-card:not(.all-relatives) .family-group.is-focused .tree-edge:not(.edge-halo) { stroke: #b68827 !important; stroke-width: 3.2; }
 .tree-card.all-relatives .family-group.is-focused .tree-edge.edge-halo { stroke-width: 8; }
 .tree-card.has-relation-path .family-group { opacity: .17; }
 .tree-card.has-relation-path .family-group.is-on-route { opacity: 1; }
@@ -225,7 +226,15 @@ svg { display: block; }
 .tree-node .node-life { fill: var(--muted); font-family: var(--sans); font-size: 10px; pointer-events: none; }
 .tree-node.root .node-name { fill: #fffaf0; }
 .tree-node.root .node-life { fill: #c7d2cb; }
+.tree-node.featured-korkin .node-card { fill: #c52e43; stroke: #a51f35; stroke-width: 2.4; }
+.tree-node.featured-korkin .node-accent { fill: #ffc36f; }
+.tree-node.featured-korkin .node-name { fill: #fffaf4; font-weight: 700; }
+.tree-node.featured-korkin .node-life { fill: #ffe0d9; }
+.tree-node.featured-korkin.selected .node-card,
+.tree-node.featured-korkin:hover .node-card { stroke: #efad46; stroke-width: 3; }
 .stage-tip { position: absolute; z-index: 4; left: 13px; bottom: 12px; padding: 7px 10px; border: 1px solid rgba(218,211,197,.82); border-radius: 7px; color: #8f897e; background: rgba(255,253,247,.86); backdrop-filter: blur(6px); font-size: 9px; pointer-events: none; }
+.relation-badge { position: absolute; z-index: 6; top: 12px; left: 12px; max-width: min(340px, calc(100% - 24px)); padding: 9px 12px; border: 1px solid #d6b979; border-radius: 8px; color: #5d431d; background: rgba(255,249,235,.96); box-shadow: 0 5px 18px rgba(70,48,20,.10); font: 700 12px/1.3 var(--sans); pointer-events: none; }
+.relation-badge[hidden] { display: none; }
 .mobile-tip { display: none; }
 .state-card { position: absolute; z-index: 8; inset: 50% auto auto 50%; transform: translate(-50%,-50%); min-width: 245px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 26px; border: 1px solid var(--line); border-radius: 13px; background: rgba(255,253,247,.95); box-shadow: var(--shadow); text-align: center; }
 .state-card b { font-family: var(--serif); }
@@ -244,6 +253,9 @@ svg { display: block; }
 .life-line { margin: 0 0 17px; color: var(--gold-dark); font: 600 17px/1.35 var(--serif); }
 .root-mark { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 10px; padding: 6px 9px; border-radius: 999px; color: var(--green); background: var(--green-soft); font-size: 9px; font-weight: 800; text-transform: uppercase; }
 .kinship-path { margin: 8px 0 16px; padding: 11px 12px; border: 1px solid #dcc492; border-radius: 9px; background: #faf3e2; }
+.kinship-type { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 8px 0 14px; padding: 10px 12px; border: 1px solid #dcc492; border-radius: 9px; background: #fff7e8; }
+.kinship-type strong { color: #77551f; font-size: 10px; }
+.kinship-type span { color: #3d2c14; font: 700 14px var(--serif); }
 .kinship-path strong { display: block; color: #77551f; font-size: 11px; }
 .kinship-path p { margin: 6px 0 0; color: var(--text); font-size: 10px; line-height: 1.5; overflow-wrap: anywhere; }
 .relation-section { margin-top: 20px; }
