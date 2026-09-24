@@ -14,13 +14,12 @@
     drawer: $('#personDrawer'), detailName: $('#detailName'), details: $('#personDetails'), makeRoot: $('#makeRoot'),
     copy: $('#copyLink'), toast: $('#toast'), dialog: $('#shareDialog'), shareInput: $('#shareInput'),
     sidebar: $('#cabinetSidebar'), backdrop: $('#sidebarBackdrop'), branchToggle: $('#branchToggle'),
-    sheetNavigation: $('#sheetNavigation'), sheetPosition: $('#sheetPosition'),
     branchPanel: $('#branchPanel'), branchList: $('#branchList'), branchCount: $('#branchCount'), branchTotal: $('#branchTotal')
   };
 
   const state = {
     people: new Map(), families: new Map(), root: '', selected: '', direction: 'ancestors', scope: 'direct',
-    graph: null, components: [], expandedBranch: -1, activeIsland: 0, camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0, stageWidth: 0, hovered: ''
+    graph: null, components: [], expandedBranch: -1, camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0, stageWidth: 0, hovered: ''
   };
 
   const CARD_W = 196;
@@ -375,9 +374,58 @@
   }
 
   function layoutGraph(graph) {
-    if (state.scope === 'all') return layoutFamilyIslands(graph);
+    if (state.scope === 'all') return layoutCombined(graph);
     if (state.direction === 'ancestors') return layoutPedigree(graph);
     return layoutDescendants(graph);
+  }
+
+  // Keep the selected person on one card. Their ancestors rise above it and
+  // their families descend below it, as in a conventional focused pedigree.
+  function layoutCombined(graph) {
+    const ancestors = layoutPedigree(graph);
+    const descendants = layoutDescendants(graph);
+    const ancestorRoot = ancestors.nodes.get(state.root);
+    const descendantRoot = descendants.nodes.get(state.root);
+    const relativeX = ancestorRoot.x - descendantRoot.x;
+    const relativeY = ancestorRoot.y - descendantRoot.y;
+    const siblingFamilies = familiesAsChild(personById(state.root));
+    const siblingIds = [...new Set(siblingFamilies.flatMap(({ family }) => family.children))]
+      .filter((id) => id !== state.root && state.people.has(id));
+    const siblingStart = siblingIds.length ? ancestorRoot.x - siblingIds.length * (CARD_W + 16) : PAD;
+    const offsetX = Math.max(0, PAD - Math.min(PAD, relativeX + PAD, siblingStart));
+    const shifted = (node, x, y) => ({ ...node, x: node.x + x, y: node.y + y });
+    const renderNodes = ancestors.renderNodes.map((node) => shifted(node, offsetX, 0));
+    for (const node of descendants.renderNodes) {
+      if (node.id === state.root && node === descendantRoot) continue;
+      renderNodes.push(shifted(node, offsetX + relativeX, relativeY));
+    }
+    siblingIds.forEach((id, index) => renderNodes.push({
+      id, person: personById(id), x: siblingStart + offsetX + index * (CARD_W + 16),
+      y: ancestorRoot.y, direct: false
+    }));
+    const nodes = new Map();
+    renderNodes.forEach((node) => { if (!nodes.has(node.id)) nodes.set(node.id, node); });
+    const families = [
+      ...ancestors.families.map((family) => ({ ...family, transform: `translate(${offsetX} 0)` })),
+      ...descendants.families.map((family) => ({ ...family, transform: `translate(${offsetX + relativeX} ${relativeY})` }))
+    ];
+    for (const { family } of siblingFamilies) {
+      const ids = siblingIds.filter((id) => family.children.includes(id));
+      if (!ids.length) continue;
+      const rootCenter = ancestorRoot.x + offsetX + CARD_W / 2;
+      const busY = ancestorRoot.y - (184 - CARD_H) / 2;
+      const paths = [];
+      ids.forEach((id) => {
+        const sibling = nodes.get(id);
+        const siblingCenter = sibling.x + CARD_W / 2;
+        paths.push({ type: 'family', d: `M ${rootCenter} ${busY} H ${siblingCenter} V ${sibling.y}` });
+      });
+      families.push({ id: `${family.id}:siblings`, parents: [family.husband, family.wife].filter(Boolean),
+        children: ids, direct: false, clan: familyClan(family), paths });
+    }
+    const right = Math.max(ancestors.width + offsetX, descendants.width + offsetX + relativeX);
+    const bottom = Math.max(ancestors.height, descendants.height + relativeY);
+    return { ...graph, nodes, renderNodes, families, width: right, height: bottom };
   }
 
   function layoutDescendants(graph) {
@@ -527,98 +575,6 @@
       width: rootUnit.width + PAD * 2, height: PAD * 2 + deepest * levelHeight + CARD_H };
   }
 
-  // Family Echo's multiple-tree idea: repeat a person where two family sheets
-  // meet, but never draw a connector between different sheets.
-  function layoutFamilyIslands(graph) {
-    const renderNodes = [];
-    const firstById = new Map();
-    const families = [];
-    const boxes = [];
-    const memberFamilies = new Map();
-    for (const family of state.families.values()) {
-      for (const id of [family.husband, family.wife, ...family.children]) {
-        if (!state.people.has(id)) continue;
-        if (!memberFamilies.has(id)) memberFamilies.set(id, []);
-        memberFamilies.get(id).push(family);
-      }
-    }
-    const seen = new Set();
-    const ordered = [];
-    const enqueue = (family) => { if (family && !seen.has(family.id)) { seen.add(family.id); ordered.push(family); } };
-    (memberFamilies.get(state.root) || []).forEach(enqueue);
-    for (let index = 0; index < ordered.length; index++) {
-      const family = ordered[index];
-      for (const id of [family.husband, family.wife, ...family.children]) (memberFamilies.get(id) || []).forEach(enqueue);
-    }
-    for (const family of state.families.values()) enqueue(family);
-    let y = PAD + 32;
-    let widest = 0;
-    const cardGap = 20;
-    const columns = els.stage.clientWidth < 620 ? 2 : 4;
-    for (const [index, family] of ordered.entries()) {
-      const parents = [family.husband, family.wife].filter((id) => state.people.has(id));
-      const children = [...new Set(family.children)].filter((id) => state.people.has(id));
-      if (!parents.length && !children.length) continue;
-      const rowCount = Math.max(parents.length, Math.min(children.length, columns), 1);
-      const width = rowCount * CARD_W + (rowCount - 1) * cardGap;
-      const x0 = PAD;
-      const parentY = y + 31;
-      const childY = parentY + CARD_H + 86;
-      const parentX = x0 + (width - (parents.length * CARD_W + Math.max(0, parents.length - 1) * cardGap)) / 2;
-      const childRows = [];
-      for (let start = 0; start < children.length; start += columns) childRows.push(children.slice(start, start + columns));
-      const put = (id, x, nodeY) => {
-        const node = { id, person: personById(id), x, y: nodeY, direct: graph.directIds.has(id) };
-        renderNodes.push(node);
-        if (!firstById.has(id)) firstById.set(id, node);
-      };
-      parents.forEach((id, p) => put(id, parentX + p * (CARD_W + cardGap), parentY));
-      childRows.forEach((row, rowIndex) => {
-        const rowX = x0 + (width - (row.length * CARD_W + Math.max(0, row.length - 1) * cardGap)) / 2;
-        const rowY = childY + rowIndex * (CARD_H + 80);
-        row.forEach((id, c) => put(id, rowX + c * (CARD_W + cardGap), rowY));
-      });
-      const paths = [];
-      if (parents.length === 2) paths.push({ type: 'spouse', d: `M ${parentX + CARD_W} ${parentY + CARD_H / 2} H ${parentX + CARD_W + cardGap}` });
-      if (parents.length && children.length) {
-        const center = x0 + width / 2;
-        const trunkX = x0 - 10;
-        const firstBusY = childY - 37;
-        const lastBusY = firstBusY + (childRows.length - 1) * (CARD_H + 80);
-        if (childRows.length > 1) paths.push({ type: 'family', d: `M ${center} ${parentY + CARD_H} V ${firstBusY - 17} H ${trunkX} V ${lastBusY}` });
-        else paths.push({ type: 'family', d: `M ${center} ${parentY + CARD_H} V ${firstBusY}` });
-        childRows.forEach((row, rowIndex) => {
-          const rowX = x0 + (width - (row.length * CARD_W + Math.max(0, row.length - 1) * cardGap)) / 2;
-          const rowY = childY + rowIndex * (CARD_H + 80);
-          const busY = rowY - 37;
-          const childCenters = row.map((_, c) => rowX + c * (CARD_W + cardGap) + CARD_W / 2);
-          paths.push({ type: 'family', d: `M ${childRows.length > 1 ? trunkX : Math.min(...childCenters)} ${busY} H ${Math.max(...childCenters)}` });
-          row.forEach((id, c) => {
-            const foster = Boolean(personById(id).famc.find((ref) => ref.id === family.id && ref.pedi === 'foster'));
-            paths.push({ type: 'family', foster, d: `M ${childCenters[c]} ${busY} V ${rowY}` });
-          });
-        });
-      }
-      families.push({ id: family.id, parents, children, direct: parents.includes(state.root) || children.includes(state.root),
-        clan: familyClan(family), paths });
-      boxes.push({ x: x0 - 20, y, width: width + 40, height: children.length ? (childY - y) + childRows.length * CARD_H + (childRows.length - 1) * 80 + 20 : 31 + CARD_H + 34,
-        caption: `Семья ${index + 1} из ${ordered.length}` });
-      widest = Math.max(widest, width + PAD * 2);
-      y += boxes.at(-1).height + 38;
-    }
-    for (const person of state.people.values()) {
-      if (firstById.has(person.id)) continue;
-      const node = { id: person.id, person, x: PAD, y: y + 31, direct: graph.directIds.has(person.id) };
-      renderNodes.push(node);
-      firstById.set(person.id, node);
-      boxes.push({ x: PAD - 20, y, width: CARD_W + 40, height: CARD_H + 64, caption: 'Отдельная запись' });
-      y += CARD_H + 102;
-      widest = Math.max(widest, CARD_W + PAD * 2);
-    }
-    return { ...graph, nodes: firstById, renderNodes, families, islandBoxes: boxes,
-      width: widest, height: y + PAD };
-  }
-
   function splitName(name) {
     const words = compact(name).split(' ');
     const lines = [''];
@@ -640,7 +596,7 @@
     const desktopTip = $('#stageTip .desktop-tip');
     const mobileTip = $('#stageTip .mobile-tip');
     desktopTip.textContent = state.scope === 'all' ? 'Наведите на человека — выделится его семья · перетаскивайте схему' : 'Колесо — масштаб · перетаскивание — перемещение';
-    mobileTip.textContent = state.scope === 'all' ? 'Откройте «Ветви» или коснитесь карточки' : 'Двигайте пальцем · масштабируйте двумя пальцами';
+    mobileTip.textContent = state.scope === 'all' ? 'Коснитесь человека · двигайте древо пальцем' : 'Двигайте пальцем · масштабируйте двумя пальцами';
 
     const defs = svgEl('defs');
     const filter = svgEl('filter', { id: 'nodeShadow', x: '-20%', y: '-20%', width: '140%', height: '150%' });
@@ -657,17 +613,9 @@
       els.edges.appendChild(label);
     }
 
-    for (const box of graph.islandBoxes || []) {
-      const sheet = svgEl('g', { class: 'family-sheet' });
-      sheet.appendChild(svgEl('rect', { x: box.x, y: box.y, width: box.width, height: box.height, rx: 14 }));
-      const caption = svgEl('text', { x: box.x + 16, y: box.y + 20 });
-      caption.textContent = box.caption;
-      sheet.appendChild(caption);
-      els.edges.appendChild(sheet);
-    }
-
     for (const family of graph.families) {
       const familyGroup = svgEl('g', { class: 'family-group', 'data-family-id': family.id });
+      if (family.transform) familyGroup.setAttribute('transform', family.transform);
       for (const path of family.paths) {
         const classes = `${path.type}${family.direct ? ' direct' : ''}${path.foster ? ' foster' : ''}`;
         familyGroup.appendChild(svgEl('path', { d: path.d, class: `tree-edge edge-halo ${classes}` }));
@@ -718,11 +666,8 @@
     const mode = state.scope === 'direct' ? (state.direction === 'ancestors' ? 'Прямые предки' : 'Прямые потомки') : 'Все люди';
     const direction = state.direction === 'ancestors' ? 'предки' : 'потомки';
     els.summary.textContent = state.scope === 'all'
-      ? `Все ${graph.nodes.size} человек · ${graph.islandBoxes.length} семейных схем · выберите человека для перехода`
+      ? `На схеме ${graph.nodes.size} ${plural(graph.nodes.size, ['человек', 'человека', 'человек'])} · в базе ${state.people.size} · выберите человека для перехода`
       : `${mode} · ${direction} · ${graph.nodes.size} ${plural(graph.nodes.size, ['человек', 'человека', 'человек'])} на схеме`;
-    state.activeIsland = 0;
-    els.sheetNavigation.hidden = state.scope !== 'all';
-    updateSheetNavigation();
     els.svg.removeAttribute('hidden');
     els.loading.hidden = true;
     updateFamilyFocus();
@@ -752,29 +697,6 @@
     els.zoomValue.textContent = `${Math.round(state.camera.scale * 100)}%`;
   }
 
-  function updateSheetNavigation() {
-    const count = state.graph?.islandBoxes?.length || 0;
-    els.sheetPosition.textContent = `Семья ${Math.min(state.activeIsland + 1, count)} из ${count}`;
-    $('#previousSheet').disabled = state.activeIsland <= 0;
-    $('#nextSheet').disabled = state.activeIsland >= count - 1;
-  }
-
-  function focusIsland(index) {
-    const boxes = state.graph?.islandBoxes;
-    if (!boxes?.length) return;
-    state.activeIsland = clamp(index, 0, boxes.length - 1);
-    const box = boxes[state.activeIsland];
-    const size = visibleStageSize();
-    const scale = clamp((size.width - 32) / box.width, .42, .9);
-    state.camera.scale = scale;
-    state.camera.x = (size.width - box.width * scale) / 2 - box.x * scale;
-    state.camera.y = box.height * scale <= size.height - 32
-      ? (size.height - box.height * scale) / 2 - box.y * scale
-      : 58 - box.y * scale;
-    updateCamera();
-    updateSheetNavigation();
-  }
-
   function fitTree() {
     if (!state.graph) return;
     if (state.scope === 'all' && els.drawer.classList.contains('open')) {
@@ -783,7 +705,7 @@
       return;
     }
     const size = visibleStageSize();
-    const scale = clamp(Math.min((size.width - 44) / state.graph.width, (size.height - 44) / state.graph.height), .12, 1.15);
+    const scale = clamp(Math.min((size.width - 44) / state.graph.width, (size.height - 44) / state.graph.height), .02, 1.15);
     state.camera.scale = scale;
     state.camera.x = (size.width - state.graph.width * scale) / 2;
     state.camera.y = (size.height - state.graph.height * scale) / 2;
@@ -795,16 +717,14 @@
     const node = state.graph.nodes.get(state.root);
     if (!node) return;
     const size = visibleStageSize();
-    if (state.scope === 'all' && state.graph.islandBoxes?.length) {
-      focusIsland(0);
-      return;
-    }
     const fitScale = Math.min((size.width - 44) / state.graph.width, (size.height - 44) / state.graph.height);
-    const readableScale = .82;
+    const readableScale = state.scope === 'all' ? (els.stage.clientWidth < 620 ? .56 : .72) : .82;
     const scale = clamp(Math.max(fitScale, readableScale), .18, 1);
     state.camera.scale = scale;
     state.camera.x = size.width / 2 - (node.x + CARD_W / 2) * scale;
-    state.camera.y = state.direction === 'ancestors'
+    state.camera.y = state.scope === 'all'
+      ? size.height * (els.stage.clientWidth < 620 ? .56 : .64) - (node.y + CARD_H / 2) * scale
+      : state.direction === 'ancestors'
       ? (els.stage.clientWidth < 620
         ? Math.min(els.stage.clientHeight * .45, 260) - (node.y + CARD_H / 2) * scale
         : size.height - 38 - (node.y + CARD_H) * scale)
@@ -827,7 +747,7 @@
     const px = clientX == null ? rect.width / 2 : clientX - rect.left;
     const py = clientY == null ? rect.height / 2 : clientY - rect.top;
     const oldScale = state.camera.scale;
-    const newScale = clamp(oldScale * factor, .12, 2.4);
+    const newScale = clamp(oldScale * factor, .02, 2.4);
     const worldX = (px - state.camera.x) / oldScale;
     const worldY = (py - state.camera.y) / oldScale;
     state.camera.x = px - worldX * newScale;
@@ -852,10 +772,10 @@
     els.branchToggle.hidden = state.scope !== 'all';
     if (state.scope !== 'all') setBranchPanel(false);
     const fitButton = $('#fitTree');
-    fitButton.setAttribute('aria-label', state.scope === 'all' ? 'Вернуться к центру древа' : 'Показать древо целиком');
+    fitButton.setAttribute('aria-label', 'Показать древо целиком');
     fitButton.title = fitButton.getAttribute('aria-label');
     $('#pageHelp').textContent = state.scope === 'all'
-      ? `Все ${state.people.size} человек показаны в отдельных семейных схемах. Повторяющиеся карточки связывают семьи.`
+      ? `Предки, братья, сёстры, супруги и потомки выбранного человека показаны одной схемой. Все ${state.people.size} записей доступны через поиск.`
       : 'Исследуйте прямую линию предков или откройте боковые ветви семьи.';
   }
 
@@ -941,21 +861,6 @@
     updateCamera();
   }
 
-  function jumpToPerson(id) {
-    selectPerson(id, true);
-    const node = state.graph?.nodes.get(id);
-    if (!node) return;
-    if (state.scope === 'all') {
-      const index = state.graph.islandBoxes.findIndex((box) => node.y >= box.y && node.y < box.y + box.height);
-      if (index >= 0) { focusIsland(index); return; }
-    }
-    const { width, height } = visibleStageSize();
-    state.camera.scale = els.stage.clientWidth < 620 ? .7 : .9;
-    state.camera.x = width / 2 - (node.x + CARD_W / 2) * state.camera.scale;
-    state.camera.y = height / 2 - (node.y + CARD_H / 2) * state.camera.scale;
-    updateCamera();
-  }
-
   function setHoveredPerson(id) {
     if (state.scope !== 'all' || state.hovered === id) return;
     state.hovered = id;
@@ -967,19 +872,7 @@
     const focusId = state.hovered && state.graph.nodes.has(state.hovered) ? state.hovered : state.selected;
     const touchingFamilies = state.graph.families
       .filter((family) => family.parents.includes(focusId) || family.children.includes(focusId));
-    const focusNode = state.graph.nodes.get(focusId);
-    if (state.scope === 'all' && focusNode) {
-      const score = (family) => {
-        const distances = [...family.parents, ...family.children]
-          .filter((id) => id !== focusId)
-          .map((id) => state.graph.nodes.get(id))
-          .filter(Boolean)
-          .map((node) => Math.hypot(node.x - focusNode.x, node.y - focusNode.y));
-        return distances.filter((distance) => distance < 750).length * 10000 - Math.min(...distances);
-      };
-      touchingFamilies.sort((a, b) => score(b) - score(a));
-    }
-    const activeFamilies = new Set((state.scope === 'all' ? touchingFamilies.slice(0, 1) : touchingFamilies).map((family) => family.id));
+    const activeFamilies = new Set(touchingFamilies.map((family) => family.id));
     const activePeople = new Set([focusId]);
     for (const family of state.graph.families) {
       if (activeFamilies.has(family.id)) [...family.parents, ...family.children].forEach((id) => activePeople.add(id));
@@ -993,7 +886,7 @@
       group.classList.toggle('is-family-member', activePeople.has(group.getAttribute('data-person-id')));
       group.classList.toggle('is-focus-person', group.getAttribute('data-person-id') === focusId);
     });
-    if (state.scope === 'all') els.summary.textContent = `Все ${state.graph.nodes.size} человек · ${state.graph.islandBoxes.length} семейных схем · ${state.components.length} отдельных ветвей`;
+    if (state.scope === 'all') els.summary.textContent = `На схеме ${state.graph.nodes.size} человек · в базе ${state.people.size} · ${state.components.length} отдельных ветвей`;
   }
 
   function drawSelection() {
@@ -1057,7 +950,7 @@
     $('#closeBranches').addEventListener('click', () => setBranchPanel(false));
     els.branchList.addEventListener('click', (event) => {
       const person = event.target.closest('.branch-person');
-      if (person) { jumpToPerson(person.dataset.personId); return; }
+      if (person) { setRoot(person.dataset.personId); setBranchPanel(false); return; }
       const branch = event.target.closest('.branch-item');
       if (!branch) return;
       const index = Number(branch.dataset.branchIndex);
@@ -1075,9 +968,7 @@
     $('#zoomIn').addEventListener('click', () => zoomAt(1.22));
     $('#zoomOut').addEventListener('click', () => zoomAt(1 / 1.22));
     els.zoomValue.addEventListener('click', centerAtActualSize);
-    $('#fitTree').addEventListener('click', () => state.scope === 'all' ? focusRoot() : fitTree());
-    $('#previousSheet').addEventListener('click', () => focusIsland(state.activeIsland - 1));
-    $('#nextSheet').addEventListener('click', () => focusIsland(state.activeIsland + 1));
+    $('#fitTree').addEventListener('click', fitTree);
     $('#fullScreen').addEventListener('click', async () => {
       if (!document.fullscreenElement) await els.treeCard.requestFullscreen?.();
       else await document.exitFullscreen?.();
