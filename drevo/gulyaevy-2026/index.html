@@ -7,7 +7,7 @@
   <meta name="referrer" content="no-referrer">
   <title>Древо рода Гуляевых — кабинет «Исток»</title>
   <meta name="description" content="Интерактивное родословное древо семьи Гуляевых в личном кабинете родословного бюро «Исток».">
-  <link rel="stylesheet" href="../../gulyaevy-tree.css?v=19">
+  <link rel="stylesheet" href="../../gulyaevy-tree.css?v=21">
 </head>
 <body>
   <header class="site-header">
@@ -16,7 +16,7 @@
       <span><b>Исток</b><small>Родословное бюро</small></span>
     </a>
     <nav class="site-nav" aria-label="Основная навигация"><a href="../../#services">Услуги</a><a href="../../#process">Как работаем</a><a href="../../#examples">Примеры</a><a href="../../#about">О бюро</a><a href="../../#contacts">Контакты</a></nav>
-    <div class="header-contact"><b>+7 495 000-00-00</b><span>Пн–Сб, 10:00–20:00</span></div>
+    <div class="header-contact"><b>+7 922 008-97-61</b><span>Пн–Сб, 10:00–20:00</span></div>
     <a class="header-cta" href="../../#contact">Узнать о своём роде</a>
   </header>
 
@@ -78,6 +78,7 @@
 
         <div class="tree-stage" id="treeStage">
           <aside class="branch-panel" id="branchPanel" aria-label="Ветви родословной" hidden><div class="branch-panel-head"><div><strong>Ветви родословной</strong><small>Откройте ветвь и выберите человека из <span id="branchTotal">299</span></small></div><button id="closeBranches" type="button" aria-label="Закрыть список ветвей">×</button></div><div class="branch-list" id="branchList"></div><p>Между отдельными ветвями в GEDCOM пока не указана связь.</p></aside>
+          <nav class="sheet-navigation" id="sheetNavigation" aria-label="Семейные схемы" hidden><button id="previousSheet" type="button" aria-label="Предыдущая семья">←</button><span id="sheetPosition">Семья 1 из 113</span><button id="nextSheet" type="button" aria-label="Следующая семья">→</button></nav>
           <div class="stage-tip" id="stageTip"><span class="desktop-tip"><b>Колесо</b> — масштаб · <b>перетаскивание</b> — перемещение</span><span class="mobile-tip"><b>Двигайте пальцем</b> · масштабируйте двумя пальцами</span></div>
           <div class="state-card" id="loadingState"><span class="spinner"></span><b>Собираем родословную</b><small>Читаем связи из GEDCOM</small></div>
           <div class="state-card error" id="errorState" hidden><b>Древо не загрузилось</b><small id="errorText">Обновите страницу или попробуйте позже.</small></div>
@@ -92,7 +93,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <dialog id="shareDialog" class="share-dialog"><form method="dialog"><button class="dialog-close" aria-label="Закрыть">×</button><span class="eyebrow">Ссылка на выбранное древо</span><h2>Скопируйте адрес</h2><p>Выделите ссылку и скопируйте её вручную.</p><input id="shareInput" readonly><button class="action-button primary" value="close">Готово</button></form></dialog>
-  <script src="../../vendor/dagre.min.js?v=3.1.1"></script>
-  <script src="../../gulyaevy-tree.js?v=31" defer></script>
+  <script src="../../gulyaevy-tree.js?v=33" defer></script>
 </body>
 </html>

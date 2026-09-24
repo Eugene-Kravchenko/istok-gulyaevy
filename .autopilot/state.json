@@ -1,0 +1,87 @@
+{
+  "slug": "family-echo-tree",
+  "title": "Древо Гуляевых по принципам Family Echo",
+  "mode": "semi",
+  "depth": "normal",
+  "tier": "T0",
+  "briefFile": "2026-09-24-brief.md",
+  "memoryFile": "AGENTS.md",
+  "startedAt": "2026-09-24T10:36:11Z",
+  "updatedAt": "2026-09-24T11:23:35Z",
+  "finishedAt": null,
+  "stages": [
+    {
+      "id": "preflight",
+      "status": "done",
+      "startedAt": "2026-09-24T10:36:11Z",
+      "finishedAt": "2026-09-24T10:55:41Z"
+    },
+    {
+      "id": "manifest",
+      "status": "done",
+      "finishedAt": "2026-09-24T10:55:41Z"
+    },
+    {
+      "id": "briefing",
+      "status": "done",
+      "finishedAt": "2026-09-24T10:55:41Z"
+    },
+    {
+      "id": "spec",
+      "status": "done",
+      "finishedAt": "2026-09-24T10:55:41Z"
+    },
+    {
+      "id": "plan",
+      "status": "skipped",
+      "note": "Ярус T0 — единый статический экран, без отдельных тасков"
+    },
+    {
+      "id": "build",
+      "status": "done",
+      "startedAt": "2026-09-24T10:55:41Z",
+      "finishedAt": "2026-09-24T11:23:35Z"
+    },
+    {
+      "id": "review",
+      "status": "active",
+      "startedAt": "2026-09-24T11:23:35Z"
+    },
+    {
+      "id": "final",
+      "status": "pending"
+    }
+  ],
+  "requirements": {
+    "total": 12,
+    "done": 11,
+    "inTicket": 0,
+    "inSpec": 1,
+    "placeholder": 0,
+    "deferred": 0,
+    "dropped": 0
+  },
+  "tickets": [],
+  "singlePass": {
+    "files": [
+      "gulyaevy-tree.js",
+      "gulyaevy-tree.css",
+      "drevo/gulyaevy-2026/index.html"
+    ],
+    "tests": [
+      "node --check: passed",
+      "браузер: 299 уникальных людей, 113 семейных схем, имена без переполнения, 0 пересечений на проверенных ветвях"
+    ],
+    "commit": "pending",
+    "startedAt": "2026-09-24T10:55:41Z",
+    "finishedAt": "2026-09-24T11:23:35Z"
+  },
+  "tests": null,
+  "debt": {
+    "placeholders": [],
+    "assumptions": [],
+    "emptyEnv": []
+  },
+  "additions": [],
+  "blind": null
+}

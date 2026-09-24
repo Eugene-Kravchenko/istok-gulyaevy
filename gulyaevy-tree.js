@@ -14,16 +14,17 @@
     drawer: $('#personDrawer'), detailName: $('#detailName'), details: $('#personDetails'), makeRoot: $('#makeRoot'),
     copy: $('#copyLink'), toast: $('#toast'), dialog: $('#shareDialog'), shareInput: $('#shareInput'),
     sidebar: $('#cabinetSidebar'), backdrop: $('#sidebarBackdrop'), branchToggle: $('#branchToggle'),
+    sheetNavigation: $('#sheetNavigation'), sheetPosition: $('#sheetPosition'),
     branchPanel: $('#branchPanel'), branchList: $('#branchList'), branchCount: $('#branchCount'), branchTotal: $('#branchTotal')
   };
 
   const state = {
     people: new Map(), families: new Map(), root: '', selected: '', direction: 'ancestors', scope: 'direct',
-    graph: null, components: [], expandedBranch: -1, camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0, stageWidth: 0, hovered: ''
+    graph: null, components: [], expandedBranch: -1, activeIsland: 0, camera: { x: 0, y: 0, scale: 1 }, pointers: new Map(), drag: null, moved: false, resizeTimer: 0, stageWidth: 0, hovered: ''
   };
 
-  const CARD_W = 176;
-  const CARD_H = 92;
+  const CARD_W = 196;
+  const CARD_H = 110;
   const PAD = 44;
 
   const compact = (value = '') => String(value).replace(/\s+/g, ' ').trim();
@@ -162,12 +163,25 @@
     return result;
   }
 
+  function readableDate(value) {
+    const date = compact(value);
+    const between = date.match(/^BET (.+) AND (.+)$/i);
+    if (between) return `между ${readableDate(between[1])} и ${readableDate(between[2])}`;
+    const qualifiers = { ABT: 'около', BEF: 'до', AFT: 'после', EST: 'примерно', CAL: 'примерно' };
+    const qualified = date.match(/^(ABT|BEF|AFT|EST|CAL) (.+)$/i);
+    if (qualified) return `${qualifiers[qualified[1].toUpperCase()]} ${readableDate(qualified[2])}`;
+    const months = { JAN: '01', FEB: '02', MAR: '03', APR: '04', MAY: '05', JUN: '06', JUL: '07', AUG: '08', SEP: '09', OCT: '10', NOV: '11', DEC: '12' };
+    const full = date.match(/^(\d{1,2}) ([A-Z]{3}) (\d{4})$/i);
+    if (full && months[full[2].toUpperCase()]) return `${full[1].padStart(2, '0')}.${months[full[2].toUpperCase()]}.${full[3]}`;
+    return date;
+  }
+
   function life(person, detailed = false) {
     const birth = person.birth || '';
     const death = person.death || '';
     if (detailed) {
       if (!birth && !death) return '';
-      return compact(`${birth ? `р. ${birth}` : ''}${birth && death ? ' · ' : ''}${death ? `ум. ${death}` : ''}`);
+      return compact(`${birth ? `р. ${readableDate(birth)}` : ''}${birth && death ? ' · ' : ''}${death ? `ум. ${readableDate(death)}` : ''}`);
     }
     const born = yearFrom(birth);
     const died = yearFrom(death);
@@ -314,6 +328,12 @@
     const visited = new Set([root.id]);
     while (queue.length) {
       const current = queue.shift();
+      if (state.direction === 'descendants') {
+        for (const { person: spouse } of spousesOf(current.person)) {
+          addGraphNode(nodes, spouse, current.generation, true);
+          directIds.add(spouse.id);
+        }
+      }
       const relatives = state.direction === 'ancestors'
         ? parentsOf(current.person).map((entry) => entry.person)
         : childrenOf(current.person).map((entry) => entry.person);
@@ -354,150 +374,249 @@
     return { nodes, edges, directIds };
   }
 
-  function visibleFamilies(graph) {
-    const families = [];
-    for (const family of state.families.values()) {
-      const parents = [family.husband, family.wife].filter((id) => graph.nodes.has(id));
-      const children = family.children.filter((id) => graph.nodes.has(id));
-      if (!children.length && parents.length < 2) continue;
-      if (!parents.length) continue;
-      const direct = parents.some((id) => graph.directIds.has(id)) && (children.some((id) => graph.directIds.has(id)) || parents.every((id) => graph.directIds.has(id)));
-      families.push({ id: family.id, parents, children, direct });
-    }
-    return families;
-  }
-
-  function buildLayoutUnits(graph, families) {
-    const units = new Map();
-    const personToUnit = new Map();
-    const assigned = new Set();
-    const candidates = families
-      .filter((family) => family.parents.length === 2)
-      .sort((a, b) => Number(b.direct) - Number(a.direct) || b.children.length - a.children.length || a.id.localeCompare(b.id));
-
-    for (const family of candidates) {
-      const alreadyPlaced = family.parents.filter((id) => assigned.has(id));
-      if (alreadyPlaced.length === 2) continue;
-      if (alreadyPlaced.length === 1) {
-        const known = alreadyPlaced[0];
-        const newcomer = family.parents.find((id) => id !== known);
-        const unit = units.get(personToUnit.get(known));
-        const index = unit?.memberIds.indexOf(known) ?? -1;
-        if (unit && unit.memberIds.length === 2 && (index === 0 || index === 1)) {
-          if (index === 0) unit.memberIds.unshift(newcomer);
-          else unit.memberIds.push(newcomer);
-          unit.width = CARD_W * unit.memberIds.length + 20 * (unit.memberIds.length - 1);
-          assigned.add(newcomer);
-          personToUnit.set(newcomer, unit.id);
-        }
-        continue;
-      }
-      const memberIds = [...family.parents].sort((a, b) => {
-        const sexA = graph.nodes.get(a)?.person.sex || '';
-        const sexB = graph.nodes.get(b)?.person.sex || '';
-        return (sexA === 'M' ? -1 : sexB === 'M' ? 1 : 0) || a.localeCompare(b);
-      });
-      const unit = { id: `couple:${family.id}`, memberIds, width: CARD_W * 2 + 20, height: CARD_H };
-      units.set(unit.id, unit);
-      memberIds.forEach((id) => { assigned.add(id); personToUnit.set(id, unit.id); });
-    }
-
-    for (const node of graph.nodes.values()) {
-      if (assigned.has(node.id)) continue;
-      const unit = { id: `person:${node.id}`, memberIds: [node.id], width: CARD_W, height: CARD_H };
-      units.set(unit.id, unit);
-      personToUnit.set(node.id, unit.id);
-    }
-    return { units, personToUnit };
-  }
-
-  function layoutConnectedGraph(graph) {
-    if (!window.dagre?.graphlib?.Graph) throw new Error('Модуль компоновки древа не загрузился');
-    const layout = new window.dagre.graphlib.Graph({ multigraph: true });
-    layout.setGraph({
-      rankdir: state.direction === 'ancestors' ? 'BT' : 'TB',
-      ranker: 'network-simplex',
-      acyclicer: 'greedy',
-      nodesep: state.scope === 'all' ? 28 : 18,
-      edgesep: state.scope === 'all' ? 16 : 10,
-      ranksep: state.scope === 'all' ? 82 : 54,
-      marginx: PAD,
-      marginy: PAD
-    });
-    layout.setDefaultEdgeLabel(() => ({}));
-
-    const families = visibleFamilies(graph);
-    const { units, personToUnit } = buildLayoutUnits(graph, families);
-    for (const unit of units.values()) layout.setNode(unit.id, { width: unit.width, height: unit.height });
-    for (const family of families) {
-      const hubId = `family:${family.id}`;
-      layout.setNode(hubId, { width: 4, height: 4 });
-      const weight = family.direct ? 18 : 5;
-      const describeUnits = (ids) => [...new Set(ids.map((id) => personToUnit.get(id)).filter(Boolean))]
-        .map((unitId) => ({ unitId, personIds: ids.filter((id) => personToUnit.get(id) === unitId) }));
-      const parentUnits = describeUnits(family.parents);
-      const childUnits = describeUnits(family.children);
-      family.routeSpecs = [];
-      const connect = (from, to, role, unit, index) => {
-        const name = `${role}:${family.id}:${index}`;
-        layout.setEdge(from, to, { minlen: 1, weight }, name);
-        family.routeSpecs.push({ from, to, name, role, unitId: unit.unitId, personIds: unit.personIds });
-      };
-      if (state.direction === 'ancestors') {
-        childUnits.forEach((unit, index) => connect(unit.unitId, hubId, 'child', unit, index));
-        parentUnits.forEach((unit, index) => connect(hubId, unit.unitId, 'parent', unit, index));
-      } else {
-        parentUnits.forEach((unit, index) => connect(unit.unitId, hubId, 'parent', unit, index));
-        childUnits.forEach((unit, index) => connect(hubId, unit.unitId, 'child', unit, index));
-      }
-    }
-
-    window.dagre.layout(layout);
-    for (const unit of units.values()) {
-      const placed = layout.node(unit.id);
-      const startX = placed.x - unit.width / 2;
-      unit.memberIds.forEach((personId, index) => {
-        const node = graph.nodes.get(personId);
-        node.x = startX + index * (CARD_W + 20);
-        node.y = placed.y - CARD_H / 2;
-      });
-    }
-    for (const family of families) {
-      const placed = layout.node(`family:${family.id}`);
-      family.hub = { x: placed.x, y: placed.y };
-      family.clan = familyClan(state.families.get(family.id));
-      family.routes = family.routeSpecs.map((route) => ({ ...route, points: layout.edge({ v: route.from, w: route.to, name: route.name })?.points || [] }));
-    }
-    assignRouteLanes(families, graph);
-    return { ...graph, families, units, width: layout.graph().width, height: layout.graph().height };
-  }
-
   function layoutGraph(graph) {
-    if (state.scope !== 'all') return layoutConnectedGraph(graph);
-    const components = orderedComponents();
-    const families = [];
-    const componentBoxes = [];
-    let offsetX = 0;
-    let height = 0;
-    for (const members of components) {
-      const memberIds = new Set(members);
-      const nodes = new Map(members.map((id) => [id, graph.nodes.get(id)]).filter(([, node]) => node));
-      if (!nodes.size) continue;
-      const part = layoutConnectedGraph({ nodes, directIds: graph.directIds });
-      for (const node of nodes.values()) node.x += offsetX;
-      for (const family of part.families) {
-        family.hub.x += offsetX;
-        for (const route of family.routes) {
-          route.points.forEach((point) => { point.x += offsetX; });
-          route.displayPoints.forEach((point) => { point.x += offsetX; });
-        }
-        families.push(family);
+    if (state.scope === 'all') return layoutFamilyIslands(graph);
+    if (state.direction === 'ancestors') return layoutPedigree(graph);
+    return layoutDescendants(graph);
+  }
+
+  function layoutDescendants(graph) {
+    const cardGap = 24;
+    const branchGap = 42;
+    const levelHeight = 192;
+    let deepest = 0;
+    const makeUnit = (personId, family, generation, path) => {
+      deepest = Math.max(deepest, generation);
+      const spouseId = family ? [family.husband, family.wife].find((id) => id && id !== personId && state.people.has(id)) : '';
+      const memberIds = [personId, spouseId].filter(Boolean);
+      const nextPath = new Set(path);
+      nextPath.add(personId);
+      const children = [];
+      if (family) for (const childId of family.children) {
+        if (!state.people.has(childId) || nextPath.has(childId)) continue;
+        const child = personById(childId);
+        const childFamilies = familiesAsSpouse(child);
+        if (childFamilies.length) childFamilies.forEach((nextFamily) => {
+          children.push({ id: childId, unit: makeUnit(childId, nextFamily, generation + 1, nextPath) });
+        });
+        else children.push({ id: childId, unit: makeUnit(childId, null, generation + 1, nextPath) });
       }
-      componentBoxes.push({ x: offsetX, width: part.width, count: nodes.size, isRoot: memberIds.has(state.root) });
-      offsetX += part.width + 180;
-      height = Math.max(height, part.height);
+      const cardsWidth = memberIds.length * CARD_W + Math.max(0, memberIds.length - 1) * cardGap;
+      const childrenWidth = children.reduce((sum, entry) => sum + entry.unit.width, 0)
+        + Math.max(0, children.length - 1) * branchGap;
+      return { personId, memberIds, family, generation, children, width: Math.max(cardsWidth, childrenWidth) };
+    };
+    const rootFamilies = familiesAsSpouse(personById(state.root));
+    const roots = (rootFamilies.length ? rootFamilies : [null]).map((family) => makeUnit(state.root, family, 0, new Set()));
+    const renderNodes = [];
+    const firstById = new Map();
+    const families = [];
+    const place = (unit, left) => {
+      const middle = left + unit.width / 2;
+      const cardsWidth = unit.memberIds.length * CARD_W + Math.max(0, unit.memberIds.length - 1) * cardGap;
+      const firstX = middle - cardsWidth / 2;
+      const y = PAD + unit.generation * levelHeight;
+      const cards = new Map();
+      unit.memberIds.forEach((id, index) => {
+        const node = { id, person: personById(id), x: firstX + index * (CARD_W + cardGap), y, direct: true };
+        renderNodes.push(node);
+        cards.set(id, node);
+        if (!firstById.has(id)) firstById.set(id, node);
+      });
+      const pathParts = [];
+      if (unit.memberIds.length === 2) {
+        pathParts.push({ type: 'spouse', d: `M ${firstX + CARD_W} ${y + CARD_H / 2} H ${firstX + CARD_W + cardGap}` });
+      }
+      const childNodes = [];
+      let cursor = left + (unit.width - (unit.children.reduce((sum, entry) => sum + entry.unit.width, 0)
+        + Math.max(0, unit.children.length - 1) * branchGap)) / 2;
+      for (const entry of unit.children) {
+        const childNode = place(entry.unit, cursor);
+        childNodes.push({ id: entry.id, node: childNode });
+        cursor += entry.unit.width + branchGap;
+      }
+      if (childNodes.length) {
+        const center = middle;
+        const busY = y + CARD_H + (levelHeight - CARD_H) / 2;
+        const centers = childNodes.map((entry) => entry.node.x + CARD_W / 2);
+        pathParts.push({ type: 'family', d: `M ${center} ${y + CARD_H} V ${busY} M ${Math.min(...centers)} ${busY} H ${Math.max(...centers)}` });
+        childNodes.forEach((entry) => {
+          const foster = Boolean(personById(entry.id).famc.find((ref) => ref.id === unit.family.id && ref.pedi === 'foster'));
+          pathParts.push({ type: 'family', foster, d: `M ${entry.node.x + CARD_W / 2} ${busY} V ${entry.node.y}` });
+        });
+      }
+      if (unit.family) families.push({ id: `${unit.family.id}:desc:${families.length}`, parents: unit.memberIds,
+        children: unit.children.map((entry) => entry.id), direct: true, clan: familyClan(unit.family), paths: pathParts });
+      return cards.get(unit.personId);
+    };
+    let x = PAD;
+    roots.forEach((unit) => { place(unit, x); x += unit.width + 80; });
+    return { ...graph, nodes: firstById, renderNodes, families,
+      width: x - 80 + PAD, height: PAD * 2 + deepest * levelHeight + CARD_H };
+  }
+
+  // Each ancestor couple owns a separate horizontal interval. This keeps
+  // connections local to one family instead of sharing a generation-wide bus.
+  function layoutPedigree(graph) {
+    const gap = 24;
+    const branchGap = 42;
+    const levelHeight = 184;
+    let deepest = 0;
+    const makeUnit = (memberIds, generation, familyId, path) => {
+      deepest = Math.max(deepest, generation);
+      const members = memberIds.filter((id) => state.people.has(id));
+      const unit = { memberIds: members, generation, familyId, parents: [], width: members.length * CARD_W + (members.length - 1) * gap };
+      for (const childId of members) {
+        const person = personById(childId);
+        if (path.has(childId)) continue;
+        const nextPath = new Set(path);
+        nextPath.add(childId);
+        for (const { family } of familiesAsChild(person)) {
+          const parentIds = [family.husband, family.wife].filter((id) => state.people.has(id));
+          if (!parentIds.length) continue;
+          unit.parents.push({ childId, unit: makeUnit(parentIds, generation + 1, family.id, nextPath) });
+        }
+      }
+      const parentsWidth = unit.parents.reduce((sum, entry) => sum + entry.unit.width, 0)
+        + Math.max(0, unit.parents.length - 1) * branchGap;
+      unit.width = Math.max(unit.width, parentsWidth);
+      return unit;
+    };
+    const rootUnit = makeUnit([state.root], 0, '', new Set());
+    const renderNodes = [];
+    const families = [];
+    const firstById = new Map();
+    const place = (unit, left) => {
+      const middle = left + unit.width / 2;
+      const cardsWidth = unit.memberIds.length * CARD_W + Math.max(0, unit.memberIds.length - 1) * gap;
+      const firstX = middle - cardsWidth / 2;
+      const y = PAD + (deepest - unit.generation) * levelHeight;
+      const cardById = new Map();
+      unit.memberIds.forEach((id, index) => {
+        const node = { id, person: personById(id), x: firstX + index * (CARD_W + gap), y, direct: true };
+        renderNodes.push(node);
+        cardById.set(id, node);
+        if (!firstById.has(id)) firstById.set(id, node);
+      });
+      if (unit.memberIds.length === 2) {
+        families.push({ id: `${unit.familyId}:pair:${renderNodes.length}`, parents: unit.memberIds, children: [], direct: true,
+          clan: familyClan(state.families.get(unit.familyId)),
+          paths: [{ type: 'spouse', d: `M ${firstX + CARD_W} ${y + CARD_H / 2} H ${firstX + CARD_W + gap}` }] });
+      }
+      let cursor = left + (unit.width - (unit.parents.reduce((sum, entry) => sum + entry.unit.width, 0)
+        + Math.max(0, unit.parents.length - 1) * branchGap)) / 2;
+      for (const entry of unit.parents) {
+        const ancestor = entry.unit;
+        const ancestorCenter = cursor + ancestor.width / 2;
+        place(ancestor, cursor);
+        const child = cardById.get(entry.childId);
+        const sameChild = unit.parents.filter((candidate) => candidate.childId === entry.childId);
+        const childX = child.x + CARD_W / 2 + (sameChild.indexOf(entry) - (sameChild.length - 1) / 2) * 48;
+        const fromY = PAD + (deepest - ancestor.generation) * levelHeight + CARD_H;
+        const midY = fromY + (y - fromY) / 2;
+        const parentIds = ancestor.memberIds;
+        const foster = Boolean(child.person.famc.find((ref) => ref.id === ancestor.familyId && ref.pedi === 'foster'));
+        families.push({ id: `${ancestor.familyId}:link:${families.length}`, parents: parentIds, children: [entry.childId], direct: true,
+          clan: familyClan(state.families.get(ancestor.familyId)), paths: [{ type: 'family', foster,
+            d: `M ${ancestorCenter} ${fromY} V ${midY} H ${childX} V ${y}` }] });
+        cursor += ancestor.width + branchGap;
+      }
+    };
+    place(rootUnit, PAD);
+    return { ...graph, nodes: firstById, renderNodes, families,
+      width: rootUnit.width + PAD * 2, height: PAD * 2 + deepest * levelHeight + CARD_H };
+  }
+
+  // Family Echo's multiple-tree idea: repeat a person where two family sheets
+  // meet, but never draw a connector between different sheets.
+  function layoutFamilyIslands(graph) {
+    const renderNodes = [];
+    const firstById = new Map();
+    const families = [];
+    const boxes = [];
+    const memberFamilies = new Map();
+    for (const family of state.families.values()) {
+      for (const id of [family.husband, family.wife, ...family.children]) {
+        if (!state.people.has(id)) continue;
+        if (!memberFamilies.has(id)) memberFamilies.set(id, []);
+        memberFamilies.get(id).push(family);
+      }
     }
-    return { ...graph, families, componentBoxes, width: Math.max(0, offsetX - 180), height };
+    const seen = new Set();
+    const ordered = [];
+    const enqueue = (family) => { if (family && !seen.has(family.id)) { seen.add(family.id); ordered.push(family); } };
+    (memberFamilies.get(state.root) || []).forEach(enqueue);
+    for (let index = 0; index < ordered.length; index++) {
+      const family = ordered[index];
+      for (const id of [family.husband, family.wife, ...family.children]) (memberFamilies.get(id) || []).forEach(enqueue);
+    }
+    for (const family of state.families.values()) enqueue(family);
+    let y = PAD + 32;
+    let widest = 0;
+    const cardGap = 20;
+    const columns = els.stage.clientWidth < 620 ? 2 : 4;
+    for (const [index, family] of ordered.entries()) {
+      const parents = [family.husband, family.wife].filter((id) => state.people.has(id));
+      const children = [...new Set(family.children)].filter((id) => state.people.has(id));
+      if (!parents.length && !children.length) continue;
+      const rowCount = Math.max(parents.length, Math.min(children.length, columns), 1);
+      const width = rowCount * CARD_W + (rowCount - 1) * cardGap;
+      const x0 = PAD;
+      const parentY = y + 31;
+      const childY = parentY + CARD_H + 86;
+      const parentX = x0 + (width - (parents.length * CARD_W + Math.max(0, parents.length - 1) * cardGap)) / 2;
+      const childRows = [];
+      for (let start = 0; start < children.length; start += columns) childRows.push(children.slice(start, start + columns));
+      const put = (id, x, nodeY) => {
+        const node = { id, person: personById(id), x, y: nodeY, direct: graph.directIds.has(id) };
+        renderNodes.push(node);
+        if (!firstById.has(id)) firstById.set(id, node);
+      };
+      parents.forEach((id, p) => put(id, parentX + p * (CARD_W + cardGap), parentY));
+      childRows.forEach((row, rowIndex) => {
+        const rowX = x0 + (width - (row.length * CARD_W + Math.max(0, row.length - 1) * cardGap)) / 2;
+        const rowY = childY + rowIndex * (CARD_H + 80);
+        row.forEach((id, c) => put(id, rowX + c * (CARD_W + cardGap), rowY));
+      });
+      const paths = [];
+      if (parents.length === 2) paths.push({ type: 'spouse', d: `M ${parentX + CARD_W} ${parentY + CARD_H / 2} H ${parentX + CARD_W + cardGap}` });
+      if (parents.length && children.length) {
+        const center = x0 + width / 2;
+        const trunkX = x0 - 10;
+        const firstBusY = childY - 37;
+        const lastBusY = firstBusY + (childRows.length - 1) * (CARD_H + 80);
+        if (childRows.length > 1) paths.push({ type: 'family', d: `M ${center} ${parentY + CARD_H} V ${firstBusY - 17} H ${trunkX} V ${lastBusY}` });
+        else paths.push({ type: 'family', d: `M ${center} ${parentY + CARD_H} V ${firstBusY}` });
+        childRows.forEach((row, rowIndex) => {
+          const rowX = x0 + (width - (row.length * CARD_W + Math.max(0, row.length - 1) * cardGap)) / 2;
+          const rowY = childY + rowIndex * (CARD_H + 80);
+          const busY = rowY - 37;
+          const childCenters = row.map((_, c) => rowX + c * (CARD_W + cardGap) + CARD_W / 2);
+          paths.push({ type: 'family', d: `M ${childRows.length > 1 ? trunkX : Math.min(...childCenters)} ${busY} H ${Math.max(...childCenters)}` });
+          row.forEach((id, c) => {
+            const foster = Boolean(personById(id).famc.find((ref) => ref.id === family.id && ref.pedi === 'foster'));
+            paths.push({ type: 'family', foster, d: `M ${childCenters[c]} ${busY} V ${rowY}` });
+          });
+        });
+      }
+      families.push({ id: family.id, parents, children, direct: parents.includes(state.root) || children.includes(state.root),
+        clan: familyClan(family), paths });
+      boxes.push({ x: x0 - 20, y, width: width + 40, height: children.length ? (childY - y) + childRows.length * CARD_H + (childRows.length - 1) * 80 + 20 : 31 + CARD_H + 34,
+        caption: `Семья ${index + 1} из ${ordered.length}` });
+      widest = Math.max(widest, width + PAD * 2);
+      y += boxes.at(-1).height + 38;
+    }
+    for (const person of state.people.values()) {
+      if (firstById.has(person.id)) continue;
+      const node = { id: person.id, person, x: PAD, y: y + 31, direct: graph.directIds.has(person.id) };
+      renderNodes.push(node);
+      firstById.set(person.id, node);
+      boxes.push({ x: PAD - 20, y, width: CARD_W + 40, height: CARD_H + 64, caption: 'Отдельная запись' });
+      y += CARD_H + 102;
+      widest = Math.max(widest, CARD_W + PAD * 2);
+    }
+    return { ...graph, nodes: firstById, renderNodes, families, islandBoxes: boxes,
+      width: widest, height: y + PAD };
   }
 
   function splitName(name) {
@@ -505,115 +624,10 @@
     const lines = [''];
     for (const word of words) {
       const current = lines.at(-1);
-      if (!current || `${current} ${word}`.length <= 16) lines[lines.length - 1] = compact(`${current} ${word}`);
+      if (!current || `${current} ${word}`.length <= 18) lines[lines.length - 1] = compact(`${current} ${word}`);
       else lines.push(word);
     }
     return lines;
-  }
-
-  function routeDisplayPoints(family, route, graph) {
-    const points = route.points.map((point) => ({ x: point.x, y: point.y }));
-    if (route.from !== `family:${family.id}`) points.reverse();
-    const relatives = route.personIds.map((id) => graph.nodes.get(id)).filter(Boolean).sort((a, b) => a.x - b.x);
-    if (!points.length || !relatives.length) return [];
-    let target;
-    if (route.role === 'parent' && relatives.length >= 2) {
-      const left = relatives[0];
-      const right = relatives.at(-1);
-      target = { x: (left.x + CARD_W + right.x) / 2, y: Math.max(left.y, right.y) + CARD_H };
-    } else {
-      const relative = relatives[0];
-      target = { x: relative.x + CARD_W / 2, y: route.role === 'parent' ? relative.y + CARD_H : relative.y };
-    }
-    points[points.length - 1] = target;
-    return points;
-  }
-
-  function assignRouteLanes(families, graph) {
-    const groups = new Map();
-    for (const family of families) {
-      for (const route of family.routes || []) {
-        route.displayPoints = routeDisplayPoints(family, route, graph);
-        route.laneYs = [];
-        route.displayPoints.slice(1).forEach((point, index) => {
-          const previous = route.displayPoints[index];
-          if (Math.abs(point.x - previous.x) < .5 || Math.abs(point.y - previous.y) < .5) return;
-          const minY = Math.min(previous.y, point.y);
-          const maxY = Math.max(previous.y, point.y);
-          const item = { familyId: family.id, route, index, left: Math.min(previous.x, point.x), right: Math.max(previous.x, point.x), minY, maxY };
-          const key = `${Math.round(minY)}:${Math.round(maxY)}`;
-          if (!groups.has(key)) groups.set(key, []);
-          groups.get(key).push(item);
-        });
-      }
-    }
-
-    for (const items of groups.values()) {
-      const lanes = [];
-      items.sort((a, b) => a.left - b.left || a.right - b.right || a.familyId.localeCompare(b.familyId));
-      for (const item of items) {
-        let lane = lanes.findIndex((entry) => entry.familyIds.has(item.familyId) || item.left > entry.right + 12);
-        if (lane < 0) { lane = lanes.length; lanes.push({ familyIds: new Set([item.familyId]), right: item.right }); }
-        else { lanes[lane].familyIds.add(item.familyId); lanes[lane].right = Math.max(lanes[lane].right, item.right); }
-        item.lane = lane;
-      }
-      const laneCount = lanes.length;
-      for (const item of items) item.route.laneYs[item.index] = item.minY + (item.maxY - item.minY) * (item.lane + 1) / (laneCount + 1);
-    }
-  }
-
-  function orthogonalPath(points, laneYs = []) {
-    if (points.length < 2) return '';
-    let previous = points[0];
-    let d = `M ${previous.x} ${previous.y}`;
-    points.slice(1).forEach((point, index) => {
-      const sameX = Math.abs(point.x - previous.x) < .5;
-      const sameY = Math.abs(point.y - previous.y) < .5;
-      if (sameX) d += ` V ${point.y}`;
-      else if (sameY) d += ` H ${point.x}`;
-      else {
-        const middleY = laneYs[index] ?? (previous.y + point.y) / 2;
-        d += ` V ${middleY} H ${point.x} V ${point.y}`;
-      }
-      previous = point;
-    });
-    return d;
-  }
-
-  function familyConnectionPaths(family, graph) {
-    const parents = family.parents.map((id) => graph.nodes.get(id)).filter(Boolean).sort((a, b) => a.x - b.x);
-    const children = family.children.map((id) => graph.nodes.get(id)).filter(Boolean).sort((a, b) => a.x - b.x);
-    const paths = [];
-    const centerX = (node) => node.x + CARD_W / 2;
-    if (children.length) {
-      const parentBottom = Math.max(...parents.map((node) => node.y + CARD_H));
-      const childTop = Math.min(...children.map((node) => node.y));
-      const between = childTop - parentBottom;
-      const busY = between > 24 ? parentBottom + between * .5 : parentBottom + 18;
-      const xs = [...parents, ...children].map(centerX);
-      const left = Math.min(...xs);
-      const right = Math.max(...xs);
-      const stems = parents.map((node) => `M ${centerX(node)} ${node.y + CARD_H} V ${busY}`);
-      const childStems = children.map((node) => {
-        const foster = Boolean(node.person.famc.find((ref) => ref.id === family.id && ref.pedi === 'foster'));
-        const path = `M ${centerX(node)} ${busY} V ${node.y}`;
-        if (foster) paths.push({ type: 'family', foster: true, d: path });
-        return foster ? '' : path;
-      }).filter(Boolean);
-      paths.push({ type: 'family', d: [...stems, `M ${left} ${busY} H ${right}`, ...childStems].join(' ') });
-    }
-    if (parents.length >= 2) {
-      const left = parents[0];
-      const right = parents.at(-1);
-      const gap = right.x - (left.x + CARD_W);
-      if (Math.abs(left.y - right.y) < 2 && gap >= 0 && gap <= 70) {
-        paths.push({ type: 'spouse', d: `M ${left.x + CARD_W} ${left.y + CARD_H / 2} H ${right.x}` });
-      } else if (!children.length) {
-        const y = Math.max(left.y, right.y) + CARD_H + 18;
-        paths.push({ type: 'spouse', d: `M ${centerX(left)} ${left.y + CARD_H} V ${y} H ${centerX(right)} V ${right.y + CARD_H}` });
-      }
-    }
-    return paths;
   }
 
   function drawGraph() {
@@ -643,9 +657,18 @@
       els.edges.appendChild(label);
     }
 
+    for (const box of graph.islandBoxes || []) {
+      const sheet = svgEl('g', { class: 'family-sheet' });
+      sheet.appendChild(svgEl('rect', { x: box.x, y: box.y, width: box.width, height: box.height, rx: 14 }));
+      const caption = svgEl('text', { x: box.x + 16, y: box.y + 20 });
+      caption.textContent = box.caption;
+      sheet.appendChild(caption);
+      els.edges.appendChild(sheet);
+    }
+
     for (const family of graph.families) {
       const familyGroup = svgEl('g', { class: 'family-group', 'data-family-id': family.id });
-      for (const path of familyConnectionPaths(family, graph)) {
+      for (const path of family.paths) {
         const classes = `${path.type}${family.direct ? ' direct' : ''}${path.foster ? ' foster' : ''}`;
         familyGroup.appendChild(svgEl('path', { d: path.d, class: `tree-edge edge-halo ${classes}` }));
         familyGroup.appendChild(svgEl('path', { d: path.d, class: `tree-edge clan-${family.clan} ${classes}` }));
@@ -653,7 +676,7 @@
       els.edges.appendChild(familyGroup);
     }
 
-    for (const node of graph.nodes.values()) {
+    for (const node of graph.renderNodes || graph.nodes.values()) {
       const clan = clanOf(node.person);
       const classes = ['tree-node', `clan-${clan}`];
       if (!node.direct) classes.push('branch');
@@ -668,21 +691,23 @@
       group.appendChild(svgEl('rect', { class: 'node-card', width: CARD_W, height: CARD_H, rx: 10 }));
       group.appendChild(svgEl('path', { class: 'node-accent', d: `M0 10A10 10 0 0 1 10 0h3v${CARD_H}h-3A10 10 0 0 1 0 ${CARD_H - 10}Z` }));
       const lines = splitName(node.person.name);
-      const firstLineY = datesText ? 40 - (lines.length - 1) * 8 : 51 - (lines.length - 1) * 7.5;
-      const name = svgEl('text', { class: 'node-name', x: 20, y: firstLineY });
+      const lineHeight = lines.length > 4 ? 12 : 15;
+      const firstLineY = datesText ? Math.max(20, 69 - lines.length * lineHeight) : Math.max(24, 68 - (lines.length - 1) * lineHeight / 2);
+      const name = svgEl('text', { class: 'node-name', x: 20, y: firstLineY,
+        style: `font-size:${lines.length > 4 ? 11 : lines.length > 3 ? 12 : 13}px` });
       lines.forEach((line, index) => {
-        const tspan = svgEl('tspan', { x: 20, dy: index ? 15 : 0 });
+        const tspan = svgEl('tspan', { x: 20, dy: index ? lineHeight : 0 });
         tspan.textContent = line;
         name.appendChild(tspan);
       });
       group.appendChild(name);
       if (datesText) {
-        const dates = svgEl('text', { class: 'node-life', x: 22, y: 78 });
+        const dates = svgEl('text', { class: 'node-life', x: 22, y: CARD_H - 14 });
         dates.textContent = datesText;
         group.appendChild(dates);
       }
-      group.addEventListener('click', () => { if (!state.moved) selectPerson(node.id, true); });
-      group.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selectPerson(node.id, true); } });
+      group.addEventListener('click', () => { if (!state.moved) (state.scope === 'all' ? setRoot : selectPerson)(node.id, true); });
+      group.addEventListener('keydown', (event) => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); (state.scope === 'all' ? setRoot : selectPerson)(node.id, true); } });
       group.addEventListener('pointerenter', () => setHoveredPerson(node.id));
       group.addEventListener('pointerleave', () => setHoveredPerson(''));
       group.addEventListener('focus', () => setHoveredPerson(node.id));
@@ -692,7 +717,12 @@
 
     const mode = state.scope === 'direct' ? (state.direction === 'ancestors' ? 'Прямые предки' : 'Прямые потомки') : 'Все люди';
     const direction = state.direction === 'ancestors' ? 'предки' : 'потомки';
-    els.summary.textContent = `${mode} · ${direction} · ${graph.nodes.size} ${plural(graph.nodes.size, ['человек', 'человека', 'человек'])} на схеме`;
+    els.summary.textContent = state.scope === 'all'
+      ? `Все ${graph.nodes.size} человек · ${graph.islandBoxes.length} семейных схем · выберите человека для перехода`
+      : `${mode} · ${direction} · ${graph.nodes.size} ${plural(graph.nodes.size, ['человек', 'человека', 'человек'])} на схеме`;
+    state.activeIsland = 0;
+    els.sheetNavigation.hidden = state.scope !== 'all';
+    updateSheetNavigation();
     els.svg.removeAttribute('hidden');
     els.loading.hidden = true;
     updateFamilyFocus();
@@ -722,6 +752,29 @@
     els.zoomValue.textContent = `${Math.round(state.camera.scale * 100)}%`;
   }
 
+  function updateSheetNavigation() {
+    const count = state.graph?.islandBoxes?.length || 0;
+    els.sheetPosition.textContent = `Семья ${Math.min(state.activeIsland + 1, count)} из ${count}`;
+    $('#previousSheet').disabled = state.activeIsland <= 0;
+    $('#nextSheet').disabled = state.activeIsland >= count - 1;
+  }
+
+  function focusIsland(index) {
+    const boxes = state.graph?.islandBoxes;
+    if (!boxes?.length) return;
+    state.activeIsland = clamp(index, 0, boxes.length - 1);
+    const box = boxes[state.activeIsland];
+    const size = visibleStageSize();
+    const scale = clamp((size.width - 32) / box.width, .42, .9);
+    state.camera.scale = scale;
+    state.camera.x = (size.width - box.width * scale) / 2 - box.x * scale;
+    state.camera.y = box.height * scale <= size.height - 32
+      ? (size.height - box.height * scale) / 2 - box.y * scale
+      : 58 - box.y * scale;
+    updateCamera();
+    updateSheetNavigation();
+  }
+
   function fitTree() {
     if (!state.graph) return;
     if (state.scope === 'all' && els.drawer.classList.contains('open')) {
@@ -742,8 +795,12 @@
     const node = state.graph.nodes.get(state.root);
     if (!node) return;
     const size = visibleStageSize();
+    if (state.scope === 'all' && state.graph.islandBoxes?.length) {
+      focusIsland(0);
+      return;
+    }
     const fitScale = Math.min((size.width - 44) / state.graph.width, (size.height - 44) / state.graph.height);
-    const readableScale = els.stage.clientWidth < 620 ? .62 : .82;
+    const readableScale = .82;
     const scale = clamp(Math.max(fitScale, readableScale), .18, 1);
     state.camera.scale = scale;
     state.camera.x = size.width / 2 - (node.x + CARD_W / 2) * scale;
@@ -798,7 +855,7 @@
     fitButton.setAttribute('aria-label', state.scope === 'all' ? 'Вернуться к центру древа' : 'Показать древо целиком');
     fitButton.title = fitButton.getAttribute('aria-label');
     $('#pageHelp').textContent = state.scope === 'all'
-      ? `В файле ${state.people.size} человек. Большую схему смотрите по частям: выберите ветвь или найдите человека.`
+      ? `Все ${state.people.size} человек показаны в отдельных семейных схемах. Повторяющиеся карточки связывают семьи.`
       : 'Исследуйте прямую линию предков или откройте боковые ветви семьи.';
   }
 
@@ -888,6 +945,10 @@
     selectPerson(id, true);
     const node = state.graph?.nodes.get(id);
     if (!node) return;
+    if (state.scope === 'all') {
+      const index = state.graph.islandBoxes.findIndex((box) => node.y >= box.y && node.y < box.y + box.height);
+      if (index >= 0) { focusIsland(index); return; }
+    }
     const { width, height } = visibleStageSize();
     state.camera.scale = els.stage.clientWidth < 620 ? .7 : .9;
     state.camera.x = width / 2 - (node.x + CARD_W / 2) * state.camera.scale;
@@ -932,10 +993,7 @@
       group.classList.toggle('is-family-member', activePeople.has(group.getAttribute('data-person-id')));
       group.classList.toggle('is-focus-person', group.getAttribute('data-person-id') === focusId);
     });
-    if (state.scope === 'all') {
-      const person = personById(focusId);
-      els.summary.textContent = `GEDCOM: ${state.graph.nodes.size} человек · ${state.components.length} ветвей · выделена семья: ${person?.name || ''}`;
-    }
+    if (state.scope === 'all') els.summary.textContent = `Все ${state.graph.nodes.size} человек · ${state.graph.islandBoxes.length} семейных схем · ${state.components.length} отдельных ветвей`;
   }
 
   function drawSelection() {
@@ -994,7 +1052,7 @@
 
   function bindEvents() {
     $$('[data-direction]').forEach((button) => button.addEventListener('click', () => { state.direction = button.dataset.direction; changeView(); }));
-    $$('[data-scope]').forEach((button) => button.addEventListener('click', () => { state.scope = button.dataset.scope; changeView(); setBranchPanel(state.scope === 'all' && els.stage.clientWidth > 820); }));
+    $$('[data-scope]').forEach((button) => button.addEventListener('click', () => { state.scope = button.dataset.scope; changeView(); setBranchPanel(false); }));
     els.branchToggle.addEventListener('click', () => setBranchPanel(els.branchPanel.hidden));
     $('#closeBranches').addEventListener('click', () => setBranchPanel(false));
     els.branchList.addEventListener('click', (event) => {
@@ -1018,6 +1076,8 @@
     $('#zoomOut').addEventListener('click', () => zoomAt(1 / 1.22));
     els.zoomValue.addEventListener('click', centerAtActualSize);
     $('#fitTree').addEventListener('click', () => state.scope === 'all' ? focusRoot() : fitTree());
+    $('#previousSheet').addEventListener('click', () => focusIsland(state.activeIsland - 1));
+    $('#nextSheet').addEventListener('click', () => focusIsland(state.activeIsland + 1));
     $('#fullScreen').addEventListener('click', async () => {
       if (!document.fullscreenElement) await els.treeCard.requestFullscreen?.();
       else await document.exitFullscreen?.();
@@ -1127,11 +1187,11 @@
       els.yearsRange.textContent = yearRange();
       renderBranchPanel();
       applyControls();
-      setBranchPanel(state.scope === 'all' && els.stage.clientWidth > 820);
+      setBranchPanel(false);
       updateUrl();
       renderPeople();
       renderDetails(personById(state.root));
-      els.drawer.classList.toggle('open', state.scope === 'direct');
+      els.drawer.classList.toggle('open', state.scope === 'direct' && els.stage.clientWidth > 760);
       drawGraph();
     } catch (error) {
       console.error(error);
