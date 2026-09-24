@@ -962,10 +962,18 @@
     const cardHeight = state.graph.cardHeight || CARD_H;
     const size = visibleStageSize();
     const fitScale = Math.min((size.width - 44) / state.graph.width, (size.height - 44) / state.graph.height);
-    const readableScale = state.scope === 'all' ? (els.stage.clientWidth < 620 ? .56 : .72) : .82;
+    const readableScale = state.scope === 'all' ? 1 : .82;
     const scale = clamp(Math.max(fitScale, readableScale), .18, 1);
     state.camera.scale = scale;
     state.camera.x = size.width / 2 - (node.x + cardWidth / 2) * scale;
+    if (state.scope === 'all' && els.stage.clientWidth < 620) {
+      const familyNodes = [node, ...parentsOf(personById(state.root))
+        .map(({ person }) => state.graph.nodes.get(person.id)).filter(Boolean)];
+      const left = Math.min(...familyNodes.map((entry) => entry.x));
+      const right = Math.max(...familyNodes.map((entry) => entry.x + cardWidth));
+      if ((right - left) * scale <= size.width - 24)
+        state.camera.x = size.width / 2 - (left + right) / 2 * scale;
+    }
     state.camera.y = state.scope === 'all'
       ? size.height * (els.stage.clientWidth < 620 ? .56 : .64) - (node.y + cardHeight / 2) * scale
       : state.direction === 'ancestors'
