@@ -178,6 +178,7 @@ svg { display: block; }
 #treeSvg.dragging { cursor: grabbing; }
 #treeViewport { transform-origin: 0 0; }
 .tree-edge { fill: none; stroke: #9d998f; stroke-width: 1.4; stroke-linecap: square; stroke-linejoin: miter; vector-effect: non-scaling-stroke; }
+.generation-band { fill: #f6f0e2; opacity: .72; pointer-events: none; }
 .tree-edge.direct { stroke: #3e6553; stroke-width: 2; }
 .tree-edge.spouse { stroke: var(--gold); stroke-width: 1.6; }
 .tree-edge.foster { stroke-dasharray: 4 4; }
@@ -193,6 +194,11 @@ svg { display: block; }
 .tree-card.all-relatives .family-group.is-focused { opacity: 1; }
 .tree-card.all-relatives .family-group.is-focused .tree-edge:not(.edge-halo) { stroke: #b68827 !important; stroke-width: 3.6; }
 .tree-card.all-relatives .family-group.is-focused .tree-edge.edge-halo { stroke-width: 8; }
+.tree-card.has-relation-path .family-group { opacity: .17; }
+.tree-card.has-relation-path .family-group.is-on-route { opacity: 1; }
+.tree-card.has-relation-path .family-group.is-on-route .tree-edge:not(.route-segment) { opacity: .2; }
+.tree-card.has-relation-path .tree-edge.route-segment:not(.edge-halo) { stroke: #b48626 !important; stroke-width: 3.6; }
+.tree-card.has-relation-path .tree-edge.route-segment.edge-halo { stroke-width: 8; }
 .component-label { pointer-events: none; }
 .component-label rect { fill: #fffdf8; stroke: #ded5c5; }
 .component-label text { fill: #6e604c; font: 600 11px Arial, sans-serif; }
@@ -200,6 +206,9 @@ svg { display: block; }
 .tree-card.all-relatives .tree-node { opacity: .96; transition: opacity .18s ease; }
 .tree-card.all-relatives .tree-node.is-family-member,
 .tree-card.all-relatives .tree-node:hover { opacity: 1; }
+.tree-card.has-relation-path .tree-node { opacity: .34; }
+.tree-card.has-relation-path .tree-node.is-family-member,
+.tree-card.has-relation-path .tree-node:hover { opacity: 1; }
 .tree-card.all-relatives .tree-node.is-family-member .node-card { stroke: var(--gold); stroke-width: 2.3; }
 .tree-card.all-relatives .tree-node.is-focus-person .node-card { stroke: var(--gold); stroke-width: 3.2; }
 .tree-node.clan-gulyaev { --clan: #2f6652; --clan-soft: #edf5f1; --clan-border: #9fbeaf; }
@@ -234,6 +243,9 @@ svg { display: block; }
 .person-drawer footer { padding: 13px 20px 18px; border-top: 1px solid var(--line); }
 .life-line { margin: 0 0 17px; color: var(--gold-dark); font: 600 17px/1.35 var(--serif); }
 .root-mark { display: inline-flex; align-items: center; gap: 7px; margin-bottom: 10px; padding: 6px 9px; border-radius: 999px; color: var(--green); background: var(--green-soft); font-size: 9px; font-weight: 800; text-transform: uppercase; }
+.kinship-path { margin: 8px 0 16px; padding: 11px 12px; border: 1px solid #dcc492; border-radius: 9px; background: #faf3e2; }
+.kinship-path strong { display: block; color: #77551f; font-size: 11px; }
+.kinship-path p { margin: 6px 0 0; color: var(--text); font-size: 10px; line-height: 1.5; overflow-wrap: anywhere; }
 .relation-section { margin-top: 20px; }
 .relation-section h3 { margin: 0 0 8px; color: var(--muted); font-size: 9px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; }
 .relation-list { display: grid; gap: 6px; }
